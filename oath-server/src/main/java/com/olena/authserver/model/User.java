@@ -3,11 +3,14 @@ package com.olena.authserver.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.lang.NonNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-@AllArgsConstructor
+@Document(collection = "User")
+@NoArgsConstructor
 public class User {
     @NonNull
     private String userName;
