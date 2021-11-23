@@ -65,7 +65,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		log.info("OL: configure ClientDetailsServiceConfigurer");
-        clients.inMemory().withClient("applicationid").secret("{noop}applicationsecret").scopes("foo", "bar")
+        //TBD -  move to  external config
+        clients.inMemory().withClient("potluck-planner").secret("{noop}XXX").scopes("user", "guest")
                 .authorizedGrantTypes("client_credentials", "password", "refresh_token")
                 .accessTokenValiditySeconds(6000);
     }

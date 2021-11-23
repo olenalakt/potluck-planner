@@ -13,16 +13,13 @@ import java.util.Map;
 @Slf4j
 public class CustomJWTEnhancer extends JwtAccessTokenConverter {
 
-
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
         log.info("OL: OAuth2AccessToken enhance");
 
         Map info = new HashMap();
-        info.put("iat", Instant.now().getEpochSecond());
-        info.put("sub", authentication.getUserAuthentication().getName());
-        info.put("iss", "sts.ecomm.com");
-        info.put("aud", "*.ecomm.com");
+        info.put("ts", Instant.now().getEpochSecond());
+        info.put("userName", authentication.getUserAuthentication().getName());
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(info);
         return accessToken;
     }
