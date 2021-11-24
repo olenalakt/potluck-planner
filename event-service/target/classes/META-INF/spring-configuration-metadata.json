@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "event-service.config",
+      "type": "com.olena.eventservice.config.EventServiceConfig",
+      "sourceType": "com.olena.eventservice.config.EventServiceConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "event-service.config.db-schema-version",
+      "type": "java.lang.String",
+      "sourceType": "com.olena.eventservice.config.EventServiceConfig"
+    }
+  ],
+  "hints": []
+}

@@ -1,0 +1,11 @@
+C:\GITHUB\potluck-planner\event-service\src\main\java\com\olena\eventservice\repository\EventRepository.java
+C:\GITHUB\potluck-planner\event-service\src\main\java\com\olena\eventservice\exception\ControllerExceptionHandler.java
+C:\GITHUB\potluck-planner\event-service\src\main\java\com\olena\eventservice\controller\EventController.java
+C:\GITHUB\potluck-planner\event-service\src\main\java\com\olena\eventservice\config\EventServiceConfig.java
+C:\GITHUB\potluck-planner\event-service\src\main\java\com\olena\eventservice\exception\ServiceException.java
+C:\GITHUB\potluck-planner\event-service\src\main\java\com\olena\eventservice\enums\RoleEnum.java
+C:\GITHUB\potluck-planner\event-service\src\main\java\com\olena\eventservice\repository\entity\Event.java
+C:\GITHUB\potluck-planner\event-service\src\main\java\com\olena\eventservice\config\MongoConfiguration.java
+C:\GITHUB\potluck-planner\event-service\src\main\java\com\olena\eventservice\service\EventService.java
+C:\GITHUB\potluck-planner\event-service\src\main\java\com\olena\eventservice\model\EventDTO.java
+C:\GITHUB\potluck-planner\event-service\src\main\java\com\olena\eventservice\EventServiceApplication.java

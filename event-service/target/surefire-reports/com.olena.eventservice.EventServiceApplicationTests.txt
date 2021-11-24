@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.olena.eventservice.EventServiceApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.76 s - in com.olena.eventservice.EventServiceApplicationTests

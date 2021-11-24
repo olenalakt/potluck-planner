@@ -1,0 +1,14 @@
+com\olena\eventservice\config\MongoConfiguration$DateToTimestampConverter.class
+com\olena\eventservice\model\EventDTO.class
+com\olena\eventservice\config\EventServiceConfig.class
+com\olena\eventservice\repository\entity\Event.class
+com\olena\eventservice\EventServiceApplication.class
+com\olena\eventservice\config\MongoConfiguration.class
+com\olena\eventservice\exception\ServiceException.class
+com\olena\eventservice\controller\EventController.class
+META-INF\spring-configuration-metadata.json
+com\olena\eventservice\exception\ControllerExceptionHandler.class
+com\olena\eventservice\repository\EventRepository.class
+com\olena\eventservice\enums\RoleEnum.class
+com\olena\eventservice\config\MongoConfiguration$TimestampToDateConverter.class
+com\olena\eventservice\service\EventService.class
