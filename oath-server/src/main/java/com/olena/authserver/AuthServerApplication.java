@@ -9,6 +9,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSession;
 import java.security.Principal;
 
 @SpringBootApplication
@@ -17,6 +20,15 @@ import java.security.Principal;
 @EnableResourceServer
 @Slf4j
 public class AuthServerApplication {
+
+    //TBD - !!! only  for dev env
+    static {
+        HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        });
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(AuthServerApplication.class, args);

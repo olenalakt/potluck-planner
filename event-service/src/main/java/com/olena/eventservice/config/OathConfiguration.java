@@ -1,11 +1,11 @@
-package com.manning.mss.ch06.sample01;
+package com.olena.eventservice.config;
 
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 @Configuration
-public class OrderAppConfiguration implements EnvironmentAware {
+public class OathConfiguration implements EnvironmentAware {
 
 	@Override
 	public void setEnvironment(final Environment environment) {
@@ -13,7 +13,8 @@ public class OrderAppConfiguration implements EnvironmentAware {
 		String keystorePassword = environment.getProperty("server.ssl.key-store-password");
 		String truststoreLocation = environment.getProperty("server.ssl.key-store");
 		String truststorePassword = environment.getProperty("server.ssl.key-store-password");
-		String inventory = environment.getProperty("inventory.service");
+
+		String guestServiceUrl = environment.getProperty("guest.service");
 
 		if (truststoreLocation != null && truststorePassword != null) {
 			System.setProperty("javax.net.ssl.trustStore", truststoreLocation);
@@ -25,8 +26,8 @@ public class OrderAppConfiguration implements EnvironmentAware {
 			System.setProperty("javax.net.ssl.keyStorePassword", keystorePassword);
 		}
 
-		if (inventory != null) {
-			System.setProperty("inventory.service", inventory);
+		if (guestServiceUrl != null) {
+			System.setProperty("guest.service", guestServiceUrl);
 		}
 
 	}

@@ -34,7 +34,7 @@ keytool -changealias -alias "1" -destalias "userservice" -keystore /export/user-
 
 keytool -import -file /export/ca/ca_cert.pem -alias ca -noprompt  -keystore /export/user-service/userservice.jks -storepass olena123
 
-keytool -importkeystore -srckeystore /export/user-service/userservice.jks -destkeystore /export/user-service/userservice.jks -deststoretype pkcs12 -storepass olena12
+#keytool -importkeystore -srckeystore /export/user-service/userservice.jks -destkeystore /export/user-service/userservice.jks -deststoretype pkcs12 -storepass olena12
 
 #Cleans up
 rm /export/user-service/app.p12 
@@ -67,7 +67,7 @@ keytool -changealias -alias "1" -destalias "eventservice" -keystore /export/even
 
 keytool -import -file /export/ca/ca_cert.pem -alias ca  -noprompt -keystore /export/event-service/eventservice.jks -storepass olena123
 
-keytool -importkeystore -srckeystore /export/event-service/eventservice.jks -destkeystore /export/event-service/eventservice.jks -deststoretype pkcs12 -storepass olena123
+#keytool -importkeystore -srckeystore /export/event-service/eventservice.jks -destkeystore /export/event-service/eventservice.jks -deststoretype pkcs12 -storepass olena123
 
 #Cleans up
 rm /export/event-service/app.p12 
@@ -101,7 +101,7 @@ keytool -changealias -alias "1" -destalias "guestservice" -keystore /export/gues
 
 keytool -import -file /export/ca/ca_cert.pem -alias ca  -noprompt -keystore /export/guest-service/guestservice.jks -storepass olena123
 
-keytool -importkeystore -srckeystore /export/guest-service/guestservice.jks -destkeystore /export/guest-service/guestservice.jks -deststoretype pkcs12 -storepass olena123
+#keytool -importkeystore -srckeystore /export/guest-service/guestservice.jks -destkeystore /export/guest-service/guestservice.jks -deststoretype pkcs12 -storepass olena123
 
 #Cleans up
 rm /export/guest-service/app.p12 
@@ -134,7 +134,7 @@ keytool -changealias -alias "1" -destalias "dishservice" -keystore /export/dish-
 
 keytool -import -file /export/ca/ca_cert.pem -alias ca  -noprompt -keystore /export/dish-service/dishservice.jks -storepass olena123
 
-keytool -importkeystore -srckeystore /export/dish-service/dishservice.jks -destkeystore /export/dish-service/dishservice.jks -deststoretype pkcs12 -storepass olena123
+#keytool -importkeystore -srckeystore /export/dish-service/dishservice.jks -destkeystore /export/dish-service/dishservice.jks -deststoretype pkcs12 -storepass olena123
 
 #Cleans up
 rm /export/dish-service/app.p12 
@@ -167,7 +167,7 @@ keytool -changealias -alias "1" -destalias "drinkservice" -keystore /export/drin
 
 keytool -import -file /export/ca/ca_cert.pem -alias ca  -noprompt -keystore /export/drink-service/drinkservice.jks -storepass olena123
 
-keytool -importkeystore -srckeystore /export/drink-service/drinkservice.jks -destkeystore /export/drink-service/drinkservice.jks -deststoretype pkcs12 -storepass olena123
+#keytool -importkeystore -srckeystore /export/drink-service/drinkservice.jks -destkeystore /export/drink-service/drinkservice.jks -deststoretype pkcs12 -storepass olena123
 
 #Cleans up
 rm /export/drink-service/app.p12 
@@ -201,7 +201,7 @@ keytool -changealias -alias "1" -destalias "oathserver" -keystore /export/oath-s
 
 keytool -import -file /export/ca/ca_cert.pem -alias ca  -noprompt -keystore /export/oath-server/oathserver.jks -storepass olena123
 
-keytool -importkeystore -srckeystore /export/oath-server/oathserver.jks -destkeystore /export/oath-server/oathserver.jks -deststoretype pkcs12 -storepass olena123
+#keytool -importkeystore -srckeystore /export/oath-server/oathserver.jks -destkeystore /export/oath-server/oathserver.jks -deststoretype pkcs12 -storepass olena123
 
 #Cleans up
 rm /export/oath-server/app.p12 
@@ -235,7 +235,7 @@ keytool -changealias -alias "1" -destalias "gatewayservice" -keystore /export/ga
 
 keytool -import -file /export/ca/ca_cert.pem -alias ca  -noprompt -keystore /export/gateway-service/gatewayservice.jks -storepass olena123
 
-keytool -importkeystore -srckeystore /export/gateway-service/gatewayservice.jks -destkeystore /export/gateway-service/gatewayservice.jks -deststoretype pkcs12 -storepass olena123
+#keytool -importkeystore -srckeystore /export/gateway-service/gatewayservice.jks -destkeystore /export/gateway-service/gatewayservice.jks -deststoretype pkcs12 -storepass olena123
 
 #Cleans up
 rm /export/gateway-service/app.p12 
