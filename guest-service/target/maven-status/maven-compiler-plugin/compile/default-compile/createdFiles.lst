@@ -1,0 +1,15 @@
+com\olena\guestservice\config\GuestServiceConfig.class
+com\olena\guestservice\config\MongoConfiguration.class
+com\olena\guestservice\controller\GuestController.class
+com\olena\guestservice\config\MongoConfiguration$TimestampToDateConverter.class
+com\olena\guestservice\GuestServiceApplication$1.class
+com\olena\guestservice\config\OathConfiguration.class
+com\olena\guestservice\enums\RoleEnum.class
+com\olena\guestservice\service\GuestService.class
+com\olena\guestservice\model\GuestDTO.class
+com\olena\guestservice\repository\GuestRepository.class
+com\olena\guestservice\GuestServiceApplication.class
+com\olena\guestservice\config\MongoConfiguration$DateToTimestampConverter.class
+com\olena\guestservice\exception\ControllerExceptionHandler.class
+com\olena\guestservice\exception\ServiceException.class
+com\olena\guestservice\repository\entity\Guest.class

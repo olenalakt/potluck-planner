@@ -1,0 +1,12 @@
+C:\GITHUB\potluck-planner\guest-service\src\main\java\com\olena\guestservice\GuestServiceApplication.java
+C:\GITHUB\potluck-planner\guest-service\src\main\java\com\olena\guestservice\repository\GuestRepository.java
+C:\GITHUB\potluck-planner\guest-service\src\main\java\com\olena\guestservice\config\OathConfiguration.java
+C:\GITHUB\potluck-planner\guest-service\src\main\java\com\olena\guestservice\repository\entity\Guest.java
+C:\GITHUB\potluck-planner\guest-service\src\main\java\com\olena\guestservice\enums\RoleEnum.java
+C:\GITHUB\potluck-planner\guest-service\src\main\java\com\olena\guestservice\service\GuestService.java
+C:\GITHUB\potluck-planner\guest-service\src\main\java\com\olena\guestservice\controller\GuestController.java
+C:\GITHUB\potluck-planner\guest-service\src\main\java\com\olena\guestservice\exception\ServiceException.java
+C:\GITHUB\potluck-planner\guest-service\src\main\java\com\olena\guestservice\exception\ControllerExceptionHandler.java
+C:\GITHUB\potluck-planner\guest-service\src\main\java\com\olena\guestservice\config\MongoConfiguration.java
+C:\GITHUB\potluck-planner\guest-service\src\main\java\com\olena\guestservice\config\GuestServiceConfig.java
+C:\GITHUB\potluck-planner\guest-service\src\main\java\com\olena\guestservice\model\GuestDTO.java
