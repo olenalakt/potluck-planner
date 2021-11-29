@@ -32,6 +32,9 @@ public class Guest {
     @NonNull
     private UUID eventId;
 
+    @NonNull
+    private UUID guestId;
+
     private String guestName;
 
     private String guestEmail;

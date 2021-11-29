@@ -1,11 +1,13 @@
 package com.olena.eventservice.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.olena.eventservice.config.EventServiceConfig;
 import com.olena.eventservice.exception.ServiceException;
 import com.olena.eventservice.model.EventDTO;
 import com.olena.eventservice.repository.EventRepository;
 import com.olena.eventservice.repository.entity.Event;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ public class EventService {
 
     @Autowired
     EventRepository eventRepository;
+
 
     /**
      * @param userName
@@ -55,13 +58,24 @@ public class EventService {
         }
     }
 
+    public EventDTO getEventByName(String eventName, GuestService guestService) throws ServiceException {
+        log.debug("getEventByName: eventName={}", eventName);
+
+        Event event = getEventFromDb(eventName);
+        ModelMapper modelMapper = new ModelMapper();
+        EventDTO eventDTO = modelMapper.map(event, EventDTO.class);
+        log.debug("getEventByName: eventDTO={}", eventDTO);
+        eventDTO.setGuests(guestService.getGuestList(eventDTO));
+        return eventDTO;
+    }
+
     public Event getEventFromDb(String eventName) throws ServiceException {
-        log.debug("getEventFromDb: userName={}", eventName);
+        log.debug("getEventFromDb: eventName={}", eventName);
 
         Event event = eventRepository.findFirstByEventName(eventName);
         if (event == null) {
             String errMsg = "Event not found";
-            log.error("getEventFromDb: userName={}, {}", eventName, errMsg);
+            log.error("getEventFromDb: eventName={}, {}", eventName, errMsg);
             throw new ServiceException(errMsg);
         }
 

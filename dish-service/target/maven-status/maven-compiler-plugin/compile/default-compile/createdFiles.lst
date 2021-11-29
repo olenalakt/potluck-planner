@@ -1,0 +1,15 @@
+com\olena\dishservice\config\TlsConfiguration.class
+com\olena\dishservice\DishServiceApplication$1.class
+com\olena\dishservice\config\MongoConfiguration$DateToTimestampConverter.class
+com\olena\dishservice\controller\GuestController.class
+com\olena\dishservice\repository\entity\Dish.class
+com\olena\dishservice\model\DishDTO.class
+com\olena\dishservice\DishServiceApplication.class
+com\olena\dishservice\service\DishService.class
+com\olena\dishservice\exception\ServiceException.class
+com\olena\dishservice\repository\DishRepository.class
+com\olena\dishservice\config\DishServiceConfig.class
+com\olena\dishservice\config\MongoConfiguration$TimestampToDateConverter.class
+com\olena\dishservice\exception\ControllerExceptionHandler.class
+com\olena\dishservice\enums\Constants.class
+com\olena\dishservice\config\MongoConfiguration.class

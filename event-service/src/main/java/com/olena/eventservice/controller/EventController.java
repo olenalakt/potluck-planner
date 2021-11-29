@@ -50,7 +50,7 @@ public class EventController {
     @RequestMapping(value = "/{eventname}", method = RequestMethod.GET)
     public ResponseEntity<?> getEvent(@PathVariable("eventname") String eventName) throws ServiceException {
 
-        return ResponseEntity.ok(eventService.getEventFromDb(eventName));
+        return ResponseEntity.ok(eventService.getEventByName(eventName, guestService));
     }
 
     /**
@@ -67,7 +67,7 @@ public class EventController {
             eventService.addEvent(eventDTO);
 
             if (eventDTO.getGuests() != null) {
-                processGuests(eventDTO);
+                guestService.processGuests(eventDTO);
             }
 
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{name}")
@@ -79,19 +79,6 @@ public class EventController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    /**
-     * @param eventDTO
-     * @throws ServiceException
-     */
-    private void processGuests(EventDTO eventDTO) throws ServiceException {
-        // call guest service to  process guests
-        RestTemplate restTemplate = new RestTemplate();
-        URI uri = URI.create(System.getProperty("guest.service"));
-        List<GuestDTO> guestDTOList = guestService.prepareGuestList(eventDTO);
-        if (guestDTOList != null && guestDTOList.size() > 0) {
-            restTemplate.put(uri, guestDTOList);
-        }
-    }
 
     /**
      * @param eventDTO
@@ -106,7 +93,7 @@ public class EventController {
             Event event = eventService.getEventFromDb(eventDTO.getEventName());
 
             eventDTO.setEventId(event.getEventId().toString());
-            processGuests(eventDTO);
+            guestService.processGuests(eventDTO);
 
 
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{name}")

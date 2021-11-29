@@ -6,11 +6,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "event-service.config")
+@ConfigurationProperties(prefix = "guest-service.config")
 @Data
 @NoArgsConstructor
 public class GuestServiceConfig {
 
     String dbSchemaVersion;
+
+    String dishServiceUrl;
+    String drinkServiceUrl;
 
 }

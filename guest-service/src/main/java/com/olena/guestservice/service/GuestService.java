@@ -45,12 +45,12 @@ public class GuestService {
      * @throws ServiceException
      */
     public void setGuest(Guest guest) throws ServiceException {
-        log.debug("setEvent: guest={}", guest.toString());
+        log.debug("setGuest: guest={}", guest.toString());
         try {
             guestRepository.save(guest);
         } catch (Exception e) {
             String errMsg = "Failed to update DB: " + e;
-            log.error("setEvent: guest={}, {}", guest, errMsg);
+            log.error("setGuest: guest={}, {}", guest, errMsg);
             throw new ServiceException(errMsg);
         }
 
