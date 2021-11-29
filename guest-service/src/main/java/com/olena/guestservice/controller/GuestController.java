@@ -5,12 +5,9 @@ import com.olena.guestservice.model.GuestDTO;
 import com.olena.guestservice.service.GuestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,19 +35,16 @@ public class GuestController {
      * @param guestDTOList
      * @return
      */
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> createUser(@RequestBody List<GuestDTO> guestDTOList) throws ServiceException {
+    @RequestMapping(method = RequestMethod.PUT)
+    public ResponseEntity<?> updateGuests(@RequestBody GuestDTO[] guestDTOList) throws ServiceException {
 
-        if (guestDTOList != null) {
-            guestService.addGuests(guestDTOList);
-// TBD -  fix
-            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{name}")
-                    .buildAndExpand(guestDTOList.get(0).getUserName()).toUri();
-
-            return ResponseEntity.created(location).build();
+        if (guestDTOList == null || guestDTOList.length == 0) {
+            return ResponseEntity.badRequest().build();
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        guestService.addGuests(guestDTOList);
+
+        return ResponseEntity.noContent().build();
     }
 
 }

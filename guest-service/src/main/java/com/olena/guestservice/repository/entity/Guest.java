@@ -45,7 +45,7 @@ public class Guest {
 
     public Guest(GuestDTO guestDTO, GuestServiceConfig guestServiceConfig) {
         this.userName = guestDTO.getUserName();
-        this.eventId = guestDTO.getEventId();
+        this.eventId = UUID.fromString(guestDTO.getEventId());
         this.guestName = guestDTO.getGuestName();
         this.guestEmail = guestDTO.getGuestEmail();
         this.notes = guestDTO.getNotes();

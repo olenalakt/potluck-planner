@@ -16,6 +16,6 @@ public interface EventRepository extends MongoRepository<Event, String> {
     Event findFirstByEventName(String eventName);
 
     @Query(collation = "{ 'locale' :  'en_US', strength: 2 }")
-    List<Event> findAllByEventNameContainsOrderByEventDateDesc (String eventNamePattern);
+    List<Event> findAllByEventNameContainsOrderByEventDateDesc(String eventNamePattern);
 
 }

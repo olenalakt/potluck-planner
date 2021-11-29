@@ -1,29 +1,25 @@
 package com.olena.eventservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
-
-import java.sql.Timestamp;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 @AllArgsConstructor
-public class EventDTO {
-    @NonNull
-    private String userName;
+@NoArgsConstructor
+public class GuestDTO {
 
+    private String userName;
     private String eventId;
 
     @NonNull
-    private String eventName;
+    private String guestName;
 
-    @JsonProperty("guests")
-    private GuestDTO[] guests;
-
-    private Timestamp eventDate;
+    @NonNull
+    private String guestEmail;
 
     private String notes;
 

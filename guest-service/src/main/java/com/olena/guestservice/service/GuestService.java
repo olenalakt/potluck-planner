@@ -44,7 +44,7 @@ public class GuestService {
      * @return
      * @throws ServiceException
      */
-    public void setEvent(Guest guest) throws ServiceException {
+    public void setGuest(Guest guest) throws ServiceException {
         log.debug("setEvent: guest={}", guest.toString());
         try {
             guestRepository.save(guest);
@@ -66,31 +66,34 @@ public class GuestService {
      * @return
      * @throws ServiceException
      */
-    public void addGuests(List<GuestDTO> guestDTOList) throws ServiceException {
+    public void addGuests(GuestDTO[] guestDTOList) throws ServiceException {
         log.debug("addGuests: guestDTO={}", guestDTOList);
-/*
-        // check if guestDTO  already  exists  -  reject
-        if (guestRepository.findFirstByUserNameAndEventIdAndGuestEmail(guestDTO.getEventName()) != null) {
-            StringBuffer errMsg = new StringBuffer();
-            errMsg.append("Guest already exists in DB");
-            log.error("addGuests: guestDTO={}, {}", guestDTO, errMsg);
-            throw new ServiceException(errMsg.toString());
+
+
+        for (GuestDTO guestDTO : guestDTOList) {
+
+            try {
+
+                Guest guest = new Guest(guestDTO, guestServiceConfig);
+                Guest guestExisting = guestRepository.findFirstByUserNameAndEventIdAndGuestEmail(guestDTO.getUserName(), UUID.fromString(guestDTO.getEventId()), guestDTO.getGuestEmail());
+
+                // check if guestDTO  already  exists  -  update
+                if (guestExisting != null) {
+                    guest.setId(guestExisting.getId());
+                }
+                // save to  DB
+                setGuest(guest);
+
+            } catch (ServiceException se) {
+                throw se;
+            } catch (Exception e) {
+                StringBuffer errMsg = new StringBuffer();
+                errMsg.append("Failed to map guest: ").append(e);
+                log.error("addGuests: guestDTO={}, {}", guestDTO, errMsg);
+                throw new ServiceException(errMsg.toString());
+            }
+
         }
-
-        try {
-
-            setEvent(new Guest(guestDTO, guestServiceConfig));
-
-        } catch (ServiceException se) {
-            throw se;
-        } catch (Exception e) {
-            StringBuffer errMsg = new StringBuffer();
-            errMsg.append("Failed to map user: ").append(e);
-            log.error("addGuests: guestDTO={}, {}", guestDTO, errMsg);
-            throw new ServiceException(errMsg.toString());
-        }
-
- */
     }
 
 

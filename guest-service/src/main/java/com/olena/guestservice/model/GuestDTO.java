@@ -3,20 +3,19 @@ package com.olena.guestservice.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
-
-import java.sql.Timestamp;
-import java.util.UUID;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class GuestDTO {
     @NonNull
     private String userName;
 
     @NonNull
-    private UUID eventId;
+    private String eventId;
 
     @NonNull
     private String guestName;

@@ -2,15 +2,21 @@ package com.olena.eventservice.controller;
 
 import com.olena.eventservice.exception.ServiceException;
 import com.olena.eventservice.model.EventDTO;
+import com.olena.eventservice.model.GuestDTO;
+import com.olena.eventservice.repository.entity.Event;
 import com.olena.eventservice.service.EventService;
+import com.olena.eventservice.service.GuestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -19,6 +25,9 @@ public class EventController {
 
     @Autowired
     EventService eventService;
+
+    @Autowired
+    GuestService guestService;
 
     //TBD extract username from JWT token and update queries
 
@@ -49,13 +58,20 @@ public class EventController {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> createUser(@RequestBody EventDTO eventDTO) throws ServiceException {
+    public ResponseEntity<?> createEvent(@RequestBody EventDTO eventDTO) throws ServiceException {
 
         if (eventDTO != null) {
+
+// TBD implement saga here -  rollback event if guests failed to  add
+            eventDTO.setEventId(UUID.randomUUID().toString());
             eventService.addEvent(eventDTO);
 
+            if (eventDTO.getGuests() != null) {
+                processGuests(eventDTO);
+            }
+
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{name}")
-                    .buildAndExpand(eventDTO.getUserName()).toUri();
+                    .buildAndExpand(eventDTO.getEventName()).toUri();
 
             return ResponseEntity.created(location).build();
         }
@@ -63,4 +79,42 @@ public class EventController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    /**
+     * @param eventDTO
+     * @throws ServiceException
+     */
+    private void processGuests(EventDTO eventDTO) throws ServiceException {
+        // call guest service to  process guests
+        RestTemplate restTemplate = new RestTemplate();
+        URI uri = URI.create(System.getProperty("guest.service"));
+        List<GuestDTO> guestDTOList = guestService.prepareGuestList(eventDTO);
+        if (guestDTOList != null && guestDTOList.size() > 0) {
+            restTemplate.put(uri, guestDTOList);
+        }
+    }
+
+    /**
+     * @param eventDTO
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.PUT)
+    public ResponseEntity<?> addGuests(@RequestBody EventDTO eventDTO) throws ServiceException {
+
+        if (eventDTO != null && eventDTO.getGuests() != null) {
+
+//  query event from DB by  name to  get  the eventId
+            Event event = eventService.getEventFromDb(eventDTO.getEventName());
+
+            eventDTO.setEventId(event.getEventId().toString());
+            processGuests(eventDTO);
+
+
+            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{name}")
+                    .buildAndExpand(eventDTO.getEventName()).toUri();
+
+            return ResponseEntity.created(location).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
 }

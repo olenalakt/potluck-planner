@@ -10,9 +10,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.UUID;
 
 
 @Data
@@ -28,6 +28,9 @@ public class Event {
     @NonNull
     private String userName;
 
+    @NonNull
+    private UUID eventId;
+
     @Indexed
     @NonNull
     private String eventName;
@@ -42,6 +45,7 @@ public class Event {
     private Timestamp lastmodified;
 
     public Event(EventDTO eventDTO, EventServiceConfig eventServiceConfig) {
+        this.eventId = UUID.fromString(eventDTO.getEventId());
         this.userName = eventDTO.getUserName();
         this.eventName = eventDTO.getEventName();
         this.eventDate = eventDTO.getEventDate();

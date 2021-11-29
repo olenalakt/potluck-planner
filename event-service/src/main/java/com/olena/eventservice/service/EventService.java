@@ -39,7 +39,6 @@ public class EventService {
     }
 
     /**
-     *
      * @param eventNamePattern
      * @return
      * @throws ServiceException
