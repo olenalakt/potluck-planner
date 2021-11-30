@@ -23,7 +23,7 @@ public class Guest {
     @Id
     private ObjectId id;
 
-    // TBD -  index on userName, eventName, guestEmail
+    //TODO - unique case insensitive index on userName, eventId, guestEmail
     @Indexed
     @NonNull
     private String userName;
@@ -47,6 +47,7 @@ public class Guest {
     private Timestamp lastmodified;
 
     public Guest(GuestDTO guestDTO, GuestServiceConfig guestServiceConfig) {
+        this.guestId = (guestDTO.getGuestId() == null ? UUID.randomUUID() : UUID.fromString(guestDTO.getGuestId()));
         this.userName = guestDTO.getUserName();
         this.eventId = UUID.fromString(guestDTO.getEventId());
         this.guestName = guestDTO.getGuestName();

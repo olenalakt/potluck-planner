@@ -1,7 +1,7 @@
 package com.olena.guestservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.olena.guestservice.enums.DishType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,23 +11,35 @@ import org.springframework.lang.NonNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GuestDTO {
+public class DishDTO {
     @NonNull
     private String userName;
 
     @NonNull
     private String eventId;
 
+    @NonNull
     private String guestId;
 
-    @NonNull
-    private String guestName;
+    private String dishId;
 
     @NonNull
-    private String guestEmail;
+    private String dishName;
 
-    private String notes;
+    @NonNull
+    private String dishType;
 
-    @JsonProperty("dishes")
-    private DishDTO[] dishes;
+    private String dishRecipe;
+
+    @NonNull
+    private Boolean isLactoseFree;
+
+    @NonNull
+    private Boolean isNutFree;
+
+    @NonNull
+    private Boolean hasFish;
+
+    @NonNull
+    private Boolean hasMeat;
 }

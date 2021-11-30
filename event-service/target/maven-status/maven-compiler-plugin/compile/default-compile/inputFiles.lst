@@ -2,8 +2,6 @@ C:\GITHUB\potluck-planner\event-service\src\main\java\com\olena\eventservice\enu
 C:\GITHUB\potluck-planner\event-service\src\main\java\com\olena\eventservice\controller\EventController.java
 C:\GITHUB\potluck-planner\event-service\src\main\java\com\olena\eventservice\config\EventServiceConfig.java
 C:\GITHUB\potluck-planner\event-service\src\main\java\com\olena\eventservice\config\TlsConfiguration.java
-C:\GITHUB\potluck-planner\event-service\src\main\java\com\olena\eventservice\enums\RoleEnum.java
-C:\GITHUB\potluck-planner\event-service\src\main\java\com\olena\eventservice\model\Guest.java
 C:\GITHUB\potluck-planner\event-service\src\main\java\com\olena\eventservice\service\EventService.java
 C:\GITHUB\potluck-planner\event-service\src\main\java\com\olena\eventservice\model\EventDTO.java
 C:\GITHUB\potluck-planner\event-service\src\main\java\com\olena\eventservice\model\GuestDTO.java

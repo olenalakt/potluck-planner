@@ -4,8 +4,6 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
-import static com.olena.eventservice.enums.Constants.GUEST_SERVICE;
-
 @Configuration
 public class TlsConfiguration implements EnvironmentAware {
 

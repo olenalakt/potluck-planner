@@ -2,8 +2,6 @@ package com.olena.eventservice.controller;
 
 import com.olena.eventservice.exception.ServiceException;
 import com.olena.eventservice.model.EventDTO;
-import com.olena.eventservice.model.GuestDTO;
-import com.olena.eventservice.repository.entity.Event;
 import com.olena.eventservice.service.EventService;
 import com.olena.eventservice.service.GuestService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,11 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -30,28 +26,6 @@ public class EventController {
     GuestService guestService;
 
     //TBD extract username from JWT token and update queries
-
-    /**
-     * @param userName
-     * @return
-     */
-//    @PreAuthorize("#oauth2.hasScope('user')")
-    @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
-    public ResponseEntity<?> getEventListByUserName(@PathVariable("username") String userName) throws ServiceException {
-        return ResponseEntity.ok(eventService.getEventListByUserName(userName));
-    }
-
-    @RequestMapping(value = "/like/{eventnamepattern}", method = RequestMethod.GET)
-    public ResponseEntity<?> getEventListByPattern(@PathVariable("eventnamepattern") String eventNamePattern) throws ServiceException {
-        return ResponseEntity.ok(eventService.getEventListByPattern(eventNamePattern));
-    }
-
-
-    @RequestMapping(value = "/{eventname}", method = RequestMethod.GET)
-    public ResponseEntity<?> getEvent(@PathVariable("eventname") String eventName) throws ServiceException {
-
-        return ResponseEntity.ok(eventService.getEventByName(eventName, guestService));
-    }
 
     /**
      * @param eventDTO
@@ -70,8 +44,8 @@ public class EventController {
                 guestService.processGuests(eventDTO);
             }
 
-            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{name}")
-                    .buildAndExpand(eventDTO.getEventName()).toUri();
+            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{eventid}")
+                    .buildAndExpand(eventDTO.getEventId()).toUri();
 
             return ResponseEntity.created(location).build();
         }
@@ -79,27 +53,54 @@ public class EventController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    //    @PreAuthorize("#oauth2.hasScope('user')")
+    @RequestMapping(value = "/{eventid}", method = RequestMethod.GET)
+    public ResponseEntity<?> getEvent(@PathVariable("eventid") final String eventId) throws ServiceException {
+        // returns event with guest info
+        return ResponseEntity.ok(eventService.getEvent(eventId, true, guestService));
+    }
+
+    /**
+     * @param userName
+     * @return
+     */
+//    @PreAuthorize("#oauth2.hasScope('user')")
+    @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
+    public ResponseEntity<?> getEventListByUserName(@PathVariable(name = "username") String userName) throws ServiceException {
+        return ResponseEntity.ok(eventService.getEventListByUserName(userName));
+    }
+
+
+    //    @PreAuthorize("#oauth2.hasScope('user')")
+    @RequestMapping(value = "/eventname/{eventname}", method = RequestMethod.GET)
+    public ResponseEntity<?> getEvent(@PathVariable("eventname") final String eventName, @RequestParam(name = "contains", required = false, defaultValue = "false") final Boolean contains) throws ServiceException {
+        if (contains) {
+            // return list with event names like requested, no  guest info
+            return ResponseEntity.ok(eventService.getEventListByPattern(eventName));
+        } else {
+            // returns exact  match with guest info
+            return ResponseEntity.ok(eventService.getEventByName(eventName, guestService));
+        }
+    }
 
     /**
      * @param eventDTO
      * @return
      */
+//    @PreAuthorize("#oauth2.hasScope('user')")
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<?> addGuests(@RequestBody EventDTO eventDTO) throws ServiceException {
 
-        if (eventDTO != null && eventDTO.getGuests() != null) {
+        if (eventDTO != null && eventDTO.getEventId() != null && eventDTO.getGuests() != null ) {
 
-//  query event from DB by  name to  get  the eventId
-            Event event = eventService.getEventFromDb(eventDTO.getEventName());
+                eventService.checkEvent(eventDTO);
 
-            eventDTO.setEventId(event.getEventId().toString());
-            guestService.processGuests(eventDTO);
+                guestService.processGuests(eventDTO);
 
+                URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{eventid}")
+                        .buildAndExpand(eventDTO.getEventId()).toUri();
 
-            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{name}")
-                    .buildAndExpand(eventDTO.getEventName()).toUri();
-
-            return ResponseEntity.created(location).build();
+                return ResponseEntity.created(location).build();
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

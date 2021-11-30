@@ -1,0 +1,89 @@
+// add event  with participants over TLS -  use -k  in dev to  avoid trust validation
+curl -k -v https://localhost:9443/events \
+-H 'Content-Type: application/json' \
+--data-binary @- << EOF
+{
+  "userName":"olena",
+  "eventName":"Christmas Party 5",
+  "eventDate":"2021-12-19T16:00:00.0000",
+  "notes":"Richmond Hill friends",
+  "guests":[{"guestName":"yura","guestEmail":"yura@gmail.com"},{"guestName":"lena","guestEmail":"lena@gmail.com"}]
+}
+EOF
+
+
+// list events by username
+curl -k -X GET https://localhost:9443/events/user/olena -H "Content-Type: application/json" 
+
+// list events by eventname pattern
+curl -k -X GET https://localhost:9443/events/eventname/Christmas?contains=true -H "Content-Type: application/json" 
+
+// get event by name with participant list
+curl -k -X GET https://localhost:9443/events/eventname/Christmas%20Party%205 -H "Content-Type: application/json" 
+
+// get event by id with participant list
+curl -k -X GET https://localhost:9443/events/0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe -H "Content-Type: application/json" 
+
+
+// add guests to event by  event name
+curl -k -X PUT https://localhost:9443/events \
+-H 'Content-Type: application/json' \
+--data-binary @- << EOF
+{
+  "eventId":"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe",
+  "guests":[{"guestName":"vera","guestEmail":"vera@gmail.com"}]
+}
+EOF
+
+// fix missing guestId;
+curl -k -X PUT https://localhost:9443/events \
+-H 'Content-Type: application/json' \
+--data-binary @- << EOF
+{
+  "eventId":"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe",
+  "guests":[{"guestName":"vera","guestEmail":"vera@gmail.com"},{"guestName":"yura","guestEmail":"yura@gmail.com"},{"guestName":"lena","guestEmail":"lena@gmail.com"}]
+}
+EOF
+
+======================
+
+// list guests by eventId
+curl -k -X GET https://localhost:7443/guests/event/0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe -H "Content-Type: application/json" 
+------
+
+
+//  guest by guestId
+curl -k -X GET https://localhost:7443/guests/52cc7652-7db2-4acd-acbf-63c3c33da295 -H "Content-Type: application/json" 
+
+
+// add dishes for guest
+curl -k -v https://localhost:9443/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/dishes \
+-H 'Content-Type: application/json' \
+--data-binary @- << EOF
+{[
+  {
+  "userName":"olena",
+  "eventId":"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe",
+  "guestId":"52cc7652-7db2-4acd-acbf-63c3c33da295",
+  "dishName":"cake",
+  "dishType":"DESERT",
+  "dishRecipe":"cake recipe here",
+  "isLactoseFree":"false",
+  "isNutFree":"false",
+  "hasFish":"false",
+  "hasMeat":"false"
+  },
+  {
+  "userName":"olena",
+  "eventId":"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe",
+  "guestId":"52cc7652-7db2-4acd-acbf-63c3c33da295",
+  "dishName":"ragu",
+  "dishType":"MAIN",
+  "dishRecipe":"ragu recipe here",
+  "isLactoseFree":"true",
+  "isNutFree":"true",
+  "hasFish":"false"
+  "hasMeat":"false"
+  } 
+]}
+EOF

@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
 
-import java.util.UUID;
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 @AllArgsConstructor
@@ -27,13 +25,13 @@ public class DishDTO {
     @NonNull
     private String dishName;
 
+    @NonNull
+    private String dishType;
+
     private String dishRecipe;
 
     @NonNull
     private Boolean isLactoseFree;
-
-    @NonNull
-    private Boolean isVegetarian;
 
     @NonNull
     private Boolean isNutFree;

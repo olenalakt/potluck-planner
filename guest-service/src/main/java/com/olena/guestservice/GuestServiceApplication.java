@@ -14,7 +14,7 @@ import javax.net.ssl.SSLSession;
 //@EnableResourceServer
 public class GuestServiceApplication {
 
-    //TBD - !!! only  for dev env
+    //TODO - !!! only  for dev env
     static {
         HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
             public boolean verify(String hostname, SSLSession session) {

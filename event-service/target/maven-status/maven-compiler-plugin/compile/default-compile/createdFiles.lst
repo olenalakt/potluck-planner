@@ -6,12 +6,10 @@ com\olena\eventservice\EventServiceApplication$1.class
 com\olena\eventservice\repository\entity\Event.class
 com\olena\eventservice\EventServiceApplication.class
 com\olena\eventservice\config\MongoConfiguration.class
-com\olena\eventservice\model\Guest.class
 com\olena\eventservice\exception\ServiceException.class
 com\olena\eventservice\controller\EventController.class
 com\olena\eventservice\exception\ControllerExceptionHandler.class
 com\olena\eventservice\repository\EventRepository.class
-com\olena\eventservice\enums\RoleEnum.class
 com\olena\eventservice\config\MongoConfiguration$TimestampToDateConverter.class
 com\olena\eventservice\model\GuestDTO.class
 com\olena\eventservice\config\TlsConfiguration.class

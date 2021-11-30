@@ -1,7 +1,7 @@
 com\olena\dishservice\config\TlsConfiguration.class
+com\olena\dishservice\controller\DishController.class
 com\olena\dishservice\DishServiceApplication$1.class
 com\olena\dishservice\config\MongoConfiguration$DateToTimestampConverter.class
-com\olena\dishservice\controller\GuestController.class
 com\olena\dishservice\repository\entity\Dish.class
 com\olena\dishservice\model\DishDTO.class
 com\olena\dishservice\DishServiceApplication.class

@@ -1,14 +1,17 @@
 package com.olena.guestservice.enums;
 
-public enum Constants {
+public enum DishType {
 
     // part of path to  dishes service
-    GUEST("guest"),
+    APPETIZER("APPETIZER"),
+    SALAD("SALAD"),
+    MAIN("MAIN"),
+    DESERT("DESERT")
     ;
 
     private final String value;
 
-    Constants(String value) {
+    DishType(String value) {
         this.value = value;
     }
 

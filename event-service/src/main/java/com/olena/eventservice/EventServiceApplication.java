@@ -14,9 +14,6 @@ import javax.net.ssl.SSLSession;
 //@EnableResourceServer
 public class EventServiceApplication {
 
-    @Autowired
-    EventRepository eventRepository;
-
     //TBD - !!! only  for dev env
     static {
         HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
@@ -25,6 +22,9 @@ public class EventServiceApplication {
             }
         });
     }
+
+    @Autowired
+    EventRepository eventRepository;
 
 /*
     @Bean

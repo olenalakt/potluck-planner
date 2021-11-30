@@ -2,7 +2,7 @@ package com.olena.eventservice.enums;
 
 public enum Constants {
 
-    GUEST_SERVICE("guest.service");
+    EVENT("event");
 
     private final String value;
 

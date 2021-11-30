@@ -13,28 +13,17 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping(value = "/dishes")
-public class GuestController {
+public class DishController {
 
     @Autowired
     DishService dishService;
 
     /**
-     * @param eventId
-     * @param guestId
-     * @return
-     */
-//    @PreAuthorize("#oauth2.hasScope('user')")
-    @RequestMapping(value = "/{eventid}/{guestid}", method = RequestMethod.GET)
-    public ResponseEntity<?> getDishListByGuest(@PathVariable("eventid") String eventId, @PathVariable("guestid") String guestId) throws ServiceException {
-        //TODO - check eventId
-        return ResponseEntity.ok(dishService.getDishListByGuestId(UUID.fromString(guestId)));
-    }
-
-    /**
      * @param dishDTOList
      * @return
      */
-    @RequestMapping(method = RequestMethod.PUT)
+//    @PreAuthorize("#oauth2.hasScope('guest')")
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> updateDishes(@RequestBody DishDTO[] dishDTOList) throws ServiceException {
 
         if (dishDTOList == null || dishDTOList.length == 0) {
@@ -44,6 +33,17 @@ public class GuestController {
         dishService.addDishes(dishDTOList);
 
         return ResponseEntity.noContent().build();
+    }
+
+
+    /**
+     * @param guestId
+     * @return
+     */
+//    @PreAuthorize("#oauth2.hasScope('guest')")
+    @RequestMapping(value = "/guest/{guestid}", method = RequestMethod.GET)
+    public ResponseEntity<?> getDishListByGuest(@PathVariable("guestid") String guestId) throws ServiceException {
+        return ResponseEntity.ok(dishService.getDishListByGuestId(UUID.fromString(guestId)));
     }
 
 }

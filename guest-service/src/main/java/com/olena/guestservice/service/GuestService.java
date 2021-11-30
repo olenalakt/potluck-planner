@@ -6,6 +6,7 @@ import com.olena.guestservice.model.GuestDTO;
 import com.olena.guestservice.repository.GuestRepository;
 import com.olena.guestservice.repository.entity.Guest;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,19 +23,44 @@ public class GuestService {
     @Autowired
     GuestRepository guestRepository;
 
+    public GuestDTO getGuestInfo(String guestId, DishService dishService) throws ServiceException {
+        log.debug("getGuestInfo: guestId={}", guestId);
+
+        Guest guest = getGuestFromDb(guestId);
+        ModelMapper modelMapper = new ModelMapper();
+        GuestDTO guestDTO = modelMapper.map(guest, GuestDTO.class);
+        log.debug("getGuestInfo: guestId={}", guestId);
+
+        guestDTO.setDishes(dishService.getDishList(guestId));
+        return guestDTO;
+    }
+
+    public Guest getGuestFromDb(String guestId) throws ServiceException {
+        log.debug("getGuestFromDb: guestId={}", guestId);
+
+        Guest guest = guestRepository.findFirstByGuestId(UUID.fromString(guestId));
+        if (guest == null) {
+            String errMsg = "Guest not found";
+            log.error("getGuestFromDb: guestId={}, {}", guestId, errMsg);
+            throw new ServiceException(errMsg);
+        }
+
+        return guest;
+    }
+
     /**
-     * @param userName
+     * @param eventId
      * @return
      * @throws ServiceException
      */
-    public List<Guest> getGuestListByUserAndEvent(String userName, UUID eventId) throws ServiceException {
-        log.debug("getGuestListByUserAndEvent: userName={}, eventId={}", userName, eventId);
+    public List<Guest> getGuestListByEventId(UUID eventId) throws ServiceException {
+        log.debug("getGuestListByEventId: eventId={}", eventId);
         try {
-            List<Guest> guestList = guestRepository.findAllByUserNameAndEventIdOrderByGuestName(userName, eventId);
+            List<Guest> guestList = guestRepository.findAllByEventIdOrderByGuestName(eventId);
             return guestList;
         } catch (Exception e) {
             String errMsg = e.toString();
-            log.error("getGuestListByUserAndEvent: userName={}, eventId={}, {}", userName, eventId, errMsg);
+            log.error("getGuestListByEventId: eventId={}, {}", eventId, errMsg);
             throw new ServiceException(errMsg);
         }
     }
@@ -54,7 +80,7 @@ public class GuestService {
             throw new ServiceException(errMsg);
         }
 
-        //TBD: push guest  asynchronously  to  the Kafka queue for processing by  other services
+        //TODO: push guest  asynchronously  to  the Kafka queue for processing by  other services
         //            inventoryClient.updateInventory(guest.getItems());
         //          guest.setOrderId(UUID.randomUUID().toString());
 
@@ -69,12 +95,12 @@ public class GuestService {
     public void addGuests(GuestDTO[] guestDTOList) throws ServiceException {
         log.debug("addGuests: guestDTO={}", guestDTOList);
 
-
         for (GuestDTO guestDTO : guestDTOList) {
 
             try {
 
                 Guest guest = new Guest(guestDTO, guestServiceConfig);
+                // unique index on username, eventId and guestEmail
                 Guest guestExisting = guestRepository.findFirstByUserNameAndEventIdAndGuestEmail(guestDTO.getUserName(), UUID.fromString(guestDTO.getEventId()), guestDTO.getGuestEmail());
 
                 // check if guestDTO  already  exists  -  update
@@ -95,6 +121,5 @@ public class GuestService {
 
         }
     }
-
 
 }

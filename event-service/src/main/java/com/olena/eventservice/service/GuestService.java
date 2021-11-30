@@ -1,9 +1,11 @@
 package com.olena.eventservice.service;
 
 import com.olena.eventservice.config.EventServiceConfig;
+import com.olena.eventservice.enums.Constants;
 import com.olena.eventservice.exception.ServiceException;
 import com.olena.eventservice.model.EventDTO;
 import com.olena.eventservice.model.GuestDTO;
+import com.olena.eventservice.repository.entity.Event;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +14,6 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -31,15 +32,15 @@ public class GuestService {
     public GuestDTO[] getGuestList(EventDTO eventDTO) throws ServiceException {
         log.debug("getGuestList: eventDTO={}", eventDTO.toString());
 
-        URI uri = URI.create(eventServiceConfig.getGuestServiceUrl()  + "/" + eventDTO.getUserName() + "/" + eventDTO.getEventId());
+        URI uri = URI.create(eventServiceConfig.getGuestServiceUrl() + "/" + Constants.EVENT.getValue() + "/" + eventDTO.getEventId());
         try {
 
-            GuestDTO[] guestList =  restTemplate.getForObject(uri, GuestDTO[].class);
+            GuestDTO[] guestList = restTemplate.getForObject(uri, GuestDTO[].class);
 
             return guestList;
 
         } catch (Exception e) {
-            String errMsg = "Failed to get guest list  from " + eventServiceConfig.getGuestServiceUrl() + ": " + e;
+            String errMsg = "Failed to get guest list  from " + uri + ": " + e;
             log.error("getGuestList: eventDTO={}, {}", eventDTO, errMsg);
             throw new ServiceException(errMsg);
         }
@@ -53,13 +54,14 @@ public class GuestService {
         // call guest service to  process guests
         log.debug("processGuests: eventDTO={}", eventDTO.toString());
 
+        //TODO replace with asynch via Kafka
         URI uri = URI.create(eventServiceConfig.getGuestServiceUrl());
         List<GuestDTO> guestDTOList = prepareGuestList(eventDTO);
         if (guestDTOList != null && guestDTOList.size() > 0) {
             try {
                 restTemplate.put(uri, guestDTOList);
             } catch (Exception e) {
-                String errMsg = "Failed to update guest list for " + eventServiceConfig.getGuestServiceUrl() + ": " + e;
+                String errMsg = "Failed to update guest list for " + uri + ": " + e;
                 log.error("processGuests: eventDTO={}, {}", eventDTO, errMsg);
                 throw new ServiceException(errMsg);
             }

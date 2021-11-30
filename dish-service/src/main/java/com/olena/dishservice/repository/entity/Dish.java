@@ -31,7 +31,7 @@ public class Dish {
     private UUID eventId;
 
     @NonNull
-    private String guestId;
+    private UUID guestId;
 
     @Indexed
     private UUID dishId;
@@ -40,13 +40,13 @@ public class Dish {
     @NonNull
     private String dishName;
 
+    @NonNull
+    private String dishType;
+
     private String dishRecipe;
 
     @NonNull
     private Boolean isLactoseFree;
-
-    @NonNull
-    private Boolean isVegetarian;
 
     @NonNull
     private Boolean isNutFree;
@@ -66,17 +66,16 @@ public class Dish {
 
         this.userName = dishDTO.getUserName();
         this.eventId = UUID.fromString(dishDTO.getEventId());
-        this.guestId = dishDTO.getGuestId();
-        this.dishId = UUID.fromString(dishDTO.getDishId());
+        this.guestId = UUID.fromString(dishDTO.getGuestId());
+        this.dishId = (dishDTO.getDishId() == null ? UUID.randomUUID() : UUID.fromString(dishDTO.getDishId()));
         this.dishName = dishDTO.getDishName();
+        this.dishType = dishDTO.getDishType();
 
         this.dishRecipe = dishDTO.getDishRecipe();
         this.isLactoseFree = dishDTO.getIsLactoseFree();
-        this.isVegetarian = dishDTO.getIsVegetarian();
         this.isNutFree = dishDTO.getIsNutFree();
         this.hasFish = dishDTO.getHasFish();
         this.hasMeat = dishDTO.getHasMeat();
-
 
         this.schemaVersion = dishServiceConfig.getDbSchemaVersion();
 

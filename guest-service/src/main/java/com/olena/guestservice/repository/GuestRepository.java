@@ -10,10 +10,12 @@ import java.util.UUID;
 public interface GuestRepository extends MongoRepository<Guest, String> {
 
     @Query(collation = "{ 'locale' :  'en_US', strength: 2 }")
-    List<Guest> findAllByUserNameAndEventIdOrderByGuestName(String userName, UUID eventId);
+    List<Guest> findAllByEventIdOrderByGuestName(UUID eventId);
 
     // retrieve all fields
     @Query(collation = "{ 'locale' :  'en_US', strength: 2 }")
     Guest findFirstByUserNameAndEventIdAndGuestEmail(String eventName, UUID eventId, String guestEmail);
 
+    @Query(collation = "{ 'locale' :  'en_US', strength: 2 }")
+    Guest findFirstByGuestId(UUID guestId);
 }
