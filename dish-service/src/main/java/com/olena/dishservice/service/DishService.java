@@ -88,7 +88,7 @@ public class DishService {
                 throw se;
             } catch (Exception e) {
                 StringBuffer errMsg = new StringBuffer();
-                errMsg.append("Failed to map dishes: ").append(e);
+                errMsg.append("Failed to process dishes: ").append(e);
                 log.error("addDishes: dishDTO={}, {}", dishDTO, errMsg);
                 throw new ServiceException(errMsg.toString());
             }

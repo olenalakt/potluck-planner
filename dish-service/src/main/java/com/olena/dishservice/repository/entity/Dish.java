@@ -23,20 +23,20 @@ public class Dish {
     @Id
     private ObjectId id;
 
-    //TODO -  index on userName, eventName, guestEmail
     @NonNull
     private String userName;
 
     @NonNull
     private UUID eventId;
 
+    //TODO -  add index guestId, dishName
+    @Indexed
     @NonNull
     private UUID guestId;
 
     @Indexed
     private UUID dishId;
 
-    @Indexed
     @NonNull
     private String dishName;
 
