@@ -30,4 +30,8 @@ public class GuestDTO {
 
     @JsonProperty("dishes")
     private DishDTO[] dishes;
+
+    @JsonProperty("drinks")
+    private DrinkDTO[] drinks;
+
 }

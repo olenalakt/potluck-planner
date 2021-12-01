@@ -40,7 +40,7 @@ public class Drink {
     private UUID drinkId;
 
     @NonNull
-    private Integer quantityL;
+    private Integer quantityMl;
 
     @NonNull
     private String drinkName;
@@ -68,7 +68,7 @@ public class Drink {
         this.eventId = UUID.fromString(drinkDTO.getEventId());
         this.guestId = UUID.fromString(drinkDTO.getGuestId());
         this.drinkId = (drinkDTO.getDrinkId() == null ? UUID.randomUUID() : UUID.fromString(drinkDTO.getDrinkId()));
-        this.quantityL = drinkDTO.getQuantityL();
+        this.quantityMl = drinkDTO.getQuantityMl();
         this.drinkName = drinkDTO.getDrinkName();
         this.drinkType = drinkDTO.getDrinkType();
 

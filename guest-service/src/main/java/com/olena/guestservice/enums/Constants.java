@@ -2,7 +2,7 @@ package com.olena.guestservice.enums;
 
 public enum Constants {
 
-    // part of path to  dishes service
+    // part of path to  dish/drink services
     GUEST("guest"),
     ;
 

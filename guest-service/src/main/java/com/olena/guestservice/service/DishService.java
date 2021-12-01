@@ -21,14 +21,6 @@ public class DishService {
     RestTemplate restTemplate = new RestTemplate();
 
     /**
-     * @param url
-     * @return
-     */
-    private URI getDishesUri(String url) {
-        return URI.create(url);
-    }
-
-    /**
      * @param guestId
      * @return
      * @throws ServiceException
@@ -36,7 +28,7 @@ public class DishService {
     public DishDTO[] getDishList(String guestId) throws ServiceException {
         log.debug("getDishList: guestId={}", guestId);
 
-        URI uri = getDishesUri(guestServiceConfig.getDishServiceUrl() + "/" + Constants.GUEST.getValue() + "/" + guestId);
+        URI uri = URI.create(guestServiceConfig.getDishServiceUrl() + "/" + Constants.GUEST.getValue() + "/" + guestId);
         try {
 
             DishDTO[] dishes = restTemplate.getForObject(uri, DishDTO[].class);
@@ -44,7 +36,7 @@ public class DishService {
             return dishes;
 
         } catch (Exception e) {
-            String errMsg = "Failed to get guest list  from " + uri + ": " + e;
+            String errMsg = "Failed to get guest dishes from " + uri + ": " + e;
             log.error("getDishList: guestId={}, {}", guestId, errMsg);
             throw new ServiceException(errMsg);
         }
@@ -59,11 +51,11 @@ public class DishService {
         // call guest service to process guests
         log.debug("processDishes: guestId={}, dishes={}", guestId, dishes.length);
 
-        URI uri = getDishesUri(guestServiceConfig.getDishServiceUrl());
+        URI uri = URI.create(guestServiceConfig.getDishServiceUrl());
         try {
             restTemplate.postForObject(uri, dishes, DishDTO[].class);
         } catch (Exception e) {
-            String errMsg = "Failed to update guest list for " + uri + ": " + e;
+            String errMsg = "Failed to update guest dishes for " + uri + ": " + e;
             log.error("processDishes: guestId={}, dishes={}, {}", guestId, dishes.length, errMsg);
             throw new ServiceException(errMsg);
         }

@@ -23,7 +23,7 @@ public class GuestService {
     @Autowired
     GuestRepository guestRepository;
 
-    public GuestDTO getGuestInfo(String guestId, DishService dishService) throws ServiceException {
+    public GuestDTO getGuestInfo(String guestId, DishService dishService, DrinkService drinkService) throws ServiceException {
         log.debug("getGuestInfo: guestId={}", guestId);
 
         Guest guest = getGuestFromDb(guestId);
@@ -32,6 +32,9 @@ public class GuestService {
         log.debug("getGuestInfo: guestId={}", guestId);
 
         guestDTO.setDishes(dishService.getDishList(guestId));
+
+        guestDTO.setDrinks(drinkService.getDrinkList(guestId));
+
         return guestDTO;
     }
 

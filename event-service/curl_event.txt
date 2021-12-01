@@ -57,10 +57,10 @@ curl -k -X GET https://localhost:7443/guests/52cc7652-7db2-4acd-acbf-63c3c33da29
 
 
 // add dishes for guest
-curl -k -v https://localhost:9443/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/dishes \
+curl -k -v https://localhost:7443/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/dishes \
 -H 'Content-Type: application/json' \
 --data-binary @- << EOF
-{[
+[
   {
   "userName":"olena",
   "eventId":"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe",
@@ -82,8 +82,38 @@ curl -k -v https://localhost:9443/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/di
   "dishRecipe":"ragu recipe here",
   "isLactoseFree":"true",
   "isNutFree":"true",
-  "hasFish":"false"
+  "hasFish":"false",
   "hasMeat":"false"
   } 
-]}
+]
+EOF
+
+// add drinks for guest
+curl -k -v https://localhost:7443/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/drinks \
+-H 'Content-Type: application/json' \
+--data-binary @- << EOF
+[
+  {
+  "userName":"olena",
+  "eventId":"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe",
+  "guestId":"52cc7652-7db2-4acd-acbf-63c3c33da295",
+  "drinkName":"shardonay",
+  "drinkType":"WINE",
+  "drinkRecipe":"",
+  "isLactoseFree":"true",
+  "isAlcoholFree":"false",
+  "quantityMl": 500
+  },
+  {
+  "userName":"olena",
+  "eventId":"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe",
+  "guestId":"52cc7652-7db2-4acd-acbf-63c3c33da295",
+  "drinkName":"apple juice",
+  "drinkType":"JUICE",
+  "drinkRecipe":"",
+  "isLactoseFree":"true",
+  "isAlcoholFree":"true",
+  "quantityMl": 1000
+  }
+]
 EOF

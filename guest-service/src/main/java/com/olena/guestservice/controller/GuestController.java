@@ -2,8 +2,10 @@ package com.olena.guestservice.controller;
 
 import com.olena.guestservice.exception.ServiceException;
 import com.olena.guestservice.model.DishDTO;
+import com.olena.guestservice.model.DrinkDTO;
 import com.olena.guestservice.model.GuestDTO;
 import com.olena.guestservice.service.DishService;
+import com.olena.guestservice.service.DrinkService;
 import com.olena.guestservice.service.GuestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class GuestController {
 
     @Autowired
     DishService dishService;
+
+    @Autowired
+    DrinkService drinkService;
 
     //TODO extract username from JWT token and update queries
 
@@ -49,7 +54,7 @@ public class GuestController {
 //    @PreAuthorize("#oauth2.hasScope('guest')")
     @RequestMapping(value = "/{guestid}", method = RequestMethod.GET)
     public ResponseEntity<?> getGuestInfo(@PathVariable("guestid") String guestId) throws ServiceException {
-        return ResponseEntity.ok(guestService.getGuestInfo(guestId, dishService));
+        return ResponseEntity.ok(guestService.getGuestInfo(guestId, dishService, drinkService));
     }
 
     @RequestMapping(value = "/{guestid}/dishes", method = RequestMethod.POST)
@@ -60,6 +65,18 @@ public class GuestController {
         }
 
         dishService.processDishes(guestId, dishes);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(value = "/{guestid}/drinks", method = RequestMethod.POST)
+    public ResponseEntity<?> updateDishes(@PathVariable("guestid") String guestId, @RequestBody DrinkDTO[] drinks) throws ServiceException {
+
+        if (guestId == null || drinks == null || drinks.length == 0) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        drinkService.processDrinks(guestId, drinks);
 
         return ResponseEntity.noContent().build();
     }

@@ -1,4 +1,4 @@
-package com.olena.drinkservice.model;
+package com.olena.guestservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
