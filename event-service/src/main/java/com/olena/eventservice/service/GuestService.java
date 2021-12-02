@@ -5,7 +5,6 @@ import com.olena.eventservice.enums.Constants;
 import com.olena.eventservice.exception.ServiceException;
 import com.olena.eventservice.model.EventDTO;
 import com.olena.eventservice.model.GuestDTO;
-import com.olena.eventservice.repository.entity.Event;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +22,11 @@ public class GuestService {
     EventServiceConfig eventServiceConfig;
 
     RestTemplate restTemplate = new RestTemplate();
+
+/*
+    @Autowired
+    OAuth2RestTemplate restTemplate;
+*/
 
     /**
      * @param eventDTO

@@ -39,10 +39,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		log.info("OL: configure AuthorizationServerEndpointsConfigurer, {}", environment.getProperty("spring.security.oauth.jwt.keystore.alias"));
+        log.info("OL: configure AuthorizationServerEndpointsConfigurer, {}", environment.getProperty("spring.security.oauth.jwt.keystore.alias"));
 
         String useJwt = environment.getProperty("spring.security.oauth.jwt");
-        log.info("OL: useJwt={}",useJwt);
+        log.info("OL: useJwt={}", useJwt);
         if (useJwt != null && "true".equalsIgnoreCase(useJwt.trim())) {
 
             TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
@@ -58,13 +58,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-		log.info("OL: configure AuthorizationServerSecurityConfigurer");
+        log.info("OL: configure AuthorizationServerSecurityConfigurer");
         security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		log.info("OL: configure ClientDetailsServiceConfigurer");
+        log.info("OL: configure ClientDetailsServiceConfigurer");
         //TBD -  move to  external config
         clients.inMemory()
                 .withClient(environment.getProperty("oath-service.config.appId"))
@@ -76,7 +76,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Bean
     public TokenStore tokenStore() {
-		log.info("OL: tokenStore");
+        log.info("OL: tokenStore");
         String useJwt = environment.getProperty("spring.security.oauth.jwt");
         if (useJwt != null && "true".equalsIgnoreCase(useJwt.trim())) {
             return new JwtTokenStore(jwtConeverter());
@@ -87,7 +87,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Bean
     protected JwtAccessTokenConverter jwtConeverter() {
-		log.info("OL: jwtConeverter");
+        log.info("OL: jwtConeverter");
         String pwd = environment.getProperty("spring.security.oauth.jwt.keystore.password");
         String alias = environment.getProperty("spring.security.oauth.jwt.keystore.alias");
         String keystore = environment.getProperty("spring.security.oauth.jwt.keystore.name");

@@ -91,16 +91,18 @@ public class EventController {
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<?> addGuests(@RequestBody EventDTO eventDTO) throws ServiceException {
 
-        if (eventDTO != null && eventDTO.getEventId() != null && eventDTO.getGuests() != null ) {
+        log.debug("OL: trustStore: {}", System.getProperty("javax.net.ssl.trustStore"));
 
-                eventService.checkEvent(eventDTO);
+        if (eventDTO != null && eventDTO.getEventId() != null && eventDTO.getGuests() != null) {
 
-                guestService.processGuests(eventDTO);
+            eventService.checkEvent(eventDTO);
 
-                URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{eventid}")
-                        .buildAndExpand(eventDTO.getEventId()).toUri();
+            guestService.processGuests(eventDTO);
 
-                return ResponseEntity.created(location).build();
+            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{eventid}")
+                    .buildAndExpand(eventDTO.getEventId()).toUri();
+
+            return ResponseEntity.created(location).build();
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

@@ -1,15 +1,25 @@
+// token directly 
+curl -v -k -X POST --basic -u potluck-planner:XXX -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d "grant_type=password&username=olena&password=123&scope=user" https://localhost:8443/oauth/token
+
+
+export TOKEN=
+
+curl -k -H "Authorization: Bearer $TOKEN" https://localhost:9443/events/0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe
+
 // add event  with participants over TLS -  use -k  in dev to  avoid trust validation
 curl -k -v https://localhost:9443/events \
--H 'Content-Type: application/json' \
+-H "Authorization: Bearer $TOKEN" \
 --data-binary @- << EOF
 {
   "userName":"olena",
-  "eventName":"Christmas Party 5",
+  "eventName":"Christmas Party 6",
   "eventDate":"2021-12-19T16:00:00.0000",
   "notes":"Richmond Hill friends",
   "guests":[{"guestName":"yura","guestEmail":"yura@gmail.com"},{"guestName":"lena","guestEmail":"lena@gmail.com"}]
 }
 EOF
+
+-H 'Content-Type: application/json' \
 
 
 // list events by username

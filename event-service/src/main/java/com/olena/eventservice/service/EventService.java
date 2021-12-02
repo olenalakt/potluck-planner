@@ -61,7 +61,7 @@ public class EventService {
         Event event = getEventFromDb(eventDTO.getEventId());
         eventDTO.setUserName(event.getUserName());
 
-        log.debug("checkEvent done: eventDTO={}", eventDTO.toString());
+        log.debug("checkEvent done: eventDTO={}", eventDTO);
     }
 
     /**
@@ -176,7 +176,6 @@ public class EventService {
         eventDTO.setGuests(guestService.getGuestList(eventDTO));
         return eventDTO;
     }
-
 
 
 }
