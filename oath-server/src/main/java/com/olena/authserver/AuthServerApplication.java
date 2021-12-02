@@ -15,7 +15,7 @@ import javax.net.ssl.SSLSession;
 import java.security.Principal;
 
 @SpringBootApplication
-@RestController
+//@RestController
 @EnableAuthorizationServer
 @EnableResourceServer
 @Slf4j
@@ -33,6 +33,7 @@ public class AuthServerApplication {
     public static void main(String[] args) {
         SpringApplication.run(AuthServerApplication.class, args);
     }
+/*
 
     @RequestMapping("/user")
     public Principal user(Principal user) {
@@ -40,4 +41,6 @@ public class AuthServerApplication {
 
         return user;
     }
+*/
+
 }
