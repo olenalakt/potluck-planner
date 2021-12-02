@@ -39,7 +39,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		log.info("OL: configure AuthorizationServerEndpointsConfigurer, {}", environment.getProperty("spring.security.oauth.jwt.keystore.alias"));
+		log.info("OL: configure AuthorizationServerEndpointsConfigurer");
 
         String useJwt = environment.getProperty("spring.security.oauth.jwt");
         log.info("OL: useJwt={}",useJwt);
@@ -66,10 +66,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		log.info("OL: configure ClientDetailsServiceConfigurer");
         //TBD -  move to  external config
-        clients.inMemory()
-                .withClient(environment.getProperty("oath-service.config.appId"))
-                .secret("{noop}" + environment.getProperty("oath-service.config.appSecret"))
-                .scopes("user", "guest")
+        clients.inMemory().withClient("potluck-planner").secret("{noop}XXX").scopes("user", "guest")
                 .authorizedGrantTypes("client_credentials", "password", "refresh_token")
                 .accessTokenValiditySeconds(6000);
     }
