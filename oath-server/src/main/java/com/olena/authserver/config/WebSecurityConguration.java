@@ -29,11 +29,5 @@ public class WebSecurityConguration extends WebSecurityConfigurerAdapter {
         //  auth.inMemoryAuthentication().withUser("peter").password("{noop}peter123").roles("USER");
         auth.authenticationProvider(authProvider);
     }
-/*
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().anyRequest().authenticated()
-                .and().httpBasic();
-    }
- */
+
 }

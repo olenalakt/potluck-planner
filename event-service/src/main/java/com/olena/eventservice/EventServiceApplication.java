@@ -12,10 +12,10 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 import java.io.File;
 
-@EnableResourceServer
 //@EnableOAuth2Client
 @SpringBootApplication
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableResourceServer
 @Slf4j
 public class EventServiceApplication {
 
@@ -26,12 +26,12 @@ public class EventServiceApplication {
         String path = System.getProperty("user.dir");
         log.debug("OL: path: {}", path);
 
-        System.setProperty("javax.net.ssl.trustStore", path + File.separator + "trust-store.jks");
-        System.setProperty("javax.net.ssl.trustStorePassword", "springboot");
+        System.setProperty("javax.net.ssl.trustStore", path + File.separator + "eventservice.jks");
+        System.setProperty("javax.net.ssl.trustStorePassword", "olena123");
         log.debug("OL: trustStore: {}", System.getProperty("javax.net.ssl.trustStore"));
 
-        System.setProperty("javax.net.ssl.keyStore", path + File.separator + "keystore.jks");
-        System.setProperty("javax.net.ssl.keyStorePassword", "springboot");
+        System.setProperty("javax.net.ssl.keyStore", path + File.separator + "eventservice.jks");
+        System.setProperty("javax.net.ssl.keyStorePassword", "olena123");
         log.debug("OL: trustStore: {}", System.getProperty("javax.net.ssl.keyStore"));
 
         HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
