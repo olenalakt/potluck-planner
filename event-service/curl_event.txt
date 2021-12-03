@@ -10,6 +10,15 @@ curl -u potluck-planner:XXX \
 -d "grant_type=password&username=olena&password=123&scope=user" \
 http://localhost:9090/token/oauth/token
 
+// access token via gateway
+curl -u application1:application1secret \
+-H "Content-Type: application/x-www-form-urlencoded" \
+-d "grant_type=password&username=olena&password=123&scope=user" \
+http://localhost:9090/token/oauth/token
+
+
+----------------------
+
 // add event  with participants over TLS -  use -k  in dev to  avoid trust validation
 curl -k -v https://localhost:9443/events \
 -H 'Content-Type: application/json' \

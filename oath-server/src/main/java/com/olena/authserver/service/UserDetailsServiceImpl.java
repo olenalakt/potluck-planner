@@ -9,9 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -20,7 +17,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-log.debug("OL: loadUserByUsername: {}", username);
+        log.debug("OL: loadUserByUsername: {}", username);
 
         //TBD replace with service call
         User user = userRepository.findFirstByUserName(username);

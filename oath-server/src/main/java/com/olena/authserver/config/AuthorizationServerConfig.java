@@ -46,7 +46,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         log.info("OL: configure AuthorizationServerEndpointsConfigurer, {}", environment.getProperty("spring.security.oauth.jwt.keystore.alias"));
 
         clients.inMemory()
-                .withClient("application1").secret("{noop}" +"application1secret")
+                .withClient(environment.getProperty("oath-service.config.appId"))
+                .secret("{noop}" + environment.getProperty("oath-service.config.appSecret"))
                 .scopes("user", "guest")
                 .authorizedGrantTypes("client_credentials", "password", "refresh_token")
                 .accessTokenValiditySeconds(60000);
