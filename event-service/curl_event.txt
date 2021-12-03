@@ -1,3 +1,15 @@
+// JWT token directly 
+curl -v -k -X POST --basic -u potluck-planner:XXX -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d "grant_type=password&username=olena&password=123&scope=user" https://localhost:8443/oauth/token
+
+// access token directly no  SSL
+curl -v  -X POST --basic -u potluck-planner:XXX -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d "grant_type=password&username=olena&password=123&scope=user" http://localhost:8443/oauth/token
+
+// access token via gateway
+curl -u potluck-planner:XXX \
+-H "Content-Type: application/x-www-form-urlencoded" \
+-d "grant_type=password&username=olena&password=123&scope=user" \
+http://localhost:9090/token/oauth/token
+
 // add event  with participants over TLS -  use -k  in dev to  avoid trust validation
 curl -k -v https://localhost:9443/events \
 -H 'Content-Type: application/json' \
@@ -14,6 +26,8 @@ EOF
 
 // list events by username
 curl -k -X GET https://localhost:9443/events/user/olena -H "Content-Type: application/json" 
+
+ 
 
 // list events by eventname pattern
 curl -k -X GET https://localhost:9443/events/eventname/Christmas?contains=true -H "Content-Type: application/json" 

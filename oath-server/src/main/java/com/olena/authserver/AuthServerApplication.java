@@ -3,25 +3,23 @@ package com.olena.authserver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
-import java.security.Principal;
 
 @SpringBootApplication
 //@RestController
-@EnableAuthorizationServer
-@EnableResourceServer
+//@EnableAuthorizationServer
+//@EnableResourceServer
 @Slf4j
 public class AuthServerApplication {
 
-    //TBD - !!! only  for dev env
+    //TBD - !!! only  for dev env for TLS
     static {
         HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
             public boolean verify(String hostname, SSLSession session) {
@@ -32,6 +30,15 @@ public class AuthServerApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AuthServerApplication.class, args);
+    }
+
+    @RequestMapping(
+            value = "/",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+
+    public ResponseEntity<String> index() {
+        return new ResponseEntity<>("{\"message\":\"Home!\"}", HttpStatus.OK);
     }
 /*
 

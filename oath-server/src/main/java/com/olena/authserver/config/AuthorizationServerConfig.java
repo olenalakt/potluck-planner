@@ -2,36 +2,87 @@ package com.olena.authserver.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.TokenEnhancer;
-import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
-import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
-
-import java.util.Arrays;
 
 @Configuration
+@EnableAuthorizationServer
 @Slf4j
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+
+    private TokenStore tokenStore;
+//    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
+/*
+    public AuthorizationServerConfig(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+*/
+
     @Autowired
     private Environment environment;
 
-    @Bean
+
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        endpoints
+                .authenticationManager(authenticationManager)
+                .approvalStoreDisabled()
+                .tokenStore(tokenStore);
+    }
+
+    @Override
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        log.info("OL: configure AuthorizationServerEndpointsConfigurer, {}", environment.getProperty("spring.security.oauth.jwt.keystore.alias"));
+
+        clients.inMemory()
+                .withClient("application1").secret("{noop}" +"application1secret")
+                .scopes("user", "guest")
+                .authorizedGrantTypes("client_credentials", "password", "refresh_token")
+                .accessTokenValiditySeconds(60000);
+
+        //?                .resourceIds("oauth-server");
+        //.and()
+        //                .withClient("application2").secret(passwordEncoder.encode("application2secret"))
+        //                .authorizedGrantTypes("client_credentials", "password")
+        //                .scopes("read")
+        //                .accessTokenValiditySeconds(3600)
+        //                .resourceIds("sample-oauth")
+
+/*
+                        .withClient(environment.getProperty("oath-service.config.appId"))
+                .secret("{noop}" + environment.getProperty("oath-service.config.appSecret"))
+*/
+
+    }
+
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        log.info("OL: configure AuthorizationServerSecurityConfigurer");
+        security
+                .tokenKeyAccess("permitAll()")
+                .checkTokenAccess("isAuthenticated()")
+                .allowFormAuthenticationForClients();
+    }
+/*
+    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        log.info("OL: configure AuthorizationServerSecurityConfigurer");
+        security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
+    }
+  */
+    // JWT version
+/*
+   @Bean
     public TokenEnhancer tokenEnhancer() {
         return new CustomJWTEnhancer();
     }
@@ -101,4 +152,5 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         //converter.setKeyPair(keyStoreKeyFactory.getKeyPair(alias));
         return converter;
     }
+    */
 }
