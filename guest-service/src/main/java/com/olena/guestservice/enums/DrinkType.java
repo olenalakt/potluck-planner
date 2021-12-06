@@ -11,8 +11,7 @@ public enum DrinkType {
     LIQUEUR("LIQUEUR"),
     TEQUILA("TEQUILA"),
     VODKA("VODKA"),
-    WHISKEY("WHISKEY")
-    ;
+    WHISKEY("WHISKEY");
 
     private final String value;
 

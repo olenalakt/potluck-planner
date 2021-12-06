@@ -3,7 +3,6 @@ package com.olena.guestservice.service;
 import com.olena.guestservice.config.GuestServiceConfig;
 import com.olena.guestservice.enums.Constants;
 import com.olena.guestservice.exception.ServiceException;
-import com.olena.guestservice.model.DishDTO;
 import com.olena.guestservice.model.DrinkDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

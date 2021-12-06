@@ -6,8 +6,7 @@ public enum DishType {
     APPETIZER("APPETIZER"),
     SALAD("SALAD"),
     MAIN("MAIN"),
-    DESERT("DESERT")
-    ;
+    DESERT("DESERT");
 
     private final String value;
 

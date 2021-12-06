@@ -1,7 +1,6 @@
 package com.olena.guestservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.olena.guestservice.enums.DishType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
