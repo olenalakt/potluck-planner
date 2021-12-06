@@ -1,0 +1,44 @@
+server.port=9090
+
+zuul:
+  routes:
+    event:
+      path: /event/**
+      url: http://localhost:9443
+    guest:
+      path: /guest/**
+      url: http://localhost:7443
+    token:
+      path: /token/**
+      url: http://localhost:8443
+  sensitiveHeaders:
+
+ribbon.eureka.enabled: false
+authserver.introspection.endpoint: http://localhost:8443/oauth/check_token
+
+#server.ssl.key-store=gatewayservice.jks
+#server.ssl.key-store-password=olena123
+#server.ssl.keyAlias=gatewayservice
+
+
+logging:
+  config: 'classpath:logback-spring.xml'
+  level:
+    com.olena.gateway: debug
+    org.springframework.cloud: error
+    org.springframework.boot: debug
+    org.springframework.security : debug
+    root: debug
+
+
+
+gateway:
+  cors-config:
+    accessControlAllowCredentials: true
+    accessControlAllowOriginList:
+       - "http://localhost[:]*"
+       - "https://localhost[:]*"
+       - "http://*[.]lakt[.]ca"
+       - "https://*[.]lakt[.]ca"
+
+    contentSecurityPolicy: "default-src blob: localhost:*, *.lakt.ca"
