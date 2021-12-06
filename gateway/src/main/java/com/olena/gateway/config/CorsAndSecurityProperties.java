@@ -1,4 +1,4 @@
-package config;
+package com.olena.gateway.config;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

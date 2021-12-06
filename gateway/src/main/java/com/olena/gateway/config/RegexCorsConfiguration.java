@@ -1,4 +1,4 @@
-package com.intrado.uc.umexternalapi.config;
+package com.olena.gateway.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,7 @@ public class RegexCorsConfiguration extends CorsConfiguration {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private List<String> allowedOriginsRegexes = new ArrayList<>();
-    private List<Pattern> allowedOriginsPatterns = new ArrayList<>();
+    private final List<Pattern> allowedOriginsPatterns = new ArrayList<>();
 
     @Override
     /**

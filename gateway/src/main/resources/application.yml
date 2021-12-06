@@ -1,4 +1,4 @@
-server.port=9090
+server.port: 9090
 
 zuul:
   routes:
@@ -20,6 +20,15 @@ authserver.introspection.endpoint: http://localhost:8443/oauth/check_token
 #server.ssl.key-store-password=olena123
 #server.ssl.keyAlias=gatewayservice
 
+gateway:
+  cors-config:
+    contentSecurityPolicy: "default-src blob: localhost:*, *.lakt.ca"
+    accessControlAllowCredentials: true
+    accessControlAllowOriginList:
+      - "http://localhost[:]*"
+      - "https://localhost[:]*"
+      - "http://*[.]lakt[.]ca"
+      - "https://*[.]lakt[.]ca"
 
 logging:
   config: 'classpath:logback-spring.xml'
@@ -32,13 +41,3 @@ logging:
 
 
 
-gateway:
-  cors-config:
-    accessControlAllowCredentials: true
-    accessControlAllowOriginList:
-       - "http://localhost[:]*"
-       - "https://localhost[:]*"
-       - "http://*[.]lakt[.]ca"
-       - "https://*[.]lakt[.]ca"
-
-    contentSecurityPolicy: "default-src blob: localhost:*, *.lakt.ca"

@@ -1,4 +1,4 @@
-package filters;
+package com.olena.gateway.filters;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
@@ -18,7 +18,7 @@ import java.net.URL;
 
 public class OAuthFilter extends ZuulFilter {
 
-    private static Logger log = LoggerFactory.getLogger(OAuthFilter.class);
+    private static final Logger log = LoggerFactory.getLogger(OAuthFilter.class);
 
     @Autowired
     private Environment env;
@@ -44,7 +44,7 @@ public class OAuthFilter extends ZuulFilter {
         HttpServletRequest request = requestContext.getRequest();
 
         //Avoid checking for authentication for the token endpoint
-        if(request.getRequestURI().startsWith("/token")){
+        if (request.getRequestURI().startsWith("/token")) {
             return null;
         }
 
@@ -57,8 +57,7 @@ public class OAuthFilter extends ZuulFilter {
             //Send error to client
             handleError(requestContext);
             return null;
-        }
-        else if(authHeader.split("Bearer ").length != 2){
+        } else if (authHeader.split("Bearer ").length != 2) {
             log.error("Invalid auth header");
             //Send error to client
             handleError(requestContext);
@@ -91,7 +90,7 @@ public class OAuthFilter extends ZuulFilter {
 
             //If the authorization server doesn't respond with a 200.
             if (responseCode != 200) {
-                log.error("Response code from authz server is " + responseCode);
+                log.error("Response code from auth server is " + responseCode);
                 handleError(requestContext);
             }
 
