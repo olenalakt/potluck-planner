@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -38,10 +39,16 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         // validate against retrieved creds
         if (user != null && user.getPassword().equals(password)) {
+
+            log.info("OL: password matched");
+
             grantedAuthorityList.add(new SimpleGrantedAuthority(user.getUserRole()));
-            return new UsernamePasswordAuthenticationToken(name, password, grantedAuthorityList);
+
+            return new UsernamePasswordAuthenticationToken(name, new BCryptPasswordEncoder().encode(password), grantedAuthorityList);
         } else {
-            return new UsernamePasswordAuthenticationToken(name, password);
+
+            log.info("OL: password failed to match");
+            return new UsernamePasswordAuthenticationToken(name, new BCryptPasswordEncoder().encode(password));
         }
     }
 
@@ -49,4 +56,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
+
+
 }

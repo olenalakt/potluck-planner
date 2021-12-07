@@ -3,21 +3,15 @@ package com.olena.authserver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 
 @SpringBootApplication
-//@RestController
-//@EnableAuthorizationServer
-//@EnableResourceServer
 @Slf4j
-public class AuthServerApplication {
+public class AuthServerApplication extends WebSecurityConfigurerAdapter {
 
     //TBD - !!! only  for dev env for TLS
     static {
@@ -31,23 +25,5 @@ public class AuthServerApplication {
     public static void main(String[] args) {
         SpringApplication.run(AuthServerApplication.class, args);
     }
-
-    @RequestMapping(
-            value = "/",
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-
-    public ResponseEntity<String> index() {
-        return new ResponseEntity<>("{\"message\":\"Home!\"}", HttpStatus.OK);
-    }
-/*
-
-    @RequestMapping("/user")
-    public Principal user(Principal user) {
-        log.info("OL:user: {}", user);
-
-        return user;
-    }
-*/
 
 }
