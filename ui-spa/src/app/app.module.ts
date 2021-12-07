@@ -9,17 +9,17 @@ import { RouterModule } from '@angular/router';
 
 // via gateway
 const config: AuthConfig = {
-  issuer: 'http://localhost:9090/',
-  loginUrl: 'http://localhost:9090/token/oauth/authorize',
-  tokenEndpoint: 'http://localhost:9090/token/oauth/token',
-  dummyClientSecret: 'application1secret',
-  clientId: 'application1',
+  issuer: 'http://localhost:9443/',
+  loginUrl: 'http://localhost:8080/oauth/authorize',
+  tokenEndpoint: 'http://localhost:8080/oauth/token',
+  dummyClientSecret: 'potluckPlannerSecret',
+  clientId: 'potluckPlannerSPA',
   disablePKCE: true,
   responseType: 'code',
   oidc: true,
   requireHttps: false,
   strictDiscoveryDocumentValidation: false,
-  customQueryParams: { audience: 'https://potluck-planner.app' },
+  customQueryParams: { audience: 'http://potluck-planner.app' },
   redirectUri: window.location.origin + '/',
   silentRefreshRedirectUri: window.location.origin + '/silent-refresh.html',
   scope: 'openid',
@@ -33,9 +33,9 @@ config.logoutUrl = `${config.issuer}v2/logout?client_id=${config.clientId}&retur
 
 const authModuleConfig: OAuthModuleConfig = {
   // Add the Bearer header for these URLs (APIs).
-  // via gateway service
+  // not via gateway service
   resourceServer: {
-    allowedUrls: ['http://localhost:9090'],
+    allowedUrls: ['http://localhost:9443'],
     sendAccessToken: true,
   },
 };

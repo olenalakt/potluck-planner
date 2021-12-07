@@ -4,16 +4,16 @@ import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
-  template: `<h1>Book List App</h1>
+  template: `<h1>Potluck Planner App</h1>
     <p>
       <button *ngIf="!isLoggedIn()" (click)='login()'>Log In</button>
-      <button *ngIf="isLoggedIn()" (click)='loadBooks()'>Load Books</button>
+      <button *ngIf="isLoggedIn()" (click)='loadEvents()'>Query Potluck Events</button>
       <button (click)='logout()'>Log out</button>
       <button (click)='refresh()'>Refresh</button>
     </p>
     
-    <span *ngIf="isLoggedIn()"><div *ngFor=\"let book of books\">
-      {{book.name}}
+    <span *ngIf="isLoggedIn()"><div *ngFor=\"let event of events\">
+      {{event.eventName}}
     </div></span>
   `,
   styles: []
@@ -21,7 +21,7 @@ import { HttpClient } from '@angular/common/http';
 
 export class AppComponent {
   username = '';
-  books: Book[];
+  events: Event[];
 
   get token() { 
     this.oauthService.setStorage(sessionStorage);
@@ -75,16 +75,27 @@ export class AppComponent {
     return true;
   } 
 
-  loadBooks(){
-     
+  loadEvents(){
+
+    // via gateway
      this.http
-      .get<Book[]>('http://localhost:8080/books', 
+      .get<Event[]>('http://localhost:9443/events',
         {headers: {'Authorization': 'Bearer '+ this.oauthService.getAccessToken()}})
-      .subscribe(data => {this.books = data});
+      .subscribe(data => {this.events = data});
   }
 }
 
-interface Book {
-  id: string;
-  name: string;
+interface Event {
+  eventId: string;
+  eventName: string;
+  eventDate: string;
+  notes: string;
+  guests: Guest[]
+}
+
+interface Guest {
+  eventId: string;
+  guestId: string;
+  guestEmail: string;
+  notes: string;
 }
