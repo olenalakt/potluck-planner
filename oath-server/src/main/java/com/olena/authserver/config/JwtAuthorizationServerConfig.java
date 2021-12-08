@@ -21,10 +21,11 @@ import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFacto
 
 import java.util.Arrays;
 
-@Configuration
-@EnableAuthorizationServer
+//@Configuration
+//@EnableAuthorizationServer
 @Slf4j
 public class JwtAuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+/*
 
     private TokenStore tokenStore;
 
@@ -104,5 +105,6 @@ public class JwtAuthorizationServerConfig extends AuthorizationServerConfigurerA
         }
 
     }
+*/
 
 }

@@ -70,16 +70,19 @@ export class AppComponent {
 
   isLoggedIn(){
     if (this.oauthService.getAccessToken() === null){
+      console.info('No access token');
        return false;
     }
     return true;
   } 
 
   loadEvents(){
+    console.info('username=' + this.username);
+    console.info('url=' + 'http://localhost:9443/events/user/' + this.username);
 
     // via gateway
      this.http
-      .get<Event[]>('http://localhost:9443/events',
+      .get<Event[]>('http://localhost:9443/events/user/olena',
         {headers: {'Authorization': 'Bearer '+ this.oauthService.getAccessToken()}})
       .subscribe(data => {this.events = data});
   }

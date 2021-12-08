@@ -54,7 +54,13 @@ public class WebSecurityConguration extends WebSecurityConfigurerAdapter {
         log.info("OL: configure AuthenticationManagerBuilder with CustomAuthenticationProvider");
 
         // Working solution for normal  and  JWT access token
-        auth.authenticationProvider(authProvider);
+     //   auth.authenticationProvider(authProvider);
+
+        auth
+                .inMemoryAuthentication()
+                .withUser("olena")
+                .password(passwordEncoder().encode("123"))
+                .roles("USER");
 
     }
 

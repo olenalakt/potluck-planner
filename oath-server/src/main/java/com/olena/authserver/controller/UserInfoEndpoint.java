@@ -1,24 +1,26 @@
-package com.manning.mss.ch04.sample03.authz.resource;
+package com.olena.authserver.controller;
 
+import com.olena.authserver.model.User;
+import com.olena.authserver.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class RestResource {
+public class UserInfoEndpoint {
+
+    @Autowired
+    UserRepository userRepository;
 
     @RequestMapping("/api/users/me")
-    public ResponseEntity<UserProfile> profile()
+    public ResponseEntity<User> profile()
     {
         //Build some dummy data to return for testing
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String email = user.getUsername() + "@nuwandias.com";
 
-        UserProfile profile = new UserProfile();
-        profile.setName(user.getUsername());
-        profile.setEmail(email);
+        User profile = userRepository.findFirstByUserName( user.getUserName() );
 
         return ResponseEntity.ok(profile);
     }

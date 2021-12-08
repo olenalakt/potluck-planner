@@ -1,0 +1,51 @@
+server.port: 8080
+
+# DB settings
+spring.data.mongodb.uri: mongodb://localhost/userdb
+
+# TLS settings
+#server.ssl.key-store: oathserver.jks
+#server.ssl.key-store-password: olena123
+#server.ssl.keyAlias: oathserver
+
+# ??? non-JWT authorization by clientId only
+#server.error.whitelabel.enabled:false
+#security.oauth2.resource.filter-order: 3
+#security.oauth2.client.authenticationScheme: header
+
+# openid-connect
+oath-service:
+  config: 
+    clientAppId: potluckPlannerSPA
+    clientAppSecret: potluckPlannerSecret
+    clientRedirectUri: http://localhost:4200/
+
+    resourceServerId: application1
+    resourceServerSecret: application1secret
+
+#TODO -  allow list of appId and secrets(!NOT working)
+#    appId: potluck-planner
+#    appSecret: XXX
+
+# JWT settings
+spring.security.oauth.jwt.enabled: false
+# from book -  working version
+#spring.security.oauth.jwt.keystore.password: springboot
+#spring.security.oauth.jwt.keystore.alias: jwtkey
+#spring.security.oauth.jwt.keystore.name: jwt.jks
+
+# TODO
+#spring.security.oauth.jwt.keystore.password: olena123
+#spring.security.oauth.jwt.keystore.alias: oathserver
+#spring.security.oauth.jwt.keystore.name: oathserver.jks
+
+# logging settings
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    com.olena.authserver: debug
+    org.springframework.security: debug
+    org.springframework.web: debug
+    org.springframework.data.mongodb: error
+    org.mongodb.driver: error
+    root: debug
