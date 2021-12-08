@@ -1,6 +1,6 @@
-package com.manning.mss.ch04.sample03.resource.entities;
+package com.olena.eventservice.model;
 
-public class OIDCConfig {
+public class OidcConfigDTO {
 
     private String token_endpoint;
 

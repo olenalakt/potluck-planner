@@ -1,0 +1,42 @@
+server.port: 9443
+
+event-service:
+  config:
+     dbSchemaVersion: 1.0.0
+     guestServiceUrl: http://localhost:7443/guests
+
+# DB config
+spring.data.mongodb.uri: mongodb://localhost/eventdb
+
+# TLS config
+#server.ssl.key-store: eventservice.jks
+#server.ssl.key-store-password: olena123
+#server.ssl.keyAlias: eventservice
+
+# openid oath-server config
+security:
+  oauth2:
+    resource.token-info-uri: http://localhost:8080/oauth/check_token
+    client:
+      clientId: application1
+      clientSecret: application1secret
+
+oidc:
+  tokenEndpoint: http://localhost:8080/oauth/token
+  tokenIssuer: http://localhost:8080/
+  authorizationEndpoint: http://localhost:8080/oauth/authorize
+  userInfoEndpoint: http://localhost:8080/api/users/me
+
+# JWT related
+#security.oauth2.resource.user-info-uri:https://localhost:8443/user
+#security.oauth2.resource.jwt.keyUri: https://localhost:8443/oauth/token_key
+
+logging:
+  config: classpath:logback-spring.xml
+  level:
+      org.springframework.security: debug
+      org.springframework.web: debug
+      org.springframework.data.mongodb: error
+      com.olena.eventservice: debug
+      org.mongodb.driver: error
+      root: debug
