@@ -1,12 +1,13 @@
 package com.olena.eventservice.enums;
 
-public enum Constants {
+public enum ConfigConstants {
 
-    EVENT("event");
+    SERVER_SSL_KEYSTORE("server.ssl.key-store"),
+    SERVER_SSL_KEYSTOREPASSWORD("server.ssl.key-store-password");
 
     private final String value;
 
-    Constants(String value) {
+    ConfigConstants(String value) {
         this.value = value;
     }
 

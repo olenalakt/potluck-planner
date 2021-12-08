@@ -17,6 +17,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping(value = "/events")
+@CrossOrigin(origins = "http://localhost:4200")
 public class EventController {
 
     @Autowired
@@ -25,7 +26,7 @@ public class EventController {
     @Autowired
     GuestService guestService;
 
-    //TBD extract username from JWT token and update queries
+    // TODO extract username from JWT token and update queries
 
     /**
      * @param eventDTO
@@ -65,8 +66,10 @@ public class EventController {
      * @return
      */
 //    @PreAuthorize("#oauth2.hasScope('user')")
-    @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
+    @GetMapping(value = "/user/{username}")
+    @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<?> getEventListByUserName(@PathVariable(name = "username") String userName) throws ServiceException {
+        log.debug("getEventListByUserName");
         return ResponseEntity.ok(eventService.getEventListByUserName(userName));
     }
 
@@ -91,16 +94,16 @@ public class EventController {
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<?> addGuests(@RequestBody EventDTO eventDTO) throws ServiceException {
 
-        if (eventDTO != null && eventDTO.getEventId() != null && eventDTO.getGuests() != null ) {
+        if (eventDTO != null && eventDTO.getEventId() != null && eventDTO.getGuests() != null) {
 
-                eventService.checkEvent(eventDTO);
+            eventService.checkEvent(eventDTO);
 
-                guestService.processGuests(eventDTO);
+            guestService.processGuests(eventDTO);
 
-                URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{eventid}")
-                        .buildAndExpand(eventDTO.getEventId()).toUri();
+            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{eventid}")
+                    .buildAndExpand(eventDTO.getEventId()).toUri();
 
-                return ResponseEntity.created(location).build();
+            return ResponseEntity.created(location).build();
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

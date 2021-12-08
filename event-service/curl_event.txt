@@ -1,6 +1,8 @@
 // JWT token directly 
 curl -v -k -X POST --basic -u potluck-planner:XXX -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d "grant_type=password&username=olena&password=123&scope=user" https://localhost:8443/oauth/token
 
+
+
 // access token directly no  SSL
 curl -v  -X POST --basic -u potluck-planner:XXX -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d "grant_type=password&username=olena&password=123&scope=user" http://localhost:8443/oauth/token
 
@@ -9,6 +11,10 @@ curl -u potluck-planner:XXX \
 -H "Content-Type: application/x-www-form-urlencoded" \
 -d "grant_type=password&username=olena&password=123&scope=user" \
 http://localhost:9090/token/oauth/token
+
+
+// access token directly no  SSL
+curl -v  -X POST --basic -u application1:application1secret -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d "grant_type=password&username=olena&password=123&scope=user" http://localhost:8443/oauth/token
 
 // access token via gateway
 curl -u application1:application1secret \
@@ -93,8 +99,8 @@ curl -k -X GET http://localhost:7443/guests/event/0e9ebe3d-71e9-4d17-ab0c-732a37
 //  guest by guestId
 curl -k -X GET https://localhost:7443/guests/52cc7652-7db2-4acd-acbf-63c3c33da295 -H "Content-Type: application/json" 
 
-//  guest by guestId
-curl -k -X GET https://localhost:7443/guests/52cc7652-7db2-4acd-acbf-63c3c33da295 -H "Content-Type: application/json" 
+//  guest by guestId, no TLS
+curl -k -X GET http://localhost:7443/guests/52cc7652-7db2-4acd-acbf-63c3c33da295 -H "Content-Type: application/json" 
 
 ----------
 // add dishes for guest

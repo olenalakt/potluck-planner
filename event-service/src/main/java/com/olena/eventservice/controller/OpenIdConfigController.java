@@ -1,24 +1,34 @@
 package com.olena.eventservice.controller;
 
-import com.olena.eventservice.model.OIDCConfig;
+import com.olena.eventservice.config.OidcConfig;
+import com.olena.eventservice.model.OidcConfigDTO;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Slf4j
 public class OpenIdConfigController {
 
+    @Autowired
+    OidcConfig oidcConfig;
+
     @GetMapping("/.well-known/openid-configuration")
+    // temporary -  until  integrated with gateway
     @CrossOrigin(origins = "http://localhost:4200")
-    public OIDCConfig getOIDCConfig() {
+    public OidcConfigDTO getOIDCConfig() {
 
-        OIDCConfig oidcConfig = new OIDCConfig();
-        oidcConfig.setToken_endpoint("http://localhost:8080/oauth/token");
-        oidcConfig.setIssuer("http://localhost:8080/");
-        oidcConfig.setAuthorization_endpoint("http://localhost:8080/oauth/authorize");
-        oidcConfig.setUserinfo_endpoint("http://localhost:8080/api/users/me");
+        log.debug ("OL: getOIDCConfig={}", oidcConfig);
 
-        return oidcConfig;
+        OidcConfigDTO oidcConfigDTO = new OidcConfigDTO();
+        oidcConfigDTO.setToken_endpoint(oidcConfig.getTokenEndpoint());
+        oidcConfigDTO.setIssuer(oidcConfig.getTokenIssuer());
+        oidcConfigDTO.setAuthorization_endpoint(oidcConfig.getAuthorizationEndpoint());
+        oidcConfigDTO.setUserinfo_endpoint(oidcConfig.getUserInfoEndpoint());
+
+        return oidcConfigDTO;
     }
 
 }
