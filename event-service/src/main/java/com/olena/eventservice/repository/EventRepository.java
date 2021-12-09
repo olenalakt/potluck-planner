@@ -16,9 +16,9 @@ public interface EventRepository extends MongoRepository<Event, String> {
 
     // retrieve all fields
     @Query(collation = "{ 'locale' :  'en_US', strength: 2 }")
-    Event findFirstByEventName(String eventName);
+    Event findFirstByUserNameAndEventName(String userName, String eventName);
 
     @Query(collation = "{ 'locale' :  'en_US', strength: 2 }")
-    List<Event> findAllByEventNameContainsOrderByEventDateDesc(String eventNamePattern);
+    List<Event> findAllByUserNameAndEventNameContainsOrderByEventDateDesc(String userName, String eventNamePattern);
 
 }

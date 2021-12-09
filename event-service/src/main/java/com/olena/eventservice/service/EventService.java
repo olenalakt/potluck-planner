@@ -37,13 +37,13 @@ public class EventService {
         return event;
     }
 
-    public Event getEventFromDbByName(String eventName) throws ServiceException {
-        log.debug("getEventFromDbByName: eventName={}", eventName);
+    public Event getEventFromDbByName(String userName, String eventName) throws ServiceException {
+        log.debug("getEventFromDbByName: userName={}, eventName={}", userName, eventName);
 
-        Event event = eventRepository.findFirstByEventName(eventName);
+        Event event = eventRepository.findFirstByUserNameAndEventName(userName, eventName);
         if (event == null) {
             String errMsg = "Event not found";
-            log.error("getEventFromDbByName: eventName={}, {}", eventName, errMsg);
+            log.error("getEventFromDbByName: userName={}, eventName={}, {}", userName, eventName, errMsg);
             throw new ServiceException(errMsg);
         }
 
@@ -79,7 +79,7 @@ public class EventService {
             throw new ServiceException(errMsg);
         }
 
-        //TBD: push event  asynchronously  to  the Kafka queue for processing by  other services
+        //TODO: push event  asynchronously  to  the Kafka queue for processing by  other services
         //            inventoryClient.updateInventory(event.getItems());
         //          event.setOrderId(UUID.randomUUID().toString());
 
@@ -95,7 +95,7 @@ public class EventService {
         log.debug("addEvent: eventDTO={}", eventDTO);
 
         // check if eventDTO  already  exists  -  reject
-        if (eventRepository.findFirstByEventName(eventDTO.getEventName()) != null) {
+        if (eventRepository.findFirstByUserNameAndEventName(eventDTO.getUserName(), eventDTO.getEventName()) != null) {
             StringBuffer errMsg = new StringBuffer();
             errMsg.append("Event already exists in DB");
             log.error("addEvent: eventDTO={}, {}", eventDTO, errMsg);
@@ -154,10 +154,10 @@ public class EventService {
      * @return
      * @throws ServiceException
      */
-    public List<Event> getEventListByPattern(String eventNamePattern) throws ServiceException {
-        log.debug("getEventListByPattern: userName={}", eventNamePattern);
+    public List<Event> getEventListByPattern(String userName, String eventNamePattern) throws ServiceException {
+        log.debug("getEventListByPattern: userName={}, eventNamePattern={}", userName, eventNamePattern);
         try {
-            List<Event> eventList = eventRepository.findAllByEventNameContainsOrderByEventDateDesc(eventNamePattern);
+            List<Event> eventList = eventRepository.findAllByUserNameAndEventNameContainsOrderByEventDateDesc(userName,eventNamePattern);
             return eventList;
         } catch (Exception e) {
             String errMsg = e.toString();
@@ -166,10 +166,10 @@ public class EventService {
         }
     }
 
-    public EventDTO getEventByName(String eventName, GuestService guestService) throws ServiceException {
-        log.debug("getEventByName: eventName={}", eventName);
+    public EventDTO getEventByName(String userName, String eventName, GuestService guestService) throws ServiceException {
+        log.debug("getEventListByPattern: userName={}, eventNamePattern={}", userName, eventName);
 
-        Event event = getEventFromDbByName(eventName);
+        Event event = getEventFromDbByName(userName, eventName);
         ModelMapper modelMapper = new ModelMapper();
         EventDTO eventDTO = modelMapper.map(event, EventDTO.class);
         log.debug("getEventByName: eventDTO={}", eventDTO);

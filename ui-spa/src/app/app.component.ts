@@ -78,11 +78,11 @@ export class AppComponent {
 
   loadEvents(){
     console.info('username=' + this.username);
-    console.info('url=' + 'http://localhost:9443/events/user/' + this.username);
+    console.info('url=' + 'http://localhost:9090/event/v1/events');
 
     // via gateway
      this.http
-      .get<Event[]>('http://localhost:9443/events/user/olena',
+      .get<Event[]>('http://localhost:9090/event/v1/events',
         {headers: {'Authorization': 'Bearer '+ this.oauthService.getAccessToken()}})
       .subscribe(data => {this.events = data});
   }

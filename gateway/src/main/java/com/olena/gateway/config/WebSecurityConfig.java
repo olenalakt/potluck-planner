@@ -1,4 +1,4 @@
-package com.olena.eventservice.config;
+package com.olena.gateway.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+
 @Configuration
 @Slf4j
 public class WebSecurityConfig extends ResourceServerConfigurerAdapter {
@@ -23,11 +24,14 @@ public class WebSecurityConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
+
         http.anonymous().
-                and().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/v1/events/**").permitAll().
+                and().authorizeRequests().antMatchers("/.well-known/**").permitAll().
+                and().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/event/**").permitAll().
+                and().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/guest/**").permitAll().
                 anyRequest().authenticated();
 
-        if (corsAndSecurityProperties.getContentSecurityPolicy() != null) {
+       if (corsAndSecurityProperties.getContentSecurityPolicy() != null) {
             http.headers().contentSecurityPolicy(corsAndSecurityProperties.getContentSecurityPolicy());
         }
     }
@@ -55,6 +59,6 @@ public class WebSecurityConfig extends ResourceServerConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
-
     }
+
 }

@@ -10,11 +10,25 @@ zuul:
       url: http://localhost:7443
     token:
       path: /token/**
-      url: http://localhost:8443
+      url: http://localhost:8080
   sensitiveHeaders:
 
 ribbon.eureka.enabled: false
-authserver.introspection.endpoint: http://localhost:8443/oauth/check_token
+authserver.introspection.endpoint: http://localhost:8080/oauth/check_token
+
+security:
+  oauth2:
+    resource.token-info-uri: http://localhost:8080/oauth/check_token
+    client:
+      clientId: application1
+      clientSecret: application1secret
+
+# via gateway
+oidc:
+  tokenEndpoint: http://localhost:8080/oauth/token
+  tokenIssuer: http://localhost:8080/
+  authorizationEndpoint: http://localhost:8080/oauth/authorize
+  userInfoEndpoint: http://localhost:8080/api/users/me
 
 #server.ssl.key-store=gatewayservice.jks
 #server.ssl.key-store-password=olena123
@@ -29,6 +43,8 @@ gateway:
       - "https://localhost[:]*"
       - "http://*[.]lakt[.]ca"
       - "https://*[.]lakt[.]ca"
+  config:
+    appVersion: 1.0.0
 
 logging:
   config: 'classpath:logback-spring.xml'

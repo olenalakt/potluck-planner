@@ -40,11 +40,23 @@ public class OAuthFilter extends ZuulFilter {
 
     public Object run() {
 
+        log.debug("OL: OAthFilter");
+
         RequestContext requestContext = RequestContext.getCurrentContext();
         HttpServletRequest request = requestContext.getRequest();
 
-        //Avoid checking for authentication for the token endpoint
+        log.debug("OL: OAthFilter, URI={}", request.getRequestURI());
+        log.debug("OL: OAthFilter, authHeader.Authorization={}", request.getHeader("Authorization"));
+
+        // Avoid checking for authentication for preflight request
+        if (request.getHeader("Access-Control-Request-Headers") != null) {
+            log.debug("OL: OAthFilter exit, authHeader.Access-Control-Request-Headers={}", request.getHeader("Access-Control-Request-Headers"));
+            return null;
+        }
+
+        // Avoid checking for authentication for the token endpoint
         if (request.getRequestURI().startsWith("/token")) {
+            log.debug("OL: OAthFilter exit, startsWith /token");
             return null;
         }
 
@@ -68,6 +80,7 @@ public class OAuthFilter extends ZuulFilter {
 
         //Get the value of the token by splitting the Authorization header
         String token = authHeader.split("Bearer ")[1];
+        log.debug("OL: OAthFilter, token={}", token);
 
         String oauthServerURL = env.getProperty("authserver.introspection.endpoint");
 
@@ -90,7 +103,7 @@ public class OAuthFilter extends ZuulFilter {
 
             //If the authorization server doesn't respond with a 200.
             if (responseCode != 200) {
-                log.error("Response code from auth server is " + responseCode);
+                log.error("OL: Response code from auth server is " + responseCode);
                 handleError(requestContext);
             }
 

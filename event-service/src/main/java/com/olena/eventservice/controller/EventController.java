@@ -16,7 +16,8 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/events")
+@RequestMapping(value = "/v1/events")
+// TODO -  get rid of @CrossOrigin -  should use CORS regex external config instead
 @CrossOrigin(origins = "http://localhost:4200")
 public class EventController {
 
@@ -27,6 +28,46 @@ public class EventController {
     GuestService guestService;
 
     // TODO extract username from JWT token and update queries
+    String userName =  "olena";
+
+    /**
+     * @return
+     */
+//    @PreAuthorize("#oauth2.hasScope('user')")
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<?> getEventListByUserName() throws ServiceException {
+        log.debug("getEventListByUserName");
+
+        // TODO - get username from JWT token later
+        return ResponseEntity.ok(eventService.getEventListByUserName(userName));
+    }
+
+    /**
+     *  get  event by  id
+     * @param eventId
+     * @return
+     * @throws ServiceException
+     */
+    //    @PreAuthorize("#oauth2.hasScope('user')")
+    @RequestMapping(value = "/{eventid}", method = RequestMethod.GET)
+    public ResponseEntity<?> getEvent(@PathVariable("eventid") final String eventId) throws ServiceException {
+        // returns event with guest info
+        return ResponseEntity.ok(eventService.getEvent(eventId, true, guestService));
+    }
+
+    //    @PreAuthorize("#oauth2.hasScope('user')")
+    @RequestMapping(value = "/eventname/{eventname}", method = RequestMethod.GET)
+    public ResponseEntity<?> getEvent(@PathVariable("eventname") final String eventName, @RequestParam(name = "contains", required = false, defaultValue = "false") final Boolean contains) throws ServiceException {
+
+        // TODO - get username from JWT token later
+        if (contains) {
+            // return list with event names like requested, no  guest info
+            return ResponseEntity.ok(eventService.getEventListByPattern(userName, eventName));
+        } else {
+            // returns exact  match with guest info
+            return ResponseEntity.ok(eventService.getEventByName(userName, eventName, guestService));
+        }
+    }
 
     /**
      * @param eventDTO
@@ -37,7 +78,7 @@ public class EventController {
 
         if (eventDTO != null) {
 
-// TBD implement saga here -  rollback event if guests failed to  add
+// TODO implement saga here -  rollback event if guests failed to  add
             eventDTO.setEventId(UUID.randomUUID().toString());
             eventService.addEvent(eventDTO);
 
@@ -52,38 +93,6 @@ public class EventController {
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    }
-
-    //    @PreAuthorize("#oauth2.hasScope('user')")
-    @RequestMapping(value = "/{eventid}", method = RequestMethod.GET)
-    public ResponseEntity<?> getEvent(@PathVariable("eventid") final String eventId) throws ServiceException {
-        // returns event with guest info
-        return ResponseEntity.ok(eventService.getEvent(eventId, true, guestService));
-    }
-
-    /**
-     * @param userName
-     * @return
-     */
-//    @PreAuthorize("#oauth2.hasScope('user')")
-    @GetMapping(value = "/user/{username}")
-    @CrossOrigin(origins = "http://localhost:4200")
-    public ResponseEntity<?> getEventListByUserName(@PathVariable(name = "username") String userName) throws ServiceException {
-        log.debug("getEventListByUserName");
-        return ResponseEntity.ok(eventService.getEventListByUserName(userName));
-    }
-
-
-    //    @PreAuthorize("#oauth2.hasScope('user')")
-    @RequestMapping(value = "/eventname/{eventname}", method = RequestMethod.GET)
-    public ResponseEntity<?> getEvent(@PathVariable("eventname") final String eventName, @RequestParam(name = "contains", required = false, defaultValue = "false") final Boolean contains) throws ServiceException {
-        if (contains) {
-            // return list with event names like requested, no  guest info
-            return ResponseEntity.ok(eventService.getEventListByPattern(eventName));
-        } else {
-            // returns exact  match with guest info
-            return ResponseEntity.ok(eventService.getEventByName(eventName, guestService));
-        }
     }
 
     /**

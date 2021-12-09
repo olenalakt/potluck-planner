@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
 
 // via gateway
 const config: AuthConfig = {
-  issuer: 'http://localhost:9443/',
+  issuer: 'http://localhost:9090',
   loginUrl: 'http://localhost:8080/oauth/authorize',
   tokenEndpoint: 'http://localhost:8080/oauth/token',
   dummyClientSecret: 'potluckPlannerSecret',
@@ -35,7 +35,7 @@ const authModuleConfig: OAuthModuleConfig = {
   // Add the Bearer header for these URLs (APIs).
   // not via gateway service
   resourceServer: {
-    allowedUrls: ['http://localhost:9443'],
+    allowedUrls: ['http://localhost:9090'],
     sendAccessToken: true,
   },
 };

@@ -23,7 +23,7 @@ public class Event {
     @Id
     private ObjectId id;
 
-    // TBD -  index on userName, eventName
+    // TODO -  index on userName, eventName
     @Indexed
     @NonNull
     private String userName;

@@ -1,7 +1,7 @@
-package com.olena.eventservice.controller;
+package com.olena.gateway.controller;
 
-import com.olena.eventservice.config.OidcConfig;
-import com.olena.eventservice.model.OidcConfigDTO;
+import com.olena.gateway.config.OidcConfig;
+import com.olena.gateway.model.OidcConfigDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,11 +16,11 @@ public class OpenIdConfigController {
     OidcConfig oidcConfig;
 
     @GetMapping("/.well-known/openid-configuration")
-    // temporary -  until  integrated with gateway
+// TODO -  get rid of @CrossOrigin -  should use CORS regex external config instead
     @CrossOrigin(origins = "http://localhost:4200")
     public OidcConfigDTO getOIDCConfig() {
 
-        log.debug ("OL: getOIDCConfig={}", oidcConfig);
+        log.debug("OL: getOIDCConfig={}", oidcConfig);
 
         OidcConfigDTO oidcConfigDTO = new OidcConfigDTO();
         oidcConfigDTO.setToken_endpoint(oidcConfig.getTokenEndpoint());

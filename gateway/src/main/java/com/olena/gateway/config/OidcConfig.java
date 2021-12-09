@@ -1,4 +1,4 @@
-package com.olena.eventservice.config;
+package com.olena.gateway.config;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -6,14 +6,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "event-service.config")
+@ConfigurationProperties(prefix = "oidc")
 @Data
 @NoArgsConstructor
-public class EventServiceConfig {
+public class OidcConfig {
 
-    String appVersion;
-    String dbSchemaVersion;
-
-    String guestServiceUrl;
+    String tokenEndpoint;
+    String tokenIssuer;
+    String authorizationEndpoint;
+    String userInfoEndpoint;
 
 }
