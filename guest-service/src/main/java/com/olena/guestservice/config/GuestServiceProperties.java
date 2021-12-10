@@ -9,7 +9,9 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "guest-service.config")
 @Data
 @NoArgsConstructor
-public class GuestServiceConfig {
+public class GuestServiceProperties {
+
+    String appVersion;
 
     String dbSchemaVersion;
 

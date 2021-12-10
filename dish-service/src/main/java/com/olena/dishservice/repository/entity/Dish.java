@@ -1,7 +1,7 @@
 package com.olena.dishservice.repository.entity;
 
 import com.mongodb.lang.NonNull;
-import com.olena.dishservice.config.DishServiceConfig;
+import com.olena.dishservice.config.DishServiceProperties;
 import com.olena.dishservice.model.DishDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -62,7 +62,7 @@ public class Dish {
     @NonNull
     private Timestamp lastmodified;
 
-    public Dish(DishDTO dishDTO, DishServiceConfig dishServiceConfig) {
+    public Dish(DishDTO dishDTO, DishServiceProperties dishServiceProperties) {
 
         this.userName = dishDTO.getUserName();
         this.eventId = UUID.fromString(dishDTO.getEventId());
@@ -77,7 +77,7 @@ public class Dish {
         this.hasFish = dishDTO.getHasFish();
         this.hasMeat = dishDTO.getHasMeat();
 
-        this.schemaVersion = dishServiceConfig.getDbSchemaVersion();
+        this.schemaVersion = dishServiceProperties.getDbSchemaVersion();
 
         Instant now = Instant.now();
         this.lastmodified = Timestamp.from(now);

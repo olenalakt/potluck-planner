@@ -1,6 +1,6 @@
 package com.olena.drinkservice.service;
 
-import com.olena.drinkservice.config.DrinkServiceConfig;
+import com.olena.drinkservice.config.DrinkServiceProperties;
 import com.olena.drinkservice.exception.ServiceException;
 import com.olena.drinkservice.model.DrinkDTO;
 import com.olena.drinkservice.repository.DrinkRepository;
@@ -17,7 +17,7 @@ import java.util.UUID;
 public class DrinkService {
 
     @Autowired
-    DrinkServiceConfig drinkServiceConfig;
+    DrinkServiceProperties drinkServiceProperties;
 
     @Autowired
     DrinkRepository drinkRepository;
@@ -74,7 +74,7 @@ public class DrinkService {
 
             try {
 
-                Drink drink = new Drink(drinkDTO, drinkServiceConfig);
+                Drink drink = new Drink(drinkDTO, drinkServiceProperties);
                 Drink drinkExisting = drinkRepository.findFirstByDrinkName(UUID.fromString(drinkDTO.getGuestId()), drinkDTO.getDrinkName());
 
                 // check if drinkDTO  already  exists  -  update

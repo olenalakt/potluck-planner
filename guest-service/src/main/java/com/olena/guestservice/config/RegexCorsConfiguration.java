@@ -1,4 +1,4 @@
-package com.olena.eventservice.config;
+package com.olena.guestservice.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

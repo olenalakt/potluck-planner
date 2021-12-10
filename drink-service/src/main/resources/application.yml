@@ -1,14 +1,54 @@
-server.port=5443
+# reporting metrics to prometheus
+management:
+  endpoints:
+    enabled-by-default: true
+    web.exposure.include: prometheus,info,health
+  endpoint:
+    prometheus.enabled: true
 
-server.ssl.key-store: drinkservice.jks
-server.ssl.key-store-password=olena123
-server.ssl.keyAlias: drinkservice
+server.port: 5443
 
-server.ssl.client-auth = need
+spring.data.mongodb.uri: mongodb://localhost/drinkdb
 
+drink-service:
+  cors-config:
+    contentSecurityPolicy: "default-src blob: localhost:*, *.lakt.ca"
+    accessControlAllowCredentials: true
+    accessControlAllowOriginList:
+      - "http://localhost[:]*"
+      - "https://localhost[:]*"
+      - "http://*[.]lakt[.]ca"
+      - "https://*[.]lakt[.]ca"
+  config:
+    appVersion: 1.0.0
+    dbSchemaVersion: 1.0.0
+
+# mTLS related
+#server.ssl.key-store: drinkservice.jks
+#server.ssl.key-store-password: olena123
+#server.ssl.keyAlias: drinkservice
+
+#server.ssl.client-auth :  need
+
+# openid oath-server config
+security:
+  oauth2:
+    resource.token-info-uri: http://localhost:8080/oauth/check_token
+    client:
+      clientId: application1
+      clientSecret: application1secret
+
+
+  # JWT related
 #security.oauth2.resource.user-info-uri:https://localhost:8443/user
 #security.oauth2.resource.jwt.keyUri: https://localhost:8443/oauth/token_key
 
-spring.data.mongodb.uri=mongodb://localhost/drinkdb
-
-drink-service.config.dbSchemaVersion=1.0.0
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    com.olena.drinkservice: debug
+    org.springframework.security: debug
+    org.springframework.web: debug
+    org.springframework.data.mongodb: error
+    org.mongodb.driver: error
+    root: debug

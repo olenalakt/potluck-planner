@@ -1,4 +1,4 @@
-package com.olena.guestservice.config;
+package com.olena.drinkservice.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

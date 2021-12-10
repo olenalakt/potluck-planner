@@ -1,7 +1,7 @@
 package com.olena.guestservice.repository.entity;
 
 import com.mongodb.lang.NonNull;
-import com.olena.guestservice.config.GuestServiceConfig;
+import com.olena.guestservice.config.GuestServiceProperties;
 import com.olena.guestservice.model.GuestDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,7 +46,7 @@ public class Guest {
     @NonNull
     private Timestamp lastmodified;
 
-    public Guest(GuestDTO guestDTO, GuestServiceConfig guestServiceConfig) {
+    public Guest(GuestDTO guestDTO, GuestServiceProperties guestServiceProperties) {
         this.guestId = (guestDTO.getGuestId() == null ? UUID.randomUUID() : UUID.fromString(guestDTO.getGuestId()));
         this.userName = guestDTO.getUserName();
         this.eventId = UUID.fromString(guestDTO.getEventId());
@@ -54,7 +54,7 @@ public class Guest {
         this.guestEmail = guestDTO.getGuestEmail();
         this.notes = guestDTO.getNotes();
 
-        this.schemaVersion = guestServiceConfig.getDbSchemaVersion();
+        this.schemaVersion = guestServiceProperties.getDbSchemaVersion();
 
         Instant now = Instant.now();
         this.lastmodified = Timestamp.from(now);

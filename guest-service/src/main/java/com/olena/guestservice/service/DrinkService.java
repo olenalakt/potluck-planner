@@ -1,6 +1,6 @@
 package com.olena.guestservice.service;
 
-import com.olena.guestservice.config.GuestServiceConfig;
+import com.olena.guestservice.config.GuestServiceProperties;
 import com.olena.guestservice.enums.Constants;
 import com.olena.guestservice.exception.ServiceException;
 import com.olena.guestservice.model.DrinkDTO;
@@ -16,7 +16,7 @@ import java.net.URI;
 public class DrinkService {
 
     @Autowired
-    GuestServiceConfig guestServiceConfig;
+    GuestServiceProperties guestServiceProperties;
 
     RestTemplate restTemplate = new RestTemplate();
 
@@ -28,7 +28,7 @@ public class DrinkService {
     public DrinkDTO[] getDrinkList(String guestId) throws ServiceException {
         log.debug("getDrinkList: guestId={}", guestId);
 
-        URI uri = URI.create(guestServiceConfig.getDrinkServiceUrl() + "/" + Constants.GUEST.getValue() + "/" + guestId);
+        URI uri = URI.create(guestServiceProperties.getDrinkServiceUrl() + "/" + Constants.GUEST.getValue() + "/" + guestId);
         try {
 
             DrinkDTO[] drinks = restTemplate.getForObject(uri, DrinkDTO[].class);
@@ -51,7 +51,7 @@ public class DrinkService {
         // call guest service to process guests
         log.debug("processDrinks: guestId={}, drinks={}", guestId, drinks.length);
 
-        URI uri = URI.create(guestServiceConfig.getDrinkServiceUrl());
+        URI uri = URI.create(guestServiceProperties.getDrinkServiceUrl());
         try {
             restTemplate.postForObject(uri, drinks, DrinkDTO[].class);
         } catch (Exception e) {

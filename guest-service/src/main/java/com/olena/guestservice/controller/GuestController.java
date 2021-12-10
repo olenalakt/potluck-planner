@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/guests")
+@RequestMapping(value = "/v1/guests")
 public class GuestController {
 
     @Autowired

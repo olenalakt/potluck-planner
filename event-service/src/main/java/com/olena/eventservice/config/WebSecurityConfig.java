@@ -22,13 +22,15 @@ public class WebSecurityConfig extends ResourceServerConfigurerAdapter {
     CorsAndSecurityProperties corsAndSecurityProperties;
 
     @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http.anonymous().
+    public void configure(HttpSecurity httpSecurity) throws Exception {
+
+        httpSecurity.anonymous().
+                and().authorizeRequests().antMatchers("/actuator/**").permitAll().
                 and().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/v1/events/**").permitAll().
                 anyRequest().authenticated();
 
         if (corsAndSecurityProperties.getContentSecurityPolicy() != null) {
-            http.headers().contentSecurityPolicy(corsAndSecurityProperties.getContentSecurityPolicy());
+            httpSecurity.headers().contentSecurityPolicy(corsAndSecurityProperties.getContentSecurityPolicy());
         }
     }
 

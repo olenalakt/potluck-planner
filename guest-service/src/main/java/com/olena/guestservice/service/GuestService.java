@@ -1,6 +1,6 @@
 package com.olena.guestservice.service;
 
-import com.olena.guestservice.config.GuestServiceConfig;
+import com.olena.guestservice.config.GuestServiceProperties;
 import com.olena.guestservice.exception.ServiceException;
 import com.olena.guestservice.model.GuestDTO;
 import com.olena.guestservice.repository.GuestRepository;
@@ -18,7 +18,7 @@ import java.util.UUID;
 public class GuestService {
 
     @Autowired
-    GuestServiceConfig guestServiceConfig;
+    GuestServiceProperties guestServiceProperties;
 
     @Autowired
     GuestRepository guestRepository;
@@ -102,7 +102,7 @@ public class GuestService {
 
             try {
 
-                Guest guest = new Guest(guestDTO, guestServiceConfig);
+                Guest guest = new Guest(guestDTO, guestServiceProperties);
                 // unique index on username, eventId and guestEmail
                 Guest guestExisting = guestRepository.findFirstByUserNameAndEventIdAndGuestEmail(guestDTO.getUserName(), UUID.fromString(guestDTO.getEventId()), guestDTO.getGuestEmail());
 

@@ -1,6 +1,6 @@
 package com.olena.guestservice.service;
 
-import com.olena.guestservice.config.GuestServiceConfig;
+import com.olena.guestservice.config.GuestServiceProperties;
 import com.olena.guestservice.enums.Constants;
 import com.olena.guestservice.exception.ServiceException;
 import com.olena.guestservice.model.DishDTO;
@@ -16,7 +16,7 @@ import java.net.URI;
 public class DishService {
 
     @Autowired
-    GuestServiceConfig guestServiceConfig;
+    GuestServiceProperties guestServiceProperties;
 
     RestTemplate restTemplate = new RestTemplate();
 
@@ -28,7 +28,7 @@ public class DishService {
     public DishDTO[] getDishList(String guestId) throws ServiceException {
         log.debug("getDishList: guestId={}", guestId);
 
-        URI uri = URI.create(guestServiceConfig.getDishServiceUrl() + "/" + Constants.GUEST.getValue() + "/" + guestId);
+        URI uri = URI.create(guestServiceProperties.getDishServiceUrl() + "/" + Constants.GUEST.getValue() + "/" + guestId);
         try {
 
             DishDTO[] dishes = restTemplate.getForObject(uri, DishDTO[].class);
@@ -51,7 +51,7 @@ public class DishService {
         // call guest service to process guests
         log.debug("processDishes: guestId={}, dishes={}", guestId, dishes.length);
 
-        URI uri = URI.create(guestServiceConfig.getDishServiceUrl());
+        URI uri = URI.create(guestServiceProperties.getDishServiceUrl());
         try {
             restTemplate.postForObject(uri, dishes, DishDTO[].class);
         } catch (Exception e) {

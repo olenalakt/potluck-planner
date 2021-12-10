@@ -1,5 +1,16 @@
 server.port: 9443
 
+# DB config
+spring.data.mongodb.uri: mongodb://localhost/eventdb
+
+# reporting metrics to prometheus
+management:
+  endpoints:
+    enabled-by-default: true
+    web.exposure.include: prometheus,info,health
+  endpoint:
+    prometheus.enabled: true
+
 event-service:
   cors-config:
     contentSecurityPolicy: "default-src blob: localhost:*, *.lakt.ca"
@@ -14,8 +25,6 @@ event-service:
      dbSchemaVersion: 1.0.0
      guestServiceUrl: http://localhost:7443/guests
 
-# DB config
-spring.data.mongodb.uri: mongodb://localhost/eventdb
 
 # TLS config
 #server.ssl.key-store: eventservice.jks

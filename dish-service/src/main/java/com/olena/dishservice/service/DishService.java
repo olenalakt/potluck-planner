@@ -1,6 +1,6 @@
 package com.olena.dishservice.service;
 
-import com.olena.dishservice.config.DishServiceConfig;
+import com.olena.dishservice.config.DishServiceProperties;
 import com.olena.dishservice.exception.ServiceException;
 import com.olena.dishservice.model.DishDTO;
 import com.olena.dishservice.repository.DishRepository;
@@ -17,7 +17,7 @@ import java.util.UUID;
 public class DishService {
 
     @Autowired
-    DishServiceConfig dishServiceConfig;
+    DishServiceProperties dishServiceProperties;
 
     @Autowired
     DishRepository dishRepository;
@@ -74,7 +74,7 @@ public class DishService {
 
             try {
 
-                Dish dish = new Dish(dishDTO, dishServiceConfig);
+                Dish dish = new Dish(dishDTO, dishServiceProperties);
                 Dish dishExisting = dishRepository.findFirstByDishName(UUID.fromString(dishDTO.getGuestId()), dishDTO.getDishName());
 
                 // check if dishDTO  already  exists  -  update

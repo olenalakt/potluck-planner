@@ -1,7 +1,7 @@
 package com.olena.drinkservice.repository.entity;
 
 import com.mongodb.lang.NonNull;
-import com.olena.drinkservice.config.DrinkServiceConfig;
+import com.olena.drinkservice.config.DrinkServiceProperties;
 import com.olena.drinkservice.model.DrinkDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -62,7 +62,7 @@ public class Drink {
     @NonNull
     private Timestamp lastmodified;
 
-    public Drink(DrinkDTO drinkDTO, DrinkServiceConfig drinkServiceConfig) {
+    public Drink(DrinkDTO drinkDTO, DrinkServiceProperties drinkServiceProperties) {
 
         this.userName = drinkDTO.getUserName();
         this.eventId = UUID.fromString(drinkDTO.getEventId());
@@ -76,7 +76,7 @@ public class Drink {
         this.isLactoseFree = drinkDTO.getIsLactoseFree();
         this.isAlcoholFree = drinkDTO.getIsAlcoholFree();
 
-        this.schemaVersion = drinkServiceConfig.getDbSchemaVersion();
+        this.schemaVersion = drinkServiceProperties.getDbSchemaVersion();
 
         Instant now = Instant.now();
         this.lastmodified = Timestamp.from(now);

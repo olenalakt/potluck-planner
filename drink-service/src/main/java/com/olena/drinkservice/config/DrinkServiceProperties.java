@@ -9,8 +9,9 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "event-service.config")
 @Data
 @NoArgsConstructor
-public class DrinkServiceConfig {
+public class DrinkServiceProperties {
 
+    String appVersion;
     String dbSchemaVersion;
 
 }

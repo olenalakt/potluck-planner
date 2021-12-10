@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/drinks")
+@RequestMapping(value = "/v1/drinks")
 public class DrinkController {
 
     @Autowired
