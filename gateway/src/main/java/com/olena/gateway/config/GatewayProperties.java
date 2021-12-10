@@ -9,8 +9,18 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "gateway.config")
 @Data
 @NoArgsConstructor
-public class GatewayConfig {
+public class GatewayProperties {
 
     String appVersion;
+
+    String oathIntrospectionEndpoint;
+
+    // throttling props
+    // max requests
+    Integer maxUserRequestsPerSec;
+    // TODO  -  not implemented per service
+    Integer maxEventRequestsPerSec;
+    Integer maxGuestRequestsPerSec;
+    Integer maxMenuRequestsPerSec;
 
 }

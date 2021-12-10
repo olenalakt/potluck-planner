@@ -2,11 +2,11 @@ package com.olena.gateway.filters;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import com.olena.gateway.config.GatewayProperties;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ public class OAuthFilter extends ZuulFilter {
     private static final Logger log = LoggerFactory.getLogger(OAuthFilter.class);
 
     @Autowired
-    private Environment env;
+    GatewayProperties gatewayProperties;
 
     public String filterType() {
 
@@ -82,7 +82,8 @@ public class OAuthFilter extends ZuulFilter {
         String token = authHeader.split("Bearer ")[1];
         log.debug("OL: OAthFilter, token={}", token);
 
-        String oauthServerURL = env.getProperty("authserver.introspection.endpoint");
+        String oauthServerURL = gatewayProperties.getOathIntrospectionEndpoint();
+        log.debug("OL: OAthFilter, oauthServerURL={}", oauthServerURL);
 
         try {
             URL url = new URL(oauthServerURL);

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "oidc")
 @Data
 @NoArgsConstructor
-public class OidcConfig {
+public class OidcProperties {
 
     String tokenEndpoint;
     String tokenIssuer;

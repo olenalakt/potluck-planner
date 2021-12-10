@@ -1,6 +1,6 @@
 package com.olena.gateway.controller;
 
-import com.olena.gateway.config.GatewayConfig;
+import com.olena.gateway.config.GatewayProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class GatewayHealth {
 
     @Autowired
-    GatewayConfig eventServiceConfig;
+    GatewayProperties eventServiceConfig;
 
     /**
      * @return

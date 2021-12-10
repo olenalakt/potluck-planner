@@ -14,7 +14,6 @@ zuul:
   sensitiveHeaders:
 
 ribbon.eureka.enabled: false
-authserver.introspection.endpoint: http://localhost:8080/oauth/check_token
 
 security:
   oauth2:
@@ -45,6 +44,14 @@ gateway:
       - "https://*[.]lakt[.]ca"
   config:
     appVersion: 1.0.0
+    oathIntrospectionEndpoint: http://localhost:8080/oauth/check_token
+    # throttling props
+    # max requests config -  different for each service
+    maxUserRequestsPerSec: 5000
+    # TODO  - not impemented counters per service
+    maxEventRequestsPerSec: 5000
+    maxGuestRequestsPerSec: 5000
+    maxMenuRequestsPerSec: 2000
 
 logging:
   config: 'classpath:logback-spring.xml'

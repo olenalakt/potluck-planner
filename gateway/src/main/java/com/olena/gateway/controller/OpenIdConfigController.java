@@ -1,6 +1,6 @@
 package com.olena.gateway.controller;
 
-import com.olena.gateway.config.OidcConfig;
+import com.olena.gateway.config.OidcProperties;
 import com.olena.gateway.model.OidcConfigDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class OpenIdConfigController {
 
     @Autowired
-    OidcConfig oidcConfig;
+    OidcProperties oidcProperties;
 
     @GetMapping("/.well-known/openid-configuration")
 // TODO -  get rid of @CrossOrigin -  should use CORS regex external config instead
     @CrossOrigin(origins = "http://localhost:4200")
     public OidcConfigDTO getOIDCConfig() {
 
-        log.debug("OL: getOIDCConfig={}", oidcConfig);
+        log.debug("OL: oidcProperties={}", oidcProperties);
 
         OidcConfigDTO oidcConfigDTO = new OidcConfigDTO();
-        oidcConfigDTO.setToken_endpoint(oidcConfig.getTokenEndpoint());
-        oidcConfigDTO.setIssuer(oidcConfig.getTokenIssuer());
-        oidcConfigDTO.setAuthorization_endpoint(oidcConfig.getAuthorizationEndpoint());
-        oidcConfigDTO.setUserinfo_endpoint(oidcConfig.getUserInfoEndpoint());
+        oidcConfigDTO.setToken_endpoint(oidcProperties.getTokenEndpoint());
+        oidcConfigDTO.setIssuer(oidcProperties.getTokenIssuer());
+        oidcConfigDTO.setAuthorization_endpoint(oidcProperties.getAuthorizationEndpoint());
+        oidcConfigDTO.setUserinfo_endpoint(oidcProperties.getUserInfoEndpoint());
 
         return oidcConfigDTO;
     }
