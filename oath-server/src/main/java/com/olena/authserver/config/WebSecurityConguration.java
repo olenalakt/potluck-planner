@@ -38,7 +38,12 @@ public class WebSecurityConguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().permitAll();
+                .formLogin().permitAll()
+                .and()
+//                .oauth2ResourceServer()
+//                .jwt()
+                ;
+
 //        http.cors();
     }
 
@@ -54,7 +59,8 @@ public class WebSecurityConguration extends WebSecurityConfigurerAdapter {
         log.info("OL: configure AuthenticationManagerBuilder with CustomAuthenticationProvider");
 
         // Working solution for normal  and  JWT access token
-     //   auth.authenticationProvider(authProvider);
+        auth.authenticationProvider(authProvider);
+/*
 
         auth
                 .inMemoryAuthentication()
@@ -62,6 +68,7 @@ public class WebSecurityConguration extends WebSecurityConfigurerAdapter {
                 .password(passwordEncoder().encode("123"))
                 .roles("USER");
 
+*/
     }
 
 }
