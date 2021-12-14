@@ -14,21 +14,24 @@ spring.data.mongodb.uri: mongodb://localhost/userdb
 #security.oauth2.client.authenticationScheme: header
 
 # openid-connect
-oath-service:
-  config: 
+oauth-server:
+  config:
+    appVersion: 1.0.0
+    appDbSchemaVersion: 1.0.0
+
     clientAppId: potluckPlannerSPA
     clientAppSecret: potluckPlannerSecret
     clientRedirectUri: http://localhost:4200/
 
-    resourceServerId: application1
-    resourceServerSecret: application1secret
+    resourceServerId: potluckPlanner
+    resourceServerSecret: potluckPlannerSecret
 
 #TODO -  allow list of appId and secrets(!NOT working)
 #    appId: potluck-planner
 #    appSecret: XXX
 
 # JWT settings
-spring.security.oauth.jwt.enabled: false
+#spring.security.oauth.jwt.enabled: false
 # from book -  working version
 #spring.security.oauth.jwt.keystore.password: springboot
 #spring.security.oauth.jwt.keystore.alias: jwtkey

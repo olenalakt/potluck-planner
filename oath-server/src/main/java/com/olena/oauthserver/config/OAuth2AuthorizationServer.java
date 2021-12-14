@@ -4,7 +4,6 @@ import com.olena.oauthserver.enums.EnvConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -17,7 +16,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 public class OAuth2AuthorizationServer extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
-    private Environment environment;
+    private OauthServerProperties oauthServerProperties;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -35,45 +34,43 @@ public class OAuth2AuthorizationServer extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        log.debug("OL: configure ClientDetailsServiceConfigurer, clientAppId={}/{}, urlRedirect={}",
-                environment.getProperty(EnvConstants.OATHSERVICE_CONFIG_CLIENTAPPID.getValue()),
-                environment.getProperty(EnvConstants.OATHSERVICE_CONFIG_CLIENTAPPSECRET.getValue()),
-                environment.getProperty(EnvConstants.OATHSERVICE_CONFIG_CLIENTREDIRECTURI.getValue())
+        log.debug("OL: configure ClientDetailsServiceConfigurer, oauthServerProperties={}",
+                oauthServerProperties
         );
 
         clients
                 .inMemory()
                 // original
-                .withClient(environment.getProperty(EnvConstants.OATHSERVICE_CONFIG_CLIENTAPPID.getValue()))
-                .secret(passwordEncoder.encode(environment.getProperty(EnvConstants.OATHSERVICE_CONFIG_CLIENTAPPSECRET.getValue())))
+                .withClient(oauthServerProperties.getClientAppId())
+                .secret(passwordEncoder.encode(oauthServerProperties.getClientAppSecret()))
                 .authorizedGrantTypes("password", "authorization_code", "refresh_token")
                 .authorities("READ_ONLY_CLIENT")
                 .scopes("openid", "read_profile_info")
                 .resourceIds("oauth2-resource")
-                .redirectUris(environment.getProperty(EnvConstants.OATHSERVICE_CONFIG_CLIENTREDIRECTURI.getValue()))
+                .redirectUris(oauthServerProperties.getClientRedirectUri())
                 .accessTokenValiditySeconds(5000)
                 .refreshTokenValiditySeconds(50000)
                 .and()
-                .withClient(environment.getProperty(EnvConstants.OATHSERVICE_CONFIG_RESOURCESERVERID.getValue()))
-                .secret(passwordEncoder.encode(environment.getProperty(EnvConstants.OATHSERVICE_CONFIG_RESOURCESERVERSECRET.getValue())));
+                .withClient(oauthServerProperties.getResourceServerId())
+                .secret(passwordEncoder.encode(oauthServerProperties.getResourceServerSecret()));
 
 /*
         clients.inMemory()
-                .withClient(environment.getProperty("oath-service.config.clientAppId"))
- //               .secret("{noop}" + environment.getProperty("oath-service.config.appSecret"))
-                .secret(passwordEncoder.encode(environment.getProperty("oath-service.config.clientAppSecret")))
+                .withClient(oauthServerProperties.getProperty("oath-service.config.clientAppId"))
+ //               .secret("{noop}" + oauthServerProperties.getProperty("oath-service.config.appSecret"))
+                .secret(passwordEncoder.encode(oauthServerProperties.getProperty("oath-service.config.clientAppSecret")))
 // !!! - TODO -  figure out  how to  allow update data
                 .authorizedGrantTypes("authorization_code", "password", "refresh_token")
                 .authorities("READ_ONLY_CLIENT")
                 .scopes( "openid", "read_profile_info")
                 .resourceIds("oauth2-resource")
-                .redirectUris(environment.getProperty("oath-service.config.clientRedirectUri"))
+                .redirectUris(oauthServerProperties.getProperty("oath-service.config.clientRedirectUri"))
                 .accessTokenValiditySeconds(5000)
                 .refreshTokenValiditySeconds(50000)
                 .and()
-                .withClient(environment.getProperty("oath-service.config.serviceAppId"))
-//                .secret("{noop}" + environment.getProperty("oath-service.config.serviceAppSecret"))
-                .secret(passwordEncoder.encode(environment.getProperty("oath-service.config.serviceAppSecret")))
+                .withClient(oauthServerProperties.getProperty("oath-service.config.serviceAppId"))
+//                .secret("{noop}" + oauthServerProperties.getProperty("oath-service.config.serviceAppSecret"))
+                .secret(passwordEncoder.encode(oauthServerProperties.getProperty("oath-service.config.serviceAppSecret")))
 //                .authorizedGrantTypes("client_credentials", "password", "refresh_token")
 //                .scopes("user", "guest", "openid", "read_profile_info")
                 .accessTokenValiditySeconds(60000)

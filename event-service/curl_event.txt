@@ -1,26 +1,16 @@
-// JWT token directly 
-curl -v -k -X POST --basic -u potluck-planner:XXX -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d "grant_type=password&username=olena&password=123&scope=user" https://localhost:8443/oauth/token
+// JWT token directly via SSL
+curl -v -k -X POST --basic -u potluckPlanner:potluckPlannerSecret -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d "grant_type=password&username=olena&password=123&scope=user" https://localhost:8443/oauth/token
 
 
 
-// access token directly no  SSL
-curl -v  -X POST --basic -u potluck-planner:XXX -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d "grant_type=password&username=olena&password=123&scope=user" http://localhost:8443/oauth/token
+// JWT access token directly no  SSL
+curl -v  -X POST --basic -u potluckPlanner:potluckPlannerSecret -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d "grant_type=password&username=olena&password=123&scope=user" http://localhost:8443/oauth/token
 
-// access token via gateway
-curl -u potluck-planner:XXX \
+// access token via gateway, no  SSL
+curl -u potluckPlanner:potluckPlannerSecret \
 -H "Content-Type: application/x-www-form-urlencoded" \
 -d "grant_type=password&username=olena&password=123&scope=user" \
-http://localhost:9090/token/oauth/token
-
-
-// access token directly no  SSL
-curl -v  -X POST --basic -u application1:application1secret -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d "grant_type=password&username=olena&password=123&scope=user" http://localhost:8080/oauth/token
-
-// access token via gateway
-curl -u application1:application1secret \
--H "Content-Type: application/x-www-form-urlencoded" \
--d "grant_type=password&username=olena&password=123&scope=user" \
-http://localhost:9090/token/oauth/token
+http://localhost:9090/jwt/oauth/token
 
 
 ----------------------
@@ -40,12 +30,16 @@ EOF
 
 ----------------
 // list events by username
-curl -k -X GET https://localhost:9443/events/user/olena -H "Content-Type: application/json" 
+curl -k -X GET https://localhost:9443/v1/events -H "Content-Type: application/json" 
 
 
-curl -k -X GET http://localhost:9090/event/events/user/olena -H "Content-Type: application/json" 
+curl -k -X GET http://localhost:9090/event/v1/events -H "Content-Type: application/json" 
 
-curl -k -H "Authorization: Bearer $TOKEN" http://localhost:9090/event/events/user/olena
+// NO SSL, no  gateway
+curl -k -H "Authorization: Bearer $TOKEN" http://localhost:9443/v1/events
+
+
+curl -k -H "Authorization: Bearer $TOKEN" http://localhost:9090/event/v1/events
 --------------------------
 
 // list events by eventname pattern

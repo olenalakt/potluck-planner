@@ -11,6 +11,9 @@ zuul:
     token:
       path: /token/**
       url: http://localhost:8080
+#    jwt:
+ #     path: /token/**
+  #    url: http://localhost:8443
   sensitiveHeaders:
 
 ribbon.eureka.enabled: false
@@ -19,8 +22,8 @@ security:
   oauth2:
     resource.token-info-uri: http://localhost:8080/oauth/check_token
     client:
-      clientId: application1
-      clientSecret: application1secret
+      clientId: potluckPlanner
+      clientSecret: potluckPlannerSecret
 
 # via gateway
 oidc:

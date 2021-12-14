@@ -21,6 +21,8 @@ token-service:
       - "https://*[.]lakt[.]ca"
   config:
     appVersion: 1.0.0
+    appDbSchemaVersion: 1.0.0
+
     appId: potluckPlanner
     appSecret: potluckPlannerSecret
 

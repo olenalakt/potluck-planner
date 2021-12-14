@@ -31,13 +31,14 @@ event-service:
 #server.ssl.key-store-password: olena123
 #server.ssl.keyAlias: eventservice
 
-# openid oath-server config
+# openid oauth-server config
 security:
   oauth2:
-    resource.token-info-uri: http://localhost:8080/oauth/check_token
-    # JWT related
-    resource.user-info-uri: http://localhost:8443/v1/api/users/me
-    resource.jwt.keyUri: http://localhost:8443/oauth/token_key
+    resource:
+      token-info-uri: http://localhost:8080/oauth/check_token
+    # JWT related -  not used yet
+#      user-info-uri: http://localhost:8443/v1/api/users/me
+#      jwt.keyUri: http://localhost:8443/oauth/token_key
     client:
       clientId: potluckPlanner
       clientSecret: potluckPlannerSecret

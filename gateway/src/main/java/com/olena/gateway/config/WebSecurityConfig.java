@@ -27,6 +27,7 @@ public class WebSecurityConfig extends ResourceServerConfigurerAdapter {
 
         http.anonymous().
                 and().authorizeRequests().antMatchers("/.well-known/**").permitAll().
+//                and().authorizeRequests().antMatchers("/jwt/**").permitAll().
                 and().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/event/**").permitAll().
                 and().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/guest/**").permitAll().
                 anyRequest().authenticated();
