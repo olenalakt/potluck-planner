@@ -35,20 +35,19 @@ event-service:
 security:
   oauth2:
     resource.token-info-uri: http://localhost:8080/oauth/check_token
+    # JWT related
+    resource.user-info-uri: http://localhost:8443/v1/api/users/me
+    resource.jwt.keyUri: http://localhost:8443/oauth/token_key
     client:
-      clientId: application1
-      clientSecret: application1secret
-
-# JWT related
-#security.oauth2.resource.user-info-uri:https://localhost:8443/user
-#security.oauth2.resource.jwt.keyUri: https://localhost:8443/oauth/token_key
+      clientId: potluckPlanner
+      clientSecret: potluckPlannerSecret
 
 logging:
   config: classpath:logback-spring.xml
   level:
+      com.olena.eventservice: debug
       org.springframework.security: debug
       org.springframework.web: debug
       org.springframework.data.mongodb: error
-      com.olena.eventservice: debug
       org.mongodb.driver: error
       root: debug

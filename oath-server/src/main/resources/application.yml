@@ -4,9 +4,9 @@ server.port: 8080
 spring.data.mongodb.uri: mongodb://localhost/userdb
 
 # TLS settings
-#server.ssl.key-store: oathserver.jks
+#server.ssl.key-store: oauthserver.jks
 #server.ssl.key-store-password: olena123
-#server.ssl.keyAlias: oathserver
+#server.ssl.keyAlias: oauthserver
 
 # ??? non-JWT authorization by clientId only
 #server.error.whitelabel.enabled:false
@@ -36,8 +36,8 @@ spring.security.oauth.jwt.enabled: false
 
 # TODO
 #spring.security.oauth.jwt.keystore.password: olena123
-#spring.security.oauth.jwt.keystore.alias: oathserver
-#spring.security.oauth.jwt.keystore.name: oathserver.jks
+#spring.security.oauth.jwt.keystore.alias: oauthserver
+#spring.security.oauth.jwt.keystore.name: oauthserver.jks
 
 # logging settings
 logging:

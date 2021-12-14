@@ -13,6 +13,13 @@ public class TokenServiceProperties {
 
     String appVersion;
 
-    String oathIntrospectionEndpoint;
+    // TODO make it list
+    String appId;
+    String appSecret;
+
+    String jwtEnabled;
+    String jwtKeystore;
+    String jwtKeystorePassword;
+    String jwtKeystoreAlias;
 
 }

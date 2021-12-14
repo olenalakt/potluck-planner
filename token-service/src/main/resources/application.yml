@@ -1,0 +1,55 @@
+server.port: 8443
+
+spring.data.mongodb.uri: mongodb://localhost/userdb
+
+# reporting metrics to prometheus
+management:
+  endpoints:
+    enabled-by-default: true
+    web.exposure.include: prometheus,info,health
+  endpoint:
+    prometheus.enabled: true
+
+token-service:
+  cors-config:
+    contentSecurityPolicy: "default-src blob: localhost:*, *.lakt.ca"
+    accessControlAllowCredentials: true
+    accessControlAllowOriginList:
+      - "http://localhost[:]*"
+      - "https://localhost[:]*"
+      - "http://*[.]lakt[.]ca"
+      - "https://*[.]lakt[.]ca"
+  config:
+    appVersion: 1.0.0
+    appId: potluckPlanner
+    appSecret: potluckPlannerSecret
+
+
+    jwtEnabled: true
+    jwtKeystore: jwt.jks
+    jwtKeystoreAlias: jwtkey
+    jwtKeystorePassword: springboot
+
+# non-JWT authorization by clientId only
+#server.error.whitelabel.enabled:false
+
+#server.ssl.key-store: oauthserver.jks
+#server.ssl.key-store-password: olena123
+#server.ssl.keyAlias: oauthserver
+
+security:
+  oauth2:
+    resource.filter-order: 3
+    client.authenticationScheme: header
+
+
+logging:
+  config: 'classpath:logback-spring.xml'
+  level:
+    com.olena.token-service: debug
+    org.springframework.cloud: error
+    org.springframework.boot: debug
+    org.springframework.security : debug
+    org.springframework.data.mongodb: error
+    org.mongodb.driver: error
+    root: debug
