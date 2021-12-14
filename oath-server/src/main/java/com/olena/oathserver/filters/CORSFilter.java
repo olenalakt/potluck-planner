@@ -1,4 +1,4 @@
-package com.olena.authserver.filters;
+package com.olena.oathserver.filters;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -12,7 +12,6 @@ import org.springframework.web.filter.CorsFilter;
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Slf4j
-//    TODO  -  remove if integrated with gateway
 public class CORSFilter extends CorsFilter {
 
     public CORSFilter() {
@@ -24,8 +23,9 @@ public class CORSFilter extends CorsFilter {
         log.debug("OL: CORS configurationSource");
 
         CorsConfiguration config = new CorsConfiguration();
-
+// TODO: use external configuration
         config.addAllowedOrigin("http://localhost:4200");
+//        config.addAllowedOrigin("http://localhost:4200");
         config.setAllowCredentials(true);
         config.addAllowedHeader("Authentication");
         config.addAllowedHeader("Content-Type");

@@ -1,6 +1,6 @@
-package com.olena.authserver.config;
+package com.olena.oathserver.config;
 
-import com.olena.authserver.service.CustomAuthenticationProvider;
+import com.olena.oathserver.service.CustomAuthenticationProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,8 +20,7 @@ public class WebSecurityConguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private CustomAuthenticationProvider authProvider;
-
-
+    
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -39,14 +38,9 @@ public class WebSecurityConguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
-                .and()
-//                .oauth2ResourceServer()
-//                .jwt()
-                ;
+        ;
 
-//        http.cors();
     }
-
 
     @Override
     @Bean

@@ -1,4 +1,4 @@
-package com.olena.authserver.enums;
+package com.olena.oathserver.enums;
 
 public enum EnvConstants {
 

@@ -1,4 +1,4 @@
-package com.olena.authserver.filters;
+package com.olena.oathserver.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.ByteStreams;

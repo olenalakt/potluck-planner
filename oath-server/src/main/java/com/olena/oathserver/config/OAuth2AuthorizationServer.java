@@ -1,6 +1,6 @@
-package com.olena.authserver.config;
+package com.olena.oathserver.config;
 
-import com.olena.authserver.enums.EnvConstants;
+import com.olena.oathserver.enums.EnvConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -19,10 +19,8 @@ public class OAuth2AuthorizationServer extends AuthorizationServerConfigurerAdap
     @Autowired
     private Environment environment;
 
-
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
-
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {

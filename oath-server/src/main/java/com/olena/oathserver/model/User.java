@@ -1,4 +1,4 @@
-package com.olena.authserver.model;
+package com.olena.oathserver.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;

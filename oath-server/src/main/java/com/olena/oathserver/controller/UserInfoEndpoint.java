@@ -1,7 +1,7 @@
-package com.olena.authserver.controller;
+package com.olena.oathserver.controller;
 
-import com.olena.authserver.model.User;
-import com.olena.authserver.repository.UserRepository;
+import com.olena.oathserver.model.User;
+import com.olena.oathserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,13 +14,13 @@ public class UserInfoEndpoint {
     @Autowired
     UserRepository userRepository;
 
+    // TODO: improve
     @RequestMapping("/api/users/me")
-    public ResponseEntity<User> profile()
-    {
+    public ResponseEntity<User> profile() {
         //Build some dummy data to return for testing
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        User profile = userRepository.findFirstByUserName( user.getUserName() );
+        User profile = userRepository.findFirstByUserName(user.getUserName());
 
         return ResponseEntity.ok(profile);
     }

@@ -1,4 +1,4 @@
-package com.olena.authserver.config;
+package com.olena.oathserver.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;

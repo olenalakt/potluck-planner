@@ -1,4 +1,4 @@
-package com.olena.authserver;
+package com.olena.oathserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

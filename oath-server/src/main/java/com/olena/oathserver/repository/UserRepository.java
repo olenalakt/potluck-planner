@@ -1,6 +1,6 @@
-package com.olena.authserver.repository;
+package com.olena.oathserver.repository;
 
-import com.olena.authserver.model.User;
+import com.olena.oathserver.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 

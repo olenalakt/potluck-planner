@@ -1,7 +1,7 @@
-package com.olena.authserver.service;
+package com.olena.oathserver.service;
 
-import com.olena.authserver.model.User;
-import com.olena.authserver.repository.UserRepository;
+import com.olena.oathserver.model.User;
+import com.olena.oathserver.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
