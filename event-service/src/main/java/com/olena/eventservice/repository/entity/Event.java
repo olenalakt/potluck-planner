@@ -1,7 +1,7 @@
 package com.olena.eventservice.repository.entity;
 
 import com.mongodb.lang.NonNull;
-import com.olena.eventservice.config.EventServiceConfig;
+import com.olena.eventservice.config.EventServiceProperties;
 import com.olena.eventservice.model.EventDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,14 +44,14 @@ public class Event {
     @NonNull
     private Timestamp lastmodified;
 
-    public Event(EventDTO eventDTO, EventServiceConfig eventServiceConfig) {
+    public Event(EventDTO eventDTO, EventServiceProperties eventServiceProperties) {
         this.eventId = UUID.fromString(eventDTO.getEventId());
         this.userName = eventDTO.getUserName();
         this.eventName = eventDTO.getEventName();
         this.eventDate = eventDTO.getEventDate();
         this.notes = eventDTO.getNotes();
 
-        this.schemaVersion = eventServiceConfig.getDbSchemaVersion();
+        this.schemaVersion = eventServiceProperties.getDbSchemaVersion();
 
         Instant now = Instant.now();
         this.lastmodified = Timestamp.from(now);

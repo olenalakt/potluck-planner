@@ -3,17 +3,37 @@ package com.olena.oauthserver.config;
 import com.olena.oauthserver.enums.EnvConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableAuthorizationServer
 @Slf4j
 public class OAuth2AuthorizationServer extends AuthorizationServerConfigurerAdapter {
+
+    // JWT related
+    private TokenStore tokenStore;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    // end JWT related
 
     @Autowired
     private OauthServerProperties oauthServerProperties;
@@ -59,31 +79,67 @@ public class OAuth2AuthorizationServer extends AuthorizationServerConfigurerAdap
                 .secret(passwordEncoder.encode("application1secret"))
         ;
 
-/*
-        clients.inMemory()
-                .withClient(oauthServerProperties.getProperty("oath-service.config.clientAppId"))
- //               .secret("{noop}" + oauthServerProperties.getProperty("oath-service.config.appSecret"))
-                .secret(passwordEncoder.encode(oauthServerProperties.getProperty("oath-service.config.clientAppSecret")))
-// !!! - TODO -  figure out  how to  allow update data
-                .authorizedGrantTypes("authorization_code", "password", "refresh_token")
-                .authorities("READ_ONLY_CLIENT")
-                .scopes( "openid", "read_profile_info")
-                .resourceIds("oauth2-resource")
-                .redirectUris(oauthServerProperties.getProperty("oath-service.config.clientRedirectUri"))
-                .accessTokenValiditySeconds(5000)
-                .refreshTokenValiditySeconds(50000)
-                .and()
-                .withClient(oauthServerProperties.getProperty("oath-service.config.serviceAppId"))
-//                .secret("{noop}" + oauthServerProperties.getProperty("oath-service.config.serviceAppSecret"))
-                .secret(passwordEncoder.encode(oauthServerProperties.getProperty("oath-service.config.serviceAppSecret")))
-//                .authorizedGrantTypes("client_credentials", "password", "refresh_token")
-//                .scopes("user", "guest", "openid", "read_profile_info")
-                .accessTokenValiditySeconds(60000)
-//                .resourceIds("oauth-server")
-        ;
+    }
 
-*/
+    // JWT version
+    @Bean
+    public TokenEnhancer tokenEnhancer() {
+        return new CustomJWTEnhancer();
+    }
 
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints)  {
+        log.info("OL: configure AuthorizationServerEndpointsConfigurer, {}", oauthServerProperties);
+
+        String isJwtEnabled = oauthServerProperties.getJwtEnabled();
+        log.info("OL: isJwtEnabled={}",isJwtEnabled);
+        if (isJwtEnabled != null && "true".equalsIgnoreCase(isJwtEnabled.trim())) {
+
+            TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
+            enhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer(), jwtConeverter()));
+            endpoints.tokenStore(tokenStore()).accessTokenConverter(jwtConeverter()).tokenEnhancer(enhancerChain)
+                    .authenticationManager(authenticationManager);
+            // endpoints.tokenStore(tokenStore()).tokenEnhancer(jwtConeverter())
+            // .authenticationManager(authenticationManager);
+        } else {
+            endpoints.authenticationManager(authenticationManager);
+        }
+    }
+
+
+
+    @Bean
+    public TokenStore tokenStore() {
+        log.info("OL: tokenStore");
+        String isJwtEnabled = oauthServerProperties.getJwtEnabled();
+        if (isJwtEnabled != null && "true".equalsIgnoreCase(isJwtEnabled.trim())) {
+            return new JwtTokenStore(jwtConeverter());
+        } else {
+            return new InMemoryTokenStore();
+        }
+    }
+
+    @Bean
+    protected JwtAccessTokenConverter jwtConeverter() {
+        log.info("OL: jwtConeverter");
+        String isJwtEnabled = oauthServerProperties.getJwtEnabled();
+        if (isJwtEnabled != null && "true".equalsIgnoreCase(isJwtEnabled.trim())) {
+
+            String pwd = oauthServerProperties.getJwtKeystorePassword();
+            String alias = oauthServerProperties.getJwtKeystoreAlias();
+            String keystore = oauthServerProperties.getJwtKeystore();
+            log.info("OL: pwd={}", pwd);
+            log.info("OL: alias={}", alias);
+            log.info("OL: keystore={}", keystore);
+
+            KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource(keystore),
+                    pwd.toCharArray());
+            JwtAccessTokenConverter converter = new CustomJWTEncoder(keyStoreKeyFactory.getKeyPair(alias));
+            //converter.setKeyPair(keyStoreKeyFactory.getKeyPair(alias));
+            return converter;
+        } else {
+            return null;
+        }
 
     }
 

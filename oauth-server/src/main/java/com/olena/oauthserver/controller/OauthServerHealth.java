@@ -1,7 +1,6 @@
-package com.olena.eventservice.controller;
+package com.olena.oauthserver.controller;
 
-import com.olena.eventservice.config.EventServiceProperties;
-import com.olena.eventservice.repository.EventRepository;
+import com.olena.oauthserver.config.OauthServerProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,13 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-public class EventServiceHealth {
+public class OauthServerHealth {
 
     @Autowired
-    EventServiceProperties eventServiceProperties;
-
-    @Autowired
-    EventRepository eventRepository;
+    OauthServerProperties oauthServerProperties;
 
     /**
      * @return
@@ -32,14 +28,14 @@ public class EventServiceHealth {
     @GetMapping("/health")
     public ResponseEntity<String> checkHealth() {
         log.debug("checkHealth, entered");
-        return new ResponseEntity<>("Welcome to Event Service", HttpStatus.OK);
+        return new ResponseEntity<>("Welcome to Potluck Planner Authorization Server", HttpStatus.OK);
     }
 
     @GetMapping(value = "/version", produces = MediaType.TEXT_PLAIN_VALUE)
     public String checkVersion() {
         log.debug("checkVersion, entered");
-        return "App version: " + eventServiceProperties.getAppVersion() +
-                "\nMongo DB schema version: " + eventServiceProperties.getDbSchemaVersion();
+        return "App version: " + oauthServerProperties.getAppVersion() +
+                "\nDB schema version: " + oauthServerProperties.getDbSchemaVersion();
     }
 
     @GetMapping(value = "/info", produces = MediaType.TEXT_PLAIN_VALUE)

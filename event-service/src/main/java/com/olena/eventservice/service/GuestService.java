@@ -1,6 +1,6 @@
 package com.olena.eventservice.service;
 
-import com.olena.eventservice.config.EventServiceConfig;
+import com.olena.eventservice.config.EventServiceProperties;
 import com.olena.eventservice.enums.Constants;
 import com.olena.eventservice.exception.ServiceException;
 import com.olena.eventservice.model.EventDTO;
@@ -19,7 +19,7 @@ import java.util.List;
 public class GuestService {
 
     @Autowired
-    EventServiceConfig eventServiceConfig;
+    EventServiceProperties eventServiceProperties;
 
     RestTemplate restTemplate = new RestTemplate();
 
@@ -31,7 +31,7 @@ public class GuestService {
     public GuestDTO[] getGuestList(EventDTO eventDTO) throws ServiceException {
         log.debug("getGuestList: eventDTO={}", eventDTO.toString());
 
-        URI uri = URI.create(eventServiceConfig.getGuestServiceUrl() + "/" + Constants.EVENT.getValue() + "/" + eventDTO.getEventId());
+        URI uri = URI.create(eventServiceProperties.getGuestServiceUrl() + "/" + Constants.EVENT.getValue() + "/" + eventDTO.getEventId());
         try {
 
             GuestDTO[] guestList = restTemplate.getForObject(uri, GuestDTO[].class);
@@ -54,7 +54,7 @@ public class GuestService {
         log.debug("processGuests: eventDTO={}", eventDTO.toString());
 
         //TODO replace with asynch via Kafka
-        URI uri = URI.create(eventServiceConfig.getGuestServiceUrl());
+        URI uri = URI.create(eventServiceProperties.getGuestServiceUrl());
         List<GuestDTO> guestDTOList = prepareGuestList(eventDTO);
         if (guestDTOList != null && guestDTOList.size() > 0) {
             try {
