@@ -10,10 +10,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>oath-server</artifactId>
+    <artifactId>oauth-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>oath-server</name>
-    <description>oath-server</description>
+    <name>oauth-server</name>
+    <description>oauth-server</description>
     <properties>
         <java.version>11</java.version>
     </properties>

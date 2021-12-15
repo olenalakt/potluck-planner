@@ -52,7 +52,12 @@ public class OAuth2AuthorizationServer extends AuthorizationServerConfigurerAdap
                 .refreshTokenValiditySeconds(50000)
                 .and()
                 .withClient(oauthServerProperties.getResourceServerId())
-                .secret(passwordEncoder.encode(oauthServerProperties.getResourceServerSecret()));
+                .secret(passwordEncoder.encode(oauthServerProperties.getResourceServerSecret()))
+                // TODO remove -  temporary, looks like caching issue
+                .and()
+                .withClient("application1")
+                .secret(passwordEncoder.encode("application1secret"))
+        ;
 
 /*
         clients.inMemory()

@@ -3,6 +3,14 @@ server.port: 8080
 # DB settings
 spring.data.mongodb.uri: mongodb://localhost/userdb
 
+# reporting metrics to prometheus
+management:
+  endpoints:
+    enabled-by-default: true
+    web.exposure.include: prometheus,info,health
+  endpoint:
+    prometheus.enabled: true
+
 # TLS settings
 #server.ssl.key-store: oauthserver.jks
 #server.ssl.key-store-password: olena123
@@ -25,6 +33,11 @@ oauth-server:
 
     resourceServerId: potluckPlanner
     resourceServerSecret: potluckPlannerSecret
+
+    jwtEnabled: true
+    jwtKeystore: jwt.jks
+    jwtKeystoreAlias: jwtkey
+    jwtKeystorePassword: springboot
 
 #TODO -  allow list of appId and secrets(!NOT working)
 #    appId: potluck-planner

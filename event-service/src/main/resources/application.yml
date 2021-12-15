@@ -32,16 +32,13 @@ event-service:
 #server.ssl.keyAlias: eventservice
 
 # openid oauth-server config
-security:
-  oauth2:
-    resource:
-      token-info-uri: http://localhost:8080/oauth/check_token
+security.oauth2.client.clientId: potluckPlanner
+security.oauth2.client.clientSecret: potluckPlannerSecret
+security.oauth2.resource.token-info-uri: http://localhost:8080/oauth/check_token
+
     # JWT related -  not used yet
 #      user-info-uri: http://localhost:8443/v1/api/users/me
 #      jwt.keyUri: http://localhost:8443/oauth/token_key
-    client:
-      clientId: potluckPlanner
-      clientSecret: potluckPlannerSecret
 
 logging:
   config: classpath:logback-spring.xml

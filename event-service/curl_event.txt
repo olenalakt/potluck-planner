@@ -30,7 +30,7 @@ EOF
 
 ----------------
 // list events by username
-curl -k -X GET https://localhost:9443/v1/events -H "Content-Type: application/json" 
+curl -k -X GET http://localhost:9443/v1/events -H "Content-Type: application/json" 
 
 
 curl -k -X GET http://localhost:9090/event/v1/events -H "Content-Type: application/json" 
@@ -158,3 +158,10 @@ curl -k -v https://localhost:7443/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/dr
   }
 ]
 EOF
+
+
+netstat -ano | findstr :8080
+  TCP    0.0.0.0:9443           0.0.0.0:0              LISTENING       19740
+  TCP    [::]:9443              [::]:0                 LISTENING       19740
+  
+taskkill /PID 19740 /F
