@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 public class OauthServerProperties {
 
     String appVersion;
-    String appDbSchemaVersion;
+    String dbSchemaVersion;
 
 /*
 
@@ -28,4 +28,9 @@ public class OauthServerProperties {
 
     String resourceServerId;
     String resourceServerSecret;
+
+    String jwtEnabled;
+    String jwtKeystore;
+    String jwtKeystorePassword;
+    String jwtKeystoreAlias;
 }

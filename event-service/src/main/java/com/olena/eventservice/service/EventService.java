@@ -1,6 +1,6 @@
 package com.olena.eventservice.service;
 
-import com.olena.eventservice.config.EventServiceConfig;
+import com.olena.eventservice.config.EventServiceProperties;
 import com.olena.eventservice.exception.ServiceException;
 import com.olena.eventservice.model.EventDTO;
 import com.olena.eventservice.repository.EventRepository;
@@ -18,7 +18,7 @@ import java.util.UUID;
 public class EventService {
 
     @Autowired
-    EventServiceConfig eventServiceConfig;
+    EventServiceProperties eventServiceProperties;
 
     @Autowired
     EventRepository eventRepository;
@@ -104,7 +104,7 @@ public class EventService {
 
         try {
 
-            setEvent(new Event(eventDTO, eventServiceConfig));
+            setEvent(new Event(eventDTO, eventServiceProperties));
 
         } catch (ServiceException se) {
             throw se;

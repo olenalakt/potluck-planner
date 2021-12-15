@@ -27,6 +27,20 @@ public class WebSecurityConguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        log.info("OL: configure AuthenticationManagerBuilder with CustomAuthenticationProvider");
+
+        auth.authenticationProvider(authProvider);
+
+    }
+
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         log.debug("OL: WebSecurityConguration.configure HttpSecurity");
@@ -38,31 +52,9 @@ public class WebSecurityConguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
-        ;
+                // added to  allow access via token
+                .and().httpBasic();
 
-    }
-
-    @Override
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        log.info("OL: configure AuthenticationManagerBuilder with CustomAuthenticationProvider");
-
-        // Working solution for normal  and  JWT access token
-        auth.authenticationProvider(authProvider);
-/*
-
-        auth
-                .inMemoryAuthentication()
-                .withUser("olena")
-                .password(passwordEncoder().encode("123"))
-                .roles("USER");
-
-*/
     }
 
 }

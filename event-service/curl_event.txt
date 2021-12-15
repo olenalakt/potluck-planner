@@ -4,13 +4,13 @@ curl -v -k -X POST --basic -u potluckPlanner:potluckPlannerSecret -H "Content-Ty
 
 
 // JWT access token directly no  SSL
-curl -v  -X POST --basic -u potluckPlanner:potluckPlannerSecret -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d "grant_type=password&username=olena&password=123&scope=user" http://localhost:8443/oauth/token
+curl -v  -X POST --basic -u potluckPlanner:potluckPlannerSecret -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d "grant_type=password&username=olena&password=123&scope=user" http://localhost:8080/oauth/token
 
-// access token via gateway, no  SSL
+// access token via gateway, no  SSL - not working
 curl -u potluckPlanner:potluckPlannerSecret \
 -H "Content-Type: application/x-www-form-urlencoded" \
 -d "grant_type=password&username=olena&password=123&scope=user" \
-http://localhost:9090/jwt/oauth/token
+http://localhost:9090/token/oauth/token
 
 
 ----------------------

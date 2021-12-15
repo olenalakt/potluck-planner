@@ -35,6 +35,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     TokenServiceProperties tokenServiceProperties;
 
     @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        log.info("OL: configure AuthorizationServerSecurityConfigurer");
+        security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
+    }
+
+    @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         log.info("OL: configure AuthorizationServerEndpointsConfigurer, tokenServiceProperties={}", tokenServiceProperties);
 
@@ -85,11 +91,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         }
     }
 
-    @Override
-    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-		log.info("OL: configure AuthorizationServerSecurityConfigurer");
-        security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
-    }
+
 
     @Bean
     public TokenStore tokenStore() {
