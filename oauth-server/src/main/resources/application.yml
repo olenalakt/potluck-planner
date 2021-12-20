@@ -33,6 +33,7 @@ oauth-server:
 
     resourceServerId: potluckPlanner
     resourceServerSecret: potluckPlannerSecret
+    resourceGuestRedirectUri: http://localhost:7443/
 
     jwtEnabled: true
     jwtKeystore: jwt.jks

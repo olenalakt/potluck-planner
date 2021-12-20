@@ -23,7 +23,7 @@ event-service:
   config:
      appVersion: 1.0.0
      dbSchemaVersion: 1.0.0
-     guestServiceUrl: http://localhost:7443/guests
+     guestServiceUrl: http://localhost:7443/v1/guests
 
 
 # TLS config
@@ -31,14 +31,30 @@ event-service:
 #server.ssl.key-store-password: olena123
 #server.ssl.keyAlias: eventservice
 
-# openid oauth-server config
-security.oauth2.client.clientId: potluckPlanner
-security.oauth2.client.clientSecret: potluckPlannerSecret
-security.oauth2.resource.token-info-uri: http://localhost:8080/oauth/check_token
+# openid oauth-server client  config
 
-    # JWT related -  not used yet
-#      user-info-uri: http://localhost:8443/v1/api/users/me
-#      jwt.keyUri: http://localhost:8443/oauth/token_key
+#security.oauth2.client.clientId: potluckPlanner
+#security.oauth2.client.clientSecret: potluckPlannerSecret
+#security.oauth2.client.accessTokenUri: http://localhost:8080/oauth/token
+#security.oauth2.client.userAuthorizationUri: http://localhost:8080/oauth/authorize
+#security.oauth2.client.tokenName: oauth_token
+#security.oauth2.client.authenticationScheme: query
+#security.oauth2.client.clientAuthenticationScheme: form
+#security.oauth2.client.scope: user
+
+security:
+  oauth2:
+   # client:
+    #  clientId: potluckPlanner
+    #  clientSecret: potluckPlannerSecret
+    #  accessTokenUri: http://localhost:8080/oauth/access_token
+    #  userAuthorizationUri: http://localhost:8080/oauth/authorize
+    #  clientAuthenticationScheme: form
+    resource:
+      user-info-uri: http://localhost:8080/api/users/me
+      token-info-uri: http://localhost:8080/oauth/check_token
+      jwt:
+        key-uri: http://localhost:8080/oauth/token_key
 
 logging:
   config: classpath:logback-spring.xml

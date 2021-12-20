@@ -73,6 +73,11 @@ public class OAuth2AuthorizationServer extends AuthorizationServerConfigurerAdap
                 .and()
                 .withClient(oauthServerProperties.getResourceServerId())
                 .secret(passwordEncoder.encode(oauthServerProperties.getResourceServerSecret()))
+                .authorizedGrantTypes("password",  "refresh_token")
+                .redirectUris(oauthServerProperties.getResourceGuestRedirectUri())
+                .accessTokenValiditySeconds(5000)
+                .refreshTokenValiditySeconds(50000)
+                .scopes("openid", "read_profile_info", "user", "guest")
                 // TODO remove -  temporary, looks like caching issue
                 .and()
                 .withClient("application1")

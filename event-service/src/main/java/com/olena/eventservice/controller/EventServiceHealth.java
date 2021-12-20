@@ -39,7 +39,7 @@ public class EventServiceHealth {
     public String checkVersion() {
         log.debug("checkVersion, entered");
         return "App version: " + eventServiceProperties.getAppVersion() +
-                "\nMongo DB schema version: " + eventServiceProperties.getDbSchemaVersion();
+                "\nDB schema version: " + eventServiceProperties.getDbSchemaVersion();
     }
 
     @GetMapping(value = "/info", produces = MediaType.TEXT_PLAIN_VALUE)

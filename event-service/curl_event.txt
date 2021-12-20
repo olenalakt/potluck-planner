@@ -54,7 +54,10 @@ curl -k -X GET https://localhost:9443/events/0e9ebe3d-71e9-4d17-ab0c-732a37ecbef
 
 curl -k -X GET http://localhost:9443/events/0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe -H "Content-Type: application/json" 
 
+// event directly protected by JWT token
+curl -k -H "Authorization: Bearer $TOKEN" http://localhost:9443/v1/events/0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe -H "Content-Type: application/json" 
 
+// event via gateway with token -  not working
  curl -k -H "Authorization: Bearer $TOKEN" http://localhost:9090/event/events/0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe -H "Content-Type: application/json"
 ----------------
 

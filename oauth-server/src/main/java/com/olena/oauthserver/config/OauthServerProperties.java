@@ -28,6 +28,7 @@ public class OauthServerProperties {
 
     String resourceServerId;
     String resourceServerSecret;
+    String resourceGuestRedirectUri;
 
     String jwtEnabled;
     String jwtKeystore;

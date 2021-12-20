@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Support Form</title>
+</head>
+<style>
+      form div {
+          display: table-row;
+          padding: 4px;
+      }
+
+      label, input, select {
+          display:  table-cell;
+          margin: 5px;
+
+          text-align: left;
+      }
+
+      form div div {
+          display: table-cell;
+      }
+</style>
+<body>
+     <h2>Support Form</h2>
+
+     <form action="#" th:action="@{/support}" th:object="${supportDetails}" method="post">
+
+         <div>
+             <label>Customer Id</label>
+             <input type="text" th:field="*{id}" />
+             <span th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></span>
+         </div>
+
+         <div>
+             <label>Customer Name</label>
+             <input type="text" th:field="*{name}" />
+             <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+         </div>
+
+         <div>
+             <label>Customer Email</label>
+             <input type="text" th:field="*{email}" />
+             <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+         </div>
+
+         <div>
+             <label>Gender</label>
+             <input type="radio" th:field="*{gender}" value="Male" /> Male
+             <input type="radio" th:field="*{gender}" value="Female" /> Female
+             <span th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></span>
+         </div>
+
+         <div>
+             <label>Membership</label>
+             <select th:field="*{membership}" >
+                 <option th:each="listItem : ${membershipList}" th:value="${listItem}" th:text="${listItem}" />
+             </select>
+             <span th:if="${#fields.hasErrors('membership')}" th:errors="*{membership}"></span>
+         </div>
+
+         <div>
+             <label>Request</label>
+             <input type="text" th:field="*{content}" />
+             <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span>
+         </div>
+
+         <p>
+             <input type="submit" value="Submit" />
+             <input type="reset" value="Reset" />
+         </p>
+     </form>
+
+</body>
+</html>

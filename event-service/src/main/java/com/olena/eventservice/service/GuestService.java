@@ -7,21 +7,27 @@ import com.olena.eventservice.model.EventDTO;
 import com.olena.eventservice.model.GuestDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Component
 @Slf4j
 public class GuestService {
 
     @Autowired
     EventServiceProperties eventServiceProperties;
 
-    RestTemplate restTemplate = new RestTemplate();
+//    RestTemplate restTemplate = new RestTemplate();
+
+    @Autowired
+    private OAuth2RestTemplate restTemplate;
 
     /**
      * @param eventDTO
@@ -29,7 +35,7 @@ public class GuestService {
      * @throws ServiceException
      */
     public GuestDTO[] getGuestList(EventDTO eventDTO) throws ServiceException {
-        log.debug("getGuestList: eventDTO={}", eventDTO.toString());
+        log.debug("OL: getGuestList: eventDTO={}", eventDTO.toString());
 
         URI uri = URI.create(eventServiceProperties.getGuestServiceUrl() + "/" + Constants.EVENT.getValue() + "/" + eventDTO.getEventId());
         try {
@@ -40,7 +46,7 @@ public class GuestService {
 
         } catch (Exception e) {
             String errMsg = "Failed to get guest list  from " + uri + ": " + e;
-            log.error("getGuestList: eventDTO={}, {}", eventDTO, errMsg);
+            log.error("OL: getGuestList: eventDTO={}, {}", eventDTO, errMsg);
             throw new ServiceException(errMsg);
         }
     }
