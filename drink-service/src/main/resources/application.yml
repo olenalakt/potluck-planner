@@ -35,9 +35,8 @@ security:
   oauth2:
     resource.token-info-uri: http://localhost:8080/oauth/check_token
     client:
-      clientId: application1
-      clientSecret: application1secret
-
+      clientId: potluckPlanner
+      clientSecret: potluckPlannerSecret
 
   # JWT related
 #security.oauth2.resource.user-info-uri:https://localhost:8443/user

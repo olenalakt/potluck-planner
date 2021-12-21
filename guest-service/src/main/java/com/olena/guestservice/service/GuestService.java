@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ public class GuestService {
     @Autowired
     GuestRepository guestRepository;
 
-    public GuestDTO getGuestInfo(String guestId, DishService dishService, DrinkService drinkService) throws ServiceException {
+    public GuestDTO getGuestInfo(String guestId, String bearerToken, DishService dishService, DrinkService drinkService) throws ServiceException {
         log.debug("getGuestInfo: guestId={}", guestId);
 
         Guest guest = getGuestFromDb(guestId);
@@ -31,9 +32,9 @@ public class GuestService {
         GuestDTO guestDTO = modelMapper.map(guest, GuestDTO.class);
         log.debug("getGuestInfo: guestId={}", guestId);
 
-        guestDTO.setDishes(dishService.getDishList(guestId));
+        guestDTO.setDishes(dishService.getDishList(guestId, bearerToken));
 
-        guestDTO.setDrinks(drinkService.getDrinkList(guestId));
+        guestDTO.setDrinks(drinkService.getDrinkList(guestId, bearerToken));
 
         return guestDTO;
     }
@@ -95,9 +96,10 @@ public class GuestService {
      * @return
      * @throws ServiceException
      */
-    public void addGuests(GuestDTO[] guestDTOList) throws ServiceException {
+    public List<Guest> addGuests(GuestDTO[] guestDTOList) throws ServiceException {
         log.debug("addGuests: guestDTO={}", guestDTOList);
 
+        List<Guest> guestList = new ArrayList<>();
         for (GuestDTO guestDTO : guestDTOList) {
 
             try {
@@ -112,6 +114,7 @@ public class GuestService {
                 }
                 // save to  DB
                 setGuest(guest);
+                guestList.add(guest);
 
             } catch (ServiceException se) {
                 throw se;
@@ -121,12 +124,86 @@ public class GuestService {
                 log.error("addGuests: guestDTO={}, {}", guestDTO, errMsg);
                 throw new ServiceException(errMsg.toString());
             }
-
         }
+
+        return guestList;
     }
 
     /**
      *
+     * @param guestDTOList
+     * @param dishService
+     * @param drinkService
+     * @return
+     * @throws ServiceException
+     */
+    public List<Guest> deleteGuests(GuestDTO[] guestDTOList, DishService dishService, DrinkService drinkService) throws ServiceException {
+        log.debug("deleteGuests: guestDTOList={}", guestDTOList);
+
+        StringBuffer errMsg = new StringBuffer();
+        List<Guest> guestList = new ArrayList<>();
+        try {
+            for (GuestDTO guestDTO : guestDTOList) {
+
+                Guest guestExisting = guestRepository.findFirstByUserNameAndEventIdAndGuestEmail(guestDTO.getUserName(), UUID.fromString(guestDTO.getEventId()), guestDTO.getGuestEmail());
+                if (guestExisting != null) {
+                    dishService.deleteDishesByGuest(guestDTO.getGuestId());
+                    drinkService.deleteDrinksByGuest(guestDTO.getGuestId());
+                    guestList.add(guestExisting);
+                    guestRepository.delete(guestExisting);
+                }
+
+            }
+
+            return guestList;
+
+        } catch (ServiceException se) {
+            throw se;
+        } catch (Exception e) {
+            log.error("deleteGuests: guestDTOList={}, {}", guestDTOList, errMsg);
+            throw new ServiceException(errMsg.toString());
+        }
+
+    }
+
+    /**
+     *
+     * @param eventId
+     * @param dishService
+     * @param drinkService
+     * @return
+     * @throws ServiceException
+     */
+    public List<Guest> deleteGuestsByEventId(String eventId, DishService dishService, DrinkService drinkService) throws ServiceException {
+        log.debug("deleteGuestsByEventId: eventId={}", eventId);
+
+        StringBuffer errMsg = new StringBuffer();
+        try {
+            List<Guest> guestList = guestRepository.findAllByEventIdOrderByGuestName(UUID.fromString(eventId));
+
+            if (guestList != null || guestList.size() > 0) {
+                for (Guest guest : guestList) {
+
+                    dishService.deleteDishesByGuest(guest.getGuestId().toString());
+                    drinkService.deleteDrinksByGuest(guest.getGuestId().toString());
+                    guestRepository.delete(guest);
+
+                }
+
+            }
+
+            return guestList;
+
+        } catch (ServiceException se) {
+            throw se;
+        } catch (Exception e) {
+            log.error("deleteGuestsByEventId: eventId={}, {}", eventId, errMsg);
+            throw new ServiceException(errMsg.toString());
+        }
+
+    }
+
+    /**
      * @param guestDTO
      * @return
      * @throws ServiceException
@@ -135,36 +212,35 @@ public class GuestService {
         log.debug("addGuests: guestDTO={}", guestDTO);
 
         StringBuffer errMsg = new StringBuffer();
-            try {
+        try {
 
-                Guest guest = new Guest(guestDTO, guestServiceProperties);
-                // unique index on username, eventId and guestEmail
-                Guest guestExisting = guestRepository.findFirstByGuestId(UUID.fromString(guestDTO.getGuestId()));
+            Guest guest = new Guest(guestDTO, guestServiceProperties);
+            // unique index on username, eventId and guestEmail
+            Guest guestExisting = guestRepository.findFirstByGuestId(UUID.fromString(guestDTO.getGuestId()));
 
-                // check if guestDTO  already  exists  -  update
-                if (guestExisting != null) {
+            // check if guestDTO  already  exists  -  update
+            if (guestExisting != null) {
 
-                    // save to  DB
-                    setGuest(guest);
+                // save to  DB
+                setGuest(guest);
 
-                } else {
-                    errMsg.append("Guest not found: ").append(guestDTO.getGuestId());
-                    throw new ServiceException(errMsg.toString());
-                }
-
-                return guest;
-
-            } catch (ServiceException se) {
-                throw se;
-            } catch (Exception e) {
-                errMsg.append("Failed to map guest: ").append(e);
-                log.error("addGuests: guestDTO={}, {}", guestDTO, errMsg);
+            } else {
+                errMsg.append("Guest not found: ").append(guestDTO.getGuestId());
                 throw new ServiceException(errMsg.toString());
             }
+
+            return guest;
+
+        } catch (ServiceException se) {
+            throw se;
+        } catch (Exception e) {
+            errMsg.append("Failed to map guest: ").append(e);
+            log.error("addGuests: guestDTO={}, {}", guestDTO, errMsg);
+            throw new ServiceException(errMsg.toString());
+        }
     }
 
     /**
-     *
      * @param guestId
      * @param dishService
      * @param drinkService
@@ -179,10 +255,10 @@ public class GuestService {
             Guest guest = guestRepository.findFirstByGuestId(UUID.fromString(guestId));
 
             if (guest != null) {
-                guestRepository.delete(guest);
 
                 dishService.deleteDishesByGuest(guestId);
                 drinkService.deleteDrinksByGuest(guestId);
+                guestRepository.delete(guest);
 
             } else {
                 errMsg.append("Guest not found: ").append(guestId);
@@ -194,7 +270,7 @@ public class GuestService {
         } catch (ServiceException se) {
             throw se;
         } catch (Exception e) {
-            log.error("addGuests: guestId={}, {}", guestId, errMsg);
+            log.error("deleteGuest: guestId={}, {}", guestId, errMsg);
             throw new ServiceException(errMsg.toString());
         }
 

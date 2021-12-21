@@ -8,6 +8,10 @@ import com.olena.guestservice.model.DrinkDTO;
 import com.olena.guestservice.repository.entity.Guest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,15 +31,23 @@ public class DrinkService {
      * @return
      * @throws ServiceException
      */
-    public DrinkDTO[] getDrinkList(String guestId) throws ServiceException {
-        log.debug("getDrinkList: guestId={}", guestId);
+    public DrinkDTO[] getDrinkList(String guestId, String bearerToken) throws ServiceException {
+        log.debug("getDrinkList: guestId={}, bearerToken={}", guestId, bearerToken);
 
         URI uri = URI.create(guestServiceProperties.getDrinkServiceUrl() + "/" + Constants.GUEST.getValue() + "/" + guestId);
         try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Authorization", bearerToken);
 
-            DrinkDTO[] drinks = restTemplate.getForObject(uri, DrinkDTO[].class);
+            HttpEntity<Void> entityReq = new HttpEntity<>(headers);
 
-            return drinks;
+            ResponseEntity<DrinkDTO[]> respEntity = restTemplate
+                    .exchange(uri.toString(), HttpMethod.GET, entityReq, DrinkDTO[].class);
+
+//            DrinkDTO[] drinks = restTemplate.getForObject(uri, DrinkDTO[].class);
+//            return drinks;
+
+            return respEntity.getBody();
 
         } catch (Exception e) {
             String errMsg = "Failed to get guest drinks from " + uri + ": " + e;

@@ -29,16 +29,6 @@ public class GuestController {
     DrinkService drinkService;
 
     /**
-     * @param guestId
-     * @return
-     */
-//    @PreAuthorize("#oauth2.hasScope('guest')")
-    @RequestMapping(value = "/{guestid}", method = RequestMethod.GET)
-    public ResponseEntity<?> getGuestInfo(@PathVariable("guestid") String guestId) throws ServiceException {
-        return ResponseEntity.ok(guestService.getGuestInfo(guestId, dishService, drinkService));
-    }
-
-    /**
      * @param eventId
      * @return
      */
@@ -46,6 +36,13 @@ public class GuestController {
     @RequestMapping(value = "/event/{eventid}", method = RequestMethod.GET)
     public ResponseEntity<?> getEventListByUserName(@PathVariable("eventid") String eventId) throws ServiceException {
         return ResponseEntity.ok(guestService.getGuestListByEventId(UUID.fromString(eventId)));
+    }
+
+    //    @PreAuthorize("#oauth2.hasScope('user')")
+    @RequestMapping(value = "/event/{eventid}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteGuestByEventId(@PathVariable("eventid") String eventId) throws ServiceException {
+
+        return ResponseEntity.ok(guestService.deleteGuestsByEventId(eventId, dishService, drinkService));
     }
 
     /**
@@ -60,11 +57,33 @@ public class GuestController {
             return ResponseEntity.badRequest().build();
         }
 
-        guestService.addGuests(guestDTOList);
-
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(guestService.addGuests(guestDTOList));
     }
 
+    /**
+     * @param guestDTOList
+     * @return
+     */
+//    @PreAuthorize("#oauth2.hasScope('user')")
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteGuests(@RequestBody GuestDTO[] guestDTOList) throws ServiceException {
+
+        if (guestDTOList == null || guestDTOList.length == 0) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(guestService.deleteGuests(guestDTOList, dishService, drinkService));
+    }
+
+    /**
+     * @param guestId
+     * @return
+     */
+//    @PreAuthorize("#oauth2.hasScope('guest')")
+    @RequestMapping(value = "/{guestid}", method = RequestMethod.GET)
+    public ResponseEntity<?> getGuestInfo(@PathVariable("guestid") String guestId, @RequestHeader(name = "Authorization") String bearerToken) throws ServiceException {
+        return ResponseEntity.ok(guestService.getGuestInfo(guestId, bearerToken, dishService, drinkService));
+    }
 
     /**
      * @param guestDTO
@@ -133,7 +152,7 @@ public class GuestController {
      */
 //    @PreAuthorize("#oauth2.hasScope('guest')")
     @RequestMapping(value = "/{guestid}/drinks", method = RequestMethod.POST)
-    public ResponseEntity<?> updateDishes(@PathVariable("guestid") String guestId, @RequestBody DrinkDTO[] drinks) throws ServiceException {
+    public ResponseEntity<?> updateDrinks(@PathVariable("guestid") String guestId, @RequestBody DrinkDTO[] drinks) throws ServiceException {
 
         if (guestId == null || drinks == null || drinks.length == 0) {
             return ResponseEntity.badRequest().build();

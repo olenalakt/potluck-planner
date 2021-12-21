@@ -66,48 +66,78 @@ curl -k -H "Authorization: Bearer $TOKEN" http://localhost:9443/v1/events/0e9ebe
 ----------   GUEST-SERVICE  -----------------------------------
 
 //called by event-service
-// add guests as list 
-curl -k -X PUT https://localhost:9443/events \
+// add/update guests as list 
+curl -k -H "Authorization: Bearer $TOKEN" -X PUT https://localhost:9443/events \
 -H 'Content-Type: application/json' \
 --data-binary @- << EOF
 {
   "eventId":"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe",
-  "guests":[{"guestName":"vera","guestEmail":"vera@gmail.com"}]
+  "guests":[{"guestName":"test","guestEmail":"test@gmail.com"}]
 }
 EOF
 
++// add/update guests as list directly
+curl -k -H "Authorization: Bearer $TOKEN" -X PUT http://localhost:7443/v1/guests \
+-H 'Content-Type: application/json' \
+--data-binary @- << EOF
+[{"userName":"olena","eventId":"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe", "guestName":"test","guestEmail":"test@gmail.com"}]
+EOF
+-----------------
+-+// delete guests as list directly
+curl -k -H "Authorization: Bearer $TOKEN" -X DELETE http://localhost:7443/v1/guests \
+-H 'Content-Type: application/json' \
+--data-binary @- << EOF
+[{"userName":"olena","eventId":"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe", "guestName":"test","guestEmail":"test@gmail.com"}]
+EOF
+
+
 ---------------
-// list guests by eventId
+// query guests by eventId
 curl -k -X GET https://localhost:7443/v1/guests/event/0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe -H "Content-Type: application/json" 
 
 // list guests by eventId, no TLS
 curl -k -X GET http://localhost:7443/v1/guests/event/0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe -H "Content-Type: application/json" 
 
-// JWT token security
++// JWT token security
 curl -k -H "Authorization: Bearer $TOKEN" http://localhost:7443/v1/guests/event/0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe -H "Content-Type: application/json" 
 -------------------
 
+---------------
+// delete guests by eventId
+
+// JWT token security
++-curl -k -H "Authorization: Bearer $TOKEN" -X DELETE http://localhost:7443/v1/guests/event/0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe -H "Content-Type: application/json" 
+
 
 //  called be client app
+--------------
 // update guest
 // JWT token security
-curl -k -H "Authorization: Bearer $TOKEN" PUT  http://localhost:7443/v1/guests/guest -H "Content-Type: application/json" 
++curl -k -H "Authorization: Bearer $TOKEN" -X PUT  http://localhost:7443/v1/guests/guest -H "Content-Type: application/json" \
+--data-binary @- << EOF
+{"userName":"olena","eventId":"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe", "guestName":"test","guestEmail":"test@gmail.com","guestId": "0f59c5af-1bb8-4890-8eb1-89c1e2684d28"}
 
 -------------
 // delete guest
 // JWT token security
-curl -k -H "Authorization: Bearer $TOKEN" DELETE  http://localhost:7443/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295 -H "Content-Type: application/json" 
++-curl -k -H "Authorization: Bearer $TOKEN" -X DELETE  http://localhost:7443/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295 -H "Content-Type: application/json" \
+-+data-binary @- << EOF
+{"userName":"olena","eventId":"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe", "guestName":"test","guestEmail":"test@gmail.com","guestId": "0f59c5af-1bb8-4890-8eb1-89c1e2684d28"}
+EOF
 
 ----------
-//  guest by guestId
+// query guest by guestId
 curl -k -X GET https://localhost:7443/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295 -H "Content-Type: application/json" 
 
 //  guest by guestId, no TLS
 curl -k -X GET http://localhost:7443/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295 -H "Content-Type: application/json" 
 
+//  guest by guestId, JWT token
+-+curl -k -H "Authorization: Bearer $TOKEN"  http://localhost:7443/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295 -H "Content-Type: application/json" 
+
 ----------
-// add dishes for guest
-curl -k -v https://localhost:7443/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/dishes \
+// add/update  dishes for guest
+curl -k -v http://localhost:7443/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/dishes \
 -H 'Content-Type: application/json' \
 --data-binary @- << EOF
 [
@@ -138,7 +168,79 @@ curl -k -v https://localhost:7443/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295
 ]
 EOF
 
-// add drinks for guest
+// add/update  dishes for guest, JWT token
+curl -k -H "Authorization: Bearer $TOKEN" http://localhost:7443/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/dishes \
+-H 'Content-Type: application/json' \
+--data-binary @- << EOF
+[
+  {
+  "userName":"olena",
+  "eventId":"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe",
+  "guestId":"52cc7652-7db2-4acd-acbf-63c3c33da295",
+  "dishName":"cake",
+  "dishType":"DESERT",
+  "dishRecipe":"cake recipe here",
+  "isLactoseFree":"false",
+  "isNutFree":"false",
+  "hasFish":"false",
+  "hasMeat":"false"
+  },
+  {
+  "userName":"olena",
+  "eventId":"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe",
+  "guestId":"52cc7652-7db2-4acd-acbf-63c3c33da295",
+  "dishName":"ragu",
+  "dishType":"MAIN",
+  "dishRecipe":"ragu recipe here",
+  "isLactoseFree":"true",
+  "isNutFree":"true",
+  "hasFish":"false",
+  "hasMeat":"false"
+  },
+  {
+  "userName":"olena",
+  "eventId":"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe",
+  "guestId":"52cc7652-7db2-4acd-acbf-63c3c33da295",
+  "dishName":"test-delete1",
+  "dishType":"MAIN",
+  "dishRecipe":"ragu recipe here",
+  "isLactoseFree":"true",
+  "isNutFree":"true",
+  "hasFish":"false",
+  "hasMeat":"false"
+  },
+  {
+  "userName":"olena",
+  "eventId":"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe",
+  "guestId":"52cc7652-7db2-4acd-acbf-63c3c33da295",
+  "dishName":"test-delete2",
+  "dishType":"MAIN",
+  "dishRecipe":"ragu recipe here",
+  "isLactoseFree":"true",
+  "isNutFree":"true",
+  "hasFish":"false",
+  "hasMeat":"false"
+  } 
+]
+EOF
+
+----------
+// delete selected dishes from guest
+curl -k -H "Authorization: Bearer $TOKEN" DELETE http://localhost:7443/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/dishes \
+-H 'Content-Type: application/json' \
+--data-binary @- << EOF
+[
+  {
+  "dishId":,
+  },
+  {
+  "dishId":,
+  } 
+]
+EOF
+
+---------------
+// add/update drinks for guest
 curl -k -v https://localhost:7443/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/drinks \
 -H 'Content-Type: application/json' \
 --data-binary @- << EOF
@@ -164,7 +266,40 @@ curl -k -v https://localhost:7443/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/dr
   "isLactoseFree":"true",
   "isAlcoholFree":"true",
   "quantityMl": 1000
+  },
+  "eventId":"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe",
+  "guestId":"52cc7652-7db2-4acd-acbf-63c3c33da295",
+  "drinkName":"test_delete1",
+  "drinkType":"JUICE",
+  "drinkRecipe":"",
+  "isLactoseFree":"true",
+  "isAlcoholFree":"true",
+  "quantityMl": 1000
+  },
+  "eventId":"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe",
+  "guestId":"52cc7652-7db2-4acd-acbf-63c3c33da295",
+  "drinkName":"test_delete2",
+  "drinkType":"JUICE",
+  "drinkRecipe":"",
+  "isLactoseFree":"true",
+  "isAlcoholFree":"true",
+  "quantityMl": 1000
   }
+]
+EOF
+
+---------------
+// delete selected drinks from guest
+curl -k -H "Authorization: Bearer $TOKEN" DELETE http://localhost:7443/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/dishes \
+-H 'Content-Type: application/json' \
+--data-binary @- << EOF
+[
+  {
+  "drinkId":,
+  },
+  {
+  "drinkId":,
+  } 
 ]
 EOF
 

@@ -1,0 +1,29 @@
+{
+	"id": "44f8b58f-2ef5-4cab-8604-217fb3815a60",
+	"values": [
+		{
+			"key": "authtoken",
+			"value": "123",
+			"enabled": true
+		},
+		{
+			"key": "TOKEN",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImQ3ZDg3NTY3LTE4NDAtNGY0NS05NjE0LTQ5MDcxZmNhNGQyMSJ9.eyJ1c2VyX25hbWUiOiJvbGVuYSIsInNjb3BlIjpbInVzZXIiXSwiZXhwIjoxNjQwMTE4NjgxLCJ1c2VyTmFtZSI6Im9sZW5hIiwiYXV0aG9yaXRpZXMiOlsiQURNSU4iXSwianRpIjoiMDJjZmY3MjEtZGM3ZS00ZTZjLWJkM2MtZDkyM2M5M2FlZDU5IiwiY2xpZW50X2lkIjoicG90bHVja1BsYW5uZXIiLCJ0cyI6MTY0MDExMzY4MX0.2vVCVFXm0ej2WXnE5ZXFR3BMBbJ0kpyl5D78kFhg_DsilQFJS-13yaMkOQm3W2eGMcovg6ZMApyEZORvWx5w_2d4svPXk4pyT83F7ZDVIZLyqXA4kd8FC_zfAM7ZlKKnb9VUZHQ3bCETTxgSkZrkzhKIYLjKf6RRcvoedDlHDZAmh-r84ASa3OOmxxWJp_BdCPvMi8A3yutc8nyOFbmf0zoMaAlrzkg36tDOQFrJzw3sJ3J8HOaMHtuinUOg4K6iOyNijct98zBbnQotZEBr4pVesWVH84k7F88PmFKxRaOwUj0Tx90oeQR4DP78gbzF9vLICxcG1sy5nsuFYjMbrA",
+			"enabled": true
+		},
+		{
+			"key": "eventId",
+			"value": "0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe",
+			"enabled": true
+		},
+		{
+			"key": "guestId",
+			"value": "52cc7652-7db2-4acd-acbf-63c3c33da295",
+			"enabled": true
+		}
+	],
+	"name": "My Workspace Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2021-12-21T19:38:02.934Z",
+	"_postman_exported_using": "Postman/8.10.0"
+}

@@ -1,0 +1,360 @@
+{
+	"info": {
+		"_postman_id": "13695d3b-e1aa-4684-89b1-7d66bfaab799",
+		"name": "AAA-potluck-planner",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Access token (directly) -  not working yet Copy",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "potluckPlanner",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded;charset=UTF-8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "pasword",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{oath-server}}/oauth/token",
+					"host": [
+						"{{oath-server}}"
+					],
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "guest-service: query guests by eventId",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{guest-service}}/v1/guests/event/{{eventId}}",
+					"host": [
+						"{{guest-service}}"
+					],
+					"path": [
+						"v1",
+						"guests",
+						"event",
+						"{{eventId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "guest-service: delete guests by eventId",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{guest-service}}/v1/guests/event/{{eventId}}",
+					"host": [
+						"{{guest-service}}"
+					],
+					"path": [
+						"v1",
+						"guests",
+						"event",
+						"{{eventId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "guest-service: update guests",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\"userName\":\"olena\",\"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\", \"guestName\":\"test\",\"guestEmail\":\"test@gmail.com\"}]"
+				},
+				"url": {
+					"raw": "{{guest-service}}/v1/guests/",
+					"host": [
+						"{{guest-service}}"
+					],
+					"path": [
+						"v1",
+						"guests",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "guest-service: delete guests (guestId has to be updated from  previous request response)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\"userName\":\"olena\",\"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\", \"guestName\":\"test\",\"guestEmail\":\"test@gmail.com\",\"guestId\": \"0f59c5af-1bb8-4890-8eb1-89c1e2684d28\"}]"
+				},
+				"url": {
+					"raw": "{{guest-service}}/v1/guests/",
+					"host": [
+						"{{guest-service}}"
+					],
+					"path": [
+						"v1",
+						"guests",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "guest-service: query by guestId",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{guest-service}}/v1/guests/{{guestId}}",
+					"host": [
+						"{{guest-service}}"
+					],
+					"path": [
+						"v1",
+						"guests",
+						"{{guestId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "guest-service:  update guest by guestId",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"guestId\": \"48dd40b0-0c1e-4300-9849-89fde150e1da\",\"userName\":\"olena\",\"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\", \"guestName\":\"test2\",\"guestEmail\":\"test2@gmail.com\",\"notes\":\"updated\"}"
+				},
+				"url": {
+					"raw": "{{guest-service}}/v1/guests/guest",
+					"host": [
+						"{{guest-service}}"
+					],
+					"path": [
+						"v1",
+						"guests",
+						"guest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "guest-service: delete by guestId",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{guest-service}}/v1/guests/48dd40b0-0c1e-4300-9849-89fde150e1da",
+					"host": [
+						"{{guest-service}}"
+					],
+					"path": [
+						"v1",
+						"guests",
+						"48dd40b0-0c1e-4300-9849-89fde150e1da"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -22,8 +22,8 @@ guest-service:
   config:
     appVersion: 1.0.0
     dbSchemaVersion: 1.0.0
-    dishServiceUrl: https://localhost:6443/v1/dishes
-    drinkServiceUrl: https://localhost:5443/v1/drinks
+    dishServiceUrl: http://localhost:6443/v1/dishes
+    drinkServiceUrl: http://localhost:5443/v1/drinks
 
 # mTLS related
 #server.ssl.key-store: guestservice.jks
