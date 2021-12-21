@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.util.HashMap;
 
 @Service
 @Slf4j
@@ -57,6 +58,27 @@ public class DishService {
         } catch (Exception e) {
             String errMsg = "Failed to update guest dishes for " + uri + ": " + e;
             log.error("processDishes: guestId={}, dishes={}, {}", guestId, dishes.length, errMsg);
+            throw new ServiceException(errMsg);
+        }
+    }
+
+    /**
+     *
+     * @param guestId
+     * @throws ServiceException
+     */
+    public void deleteDishes(String guestId) throws ServiceException {
+        // call guest service to process guests
+        log.debug("deleteDishes: guestId={}", guestId);
+
+        URI uri = URI.create(guestServiceProperties.getDishServiceUrl() + "/guest/"+ guestId);
+        try {
+
+            restTemplate.delete(uri);
+
+        } catch (Exception e) {
+            String errMsg = "Failed to delete guest dishes for " + uri + ": " + e;
+            log.error("deleteDishes: guestId={}, {}", guestId, errMsg);
             throw new ServiceException(errMsg);
         }
     }

@@ -19,6 +19,16 @@ public class DishController {
     DishService dishService;
 
     /**
+     * @param guestId
+     * @return
+     */
+//    @PreAuthorize("#oauth2.hasScope('guest')")
+    @RequestMapping(value = "/guest/{guestid}", method = RequestMethod.GET)
+    public ResponseEntity<?> getDishListByGuest(@PathVariable("guestid") String guestId) throws ServiceException {
+        return ResponseEntity.ok(dishService.getDishListByGuestId(UUID.fromString(guestId)));
+    }
+
+    /**
      * @param dishDTOList
      * @return
      */
@@ -30,20 +40,21 @@ public class DishController {
             return ResponseEntity.badRequest().build();
         }
 
-        dishService.addDishes(dishDTOList);
+        dishService.updateDishes(dishDTOList);
 
         return ResponseEntity.noContent().build();
     }
 
-
     /**
+     *
      * @param guestId
      * @return
+     * @throws ServiceException
      */
-//    @PreAuthorize("#oauth2.hasScope('guest')")
-    @RequestMapping(value = "/guest/{guestid}", method = RequestMethod.GET)
-    public ResponseEntity<?> getDishListByGuest(@PathVariable("guestid") String guestId) throws ServiceException {
-        return ResponseEntity.ok(dishService.getDishListByGuestId(UUID.fromString(guestId)));
+    //    @PreAuthorize("#oauth2.hasScope('guest')")
+    @RequestMapping(value = "/guest/{guestid}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteDishesByGuestId(@PathVariable("guestid") String guestId) throws ServiceException {
+        return ResponseEntity.ok(dishService.deleteDishesByGuestId(UUID.fromString(guestId)));
     }
 
 }

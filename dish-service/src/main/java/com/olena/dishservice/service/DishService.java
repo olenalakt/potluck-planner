@@ -54,11 +54,6 @@ public class DishService {
             throw new ServiceException(errMsg);
         }
 
-        //TODO: push dish  asynchronously  to  the Kafka queue for processing by  other services
-        //            inventoryClient.updateInventory(dish.getItems());
-        //          dish.setOrderId(UUID.randomUUID().toString());
-
-
     }
 
     /**
@@ -66,8 +61,8 @@ public class DishService {
      * @return
      * @throws ServiceException
      */
-    public void addDishes(DishDTO[] dishDTOList) throws ServiceException {
-        log.debug("addDishes: guestDTO={}", dishDTOList);
+    public void updateDishes(DishDTO[] dishDTOList) throws ServiceException {
+        log.debug("updateDishes: guestDTO={}", dishDTOList);
 
 
         for (DishDTO dishDTO : dishDTOList) {
@@ -89,12 +84,33 @@ public class DishService {
             } catch (Exception e) {
                 StringBuffer errMsg = new StringBuffer();
                 errMsg.append("Failed to process dishes: ").append(e);
-                log.error("addDishes: dishDTO={}, {}", dishDTO, errMsg);
+                log.error("updateDishes: dishDTO={}, {}", dishDTO, errMsg);
                 throw new ServiceException(errMsg.toString());
             }
 
         }
     }
 
+    /**
+     *
+     * @param guestId
+     * @return
+     * @throws ServiceException
+     */
+    public List<Dish> deleteDishesByGuestId(UUID guestId) throws ServiceException {
+        log.debug("deleteDishesByGuestId: guestId={}", guestId);
+        try {
+            List<Dish> dishList = dishRepository.findAllByGuestIdOrderByDishName(guestId);
+
+            for( Dish dish:  dishList) {
+                dishRepository.delete(dish);
+            }
+            return dishList;
+        } catch (Exception e) {
+            String errMsg = e.toString();
+            log.error("deleteDishesByGuestId: guestId={}, {}", guestId, errMsg);
+            throw new ServiceException(errMsg);
+        }
+    }
 
 }

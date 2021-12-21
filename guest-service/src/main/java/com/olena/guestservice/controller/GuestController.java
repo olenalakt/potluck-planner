@@ -30,6 +30,17 @@ public class GuestController {
 
     //TODO extract username from JWT token and update queries
 
+
+    /**
+     * @param guestId
+     * @return
+     */
+//    @PreAuthorize("#oauth2.hasScope('guest')")
+    @RequestMapping(value = "/{guestid}", method = RequestMethod.GET)
+    public ResponseEntity<?> getGuestInfo(@PathVariable("guestid") String guestId) throws ServiceException {
+        return ResponseEntity.ok(guestService.getGuestInfo(guestId, dishService, drinkService));
+    }
+
     /**
      * @param guestDTOList
      * @return
@@ -47,14 +58,30 @@ public class GuestController {
         return ResponseEntity.noContent().build();
     }
 
+
+    /**
+     * @param guestDTO
+     * @return
+     */
+//    @PreAuthorize("#oauth2.hasScope('guest')")
+    @RequestMapping(value = "/guest", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateGuest(@RequestBody GuestDTO guestDTO) throws ServiceException {
+
+        if (guestDTO == null || guestDTO.getGuestId() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(guestService.updateGuest(guestDTO));
+    }
+
     /**
      * @param guestId
      * @return
      */
 //    @PreAuthorize("#oauth2.hasScope('guest')")
-    @RequestMapping(value = "/{guestid}", method = RequestMethod.GET)
-    public ResponseEntity<?> getGuestInfo(@PathVariable("guestid") String guestId) throws ServiceException {
-        return ResponseEntity.ok(guestService.getGuestInfo(guestId, dishService, drinkService));
+    @RequestMapping(value = "/{guestid}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteGuest(@PathVariable("guestid") String guestId) throws ServiceException {
+
+        return ResponseEntity.ok(guestService.deleteGuest(guestId, dishService, drinkService));
     }
 
     @RequestMapping(value = "/{guestid}/dishes", method = RequestMethod.POST)

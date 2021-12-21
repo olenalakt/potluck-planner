@@ -61,4 +61,20 @@ public class DrinkService {
         }
     }
 
+    public void deleteDrinks(String guestId) throws ServiceException {
+        // call guest service to process guests
+        log.debug("deleteDrinks: guestId={}", guestId);
+
+        URI uri = URI.create(guestServiceProperties.getDrinkServiceUrl() + "/guest/"+ guestId);
+        try {
+
+            restTemplate.delete(uri);
+
+        } catch (Exception e) {
+            String errMsg = "Failed to delete guest drinks for " + uri + ": " + e;
+            log.error("deleteDrinks: guestId={}, {}", guestId, errMsg);
+            throw new ServiceException(errMsg);
+        }
+    }
+
 }

@@ -96,5 +96,26 @@ public class DrinkService {
         }
     }
 
+    /**
+     *
+     * @param guestId
+     * @return
+     * @throws ServiceException
+     */
+    public List<Drink> deleteDrinksByGuestId(UUID guestId) throws ServiceException {
+        log.debug("deleteDrinksByGuestId: guestId={}", guestId);
+        try {
+            List<Drink> drinkList = drinkRepository.findAllByGuestIdOrderByDrinkName(guestId);
+
+            for( Drink dish: drinkList) {
+                drinkRepository.delete(dish);
+            }
+            return drinkList;
+        } catch (Exception e) {
+            String errMsg = e.toString();
+            log.error("deleteDrinksByGuestId: guestId={}, {}", guestId, errMsg);
+            throw new ServiceException(errMsg);
+        }
+    }
 
 }

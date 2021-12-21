@@ -125,4 +125,78 @@ public class GuestService {
         }
     }
 
+    /**
+     *
+     * @param guestDTO
+     * @return
+     * @throws ServiceException
+     */
+    public Guest updateGuest(GuestDTO guestDTO) throws ServiceException {
+        log.debug("addGuests: guestDTO={}", guestDTO);
+
+        StringBuffer errMsg = new StringBuffer();
+            try {
+
+                Guest guest = new Guest(guestDTO, guestServiceProperties);
+                // unique index on username, eventId and guestEmail
+                Guest guestExisting = guestRepository.findFirstByGuestId(UUID.fromString(guestDTO.getGuestId()));
+
+                // check if guestDTO  already  exists  -  update
+                if (guestExisting != null) {
+
+                    // save to  DB
+                    setGuest(guest);
+
+                } else {
+                    errMsg.append("Guest not found: ").append(guestDTO.getGuestId());
+                    throw new ServiceException(errMsg.toString());
+                }
+
+                return guest;
+
+            } catch (ServiceException se) {
+                throw se;
+            } catch (Exception e) {
+                errMsg.append("Failed to map guest: ").append(e);
+                log.error("addGuests: guestDTO={}, {}", guestDTO, errMsg);
+                throw new ServiceException(errMsg.toString());
+            }
+    }
+
+    /**
+     *
+     * @param guestId
+     * @param dishService
+     * @param drinkService
+     * @return
+     * @throws ServiceException
+     */
+    public Guest deleteGuest(String guestId, DishService dishService, DrinkService drinkService) throws ServiceException {
+        log.debug("deleteGuest: guestId={}", guestId);
+
+        StringBuffer errMsg = new StringBuffer();
+        try {
+            Guest guest = guestRepository.findFirstByGuestId(UUID.fromString(guestId));
+
+            if (guest != null) {
+                guestRepository.delete(guest);
+
+                dishService.deleteDishes(guestId);
+                drinkService.deleteDrinks(guestId);
+
+            } else {
+                errMsg.append("Guest not found: ").append(guestId);
+                throw new ServiceException(errMsg.toString());
+            }
+
+            return guest;
+
+        } catch (ServiceException se) {
+            throw se;
+        } catch (Exception e) {
+            log.error("addGuests: guestId={}, {}", guestId, errMsg);
+            throw new ServiceException(errMsg.toString());
+        }
+
+    }
 }

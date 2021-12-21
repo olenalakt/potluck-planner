@@ -19,6 +19,17 @@ public class DrinkController {
     DrinkService drinkService;
 
     /**
+     * @param guestId
+     * @return
+     */
+//    @PreAuthorize("#oauth2.hasScope('guest')")
+    @RequestMapping(value = "/guest/{guestid}", method = RequestMethod.GET)
+    public ResponseEntity<?> getDrinkListByGuest(@PathVariable("guestid") String guestId) throws ServiceException {
+        return ResponseEntity.ok(drinkService.getDrinkListByGuestId(UUID.fromString(guestId)));
+    }
+
+
+    /**
      * @param drinkDTOList
      * @return
      */
@@ -35,15 +46,15 @@ public class DrinkController {
         return ResponseEntity.noContent().build();
     }
 
-
     /**
+     *
      * @param guestId
      * @return
+     * @throws ServiceException
      */
-//    @PreAuthorize("#oauth2.hasScope('guest')")
-    @RequestMapping(value = "/guest/{guestid}", method = RequestMethod.GET)
-    public ResponseEntity<?> getDrinkListByGuest(@PathVariable("guestid") String guestId) throws ServiceException {
-        return ResponseEntity.ok(drinkService.getDrinkListByGuestId(UUID.fromString(guestId)));
+    //    @PreAuthorize("#oauth2.hasScope('guest')")
+    @RequestMapping(value = "/guest/{guestid}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteDishesByGuestId(@PathVariable("guestid") String guestId) throws ServiceException {
+        return ResponseEntity.ok(drinkService.deleteDrinksByGuestId(UUID.fromString(guestId)));
     }
-
 }
