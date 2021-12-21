@@ -46,6 +46,18 @@ public class DrinkController {
         return ResponseEntity.noContent().build();
     }
 
+    //    @PreAuthorize("#oauth2.hasScope('guest')")
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteDrinks(@RequestBody DrinkDTO[] drinkDTOList) throws ServiceException {
+
+        if (drinkDTOList == null || drinkDTOList.length == 0) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        drinkService.deleteDrinks(drinkDTOList);
+
+        return ResponseEntity.noContent().build();
+    }
     /**
      *
      * @param guestId

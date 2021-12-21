@@ -97,6 +97,31 @@ public class DrinkService {
     }
 
     /**
+     * @param drinkDTOList
+     * @return
+     * @throws ServiceException
+     */
+    public void deleteDrinks(DrinkDTO[] drinkDTOList) throws ServiceException {
+        log.debug("deleteDrinks: drinkDTOList={}", drinkDTOList);
+
+
+        for (DrinkDTO drinkDTO : drinkDTOList) {
+
+            try {
+
+                Drink drink = new Drink(drinkDTO, drinkServiceProperties);
+                drinkRepository.delete(drink);
+
+            } catch (Exception e) {
+                StringBuffer errMsg = new StringBuffer();
+                errMsg.append("Failed to delete drinks: ").append(e);
+                log.error("deleteDrinks: drinkDTO={}, {}", drinkDTO, errMsg);
+                throw new ServiceException(errMsg.toString());
+            }
+
+        }
+    }
+    /**
      *
      * @param guestId
      * @return
@@ -107,8 +132,8 @@ public class DrinkService {
         try {
             List<Drink> drinkList = drinkRepository.findAllByGuestIdOrderByDrinkName(guestId);
 
-            for( Drink dish: drinkList) {
-                drinkRepository.delete(dish);
+            for( Drink drink: drinkList) {
+                drinkRepository.delete(drink);
             }
             return drinkList;
         } catch (Exception e) {

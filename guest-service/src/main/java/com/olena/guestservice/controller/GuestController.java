@@ -28,9 +28,6 @@ public class GuestController {
     @Autowired
     DrinkService drinkService;
 
-    //TODO extract username from JWT token and update queries
-
-
     /**
      * @param guestId
      * @return
@@ -39,6 +36,16 @@ public class GuestController {
     @RequestMapping(value = "/{guestid}", method = RequestMethod.GET)
     public ResponseEntity<?> getGuestInfo(@PathVariable("guestid") String guestId) throws ServiceException {
         return ResponseEntity.ok(guestService.getGuestInfo(guestId, dishService, drinkService));
+    }
+
+    /**
+     * @param eventId
+     * @return
+     */
+//    @PreAuthorize("#oauth2.hasScope('user')")
+    @RequestMapping(value = "/event/{eventid}", method = RequestMethod.GET)
+    public ResponseEntity<?> getEventListByUserName(@PathVariable("eventid") String eventId) throws ServiceException {
+        return ResponseEntity.ok(guestService.getGuestListByEventId(UUID.fromString(eventId)));
     }
 
     /**
@@ -84,6 +91,13 @@ public class GuestController {
         return ResponseEntity.ok(guestService.deleteGuest(guestId, dishService, drinkService));
     }
 
+    /**
+     * @param guestId
+     * @param dishes
+     * @return
+     * @throws ServiceException
+     */
+//    @PreAuthorize("#oauth2.hasScope('guest')")
     @RequestMapping(value = "/{guestid}/dishes", method = RequestMethod.POST)
     public ResponseEntity<?> updateDishes(@PathVariable("guestid") String guestId, @RequestBody DishDTO[] dishes) throws ServiceException {
 
@@ -91,11 +105,33 @@ public class GuestController {
             return ResponseEntity.badRequest().build();
         }
 
-        dishService.processDishes(guestId, dishes);
-
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(dishService.processDishes(guestId, dishes, guestService));
     }
 
+    /**
+     * @param guestId
+     * @param dishes
+     * @return
+     * @throws ServiceException
+     */
+//    @PreAuthorize("#oauth2.hasScope('guest')")
+    @RequestMapping(value = "/{guestid}/dishes", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteDishes(@PathVariable("guestid") String guestId, @RequestBody DishDTO[] dishes) throws ServiceException {
+
+        if (guestId == null || dishes == null || dishes.length == 0) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(dishService.deleteDishes(guestId, dishes, guestService));
+    }
+
+    /**
+     * @param guestId
+     * @param drinks
+     * @return
+     * @throws ServiceException
+     */
+//    @PreAuthorize("#oauth2.hasScope('guest')")
     @RequestMapping(value = "/{guestid}/drinks", method = RequestMethod.POST)
     public ResponseEntity<?> updateDishes(@PathVariable("guestid") String guestId, @RequestBody DrinkDTO[] drinks) throws ServiceException {
 
@@ -103,19 +139,24 @@ public class GuestController {
             return ResponseEntity.badRequest().build();
         }
 
-        drinkService.processDrinks(guestId, drinks);
-
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(drinkService.processDrinks(guestId, drinks, guestService));
     }
 
     /**
-     * @param eventId
+     * @param guestId
+     * @param drinks
      * @return
+     * @throws ServiceException
      */
-//    @PreAuthorize("#oauth2.hasScope('user')")
-    @RequestMapping(value = "/event/{eventid}", method = RequestMethod.GET)
-    public ResponseEntity<?> getEventListByUserName(@PathVariable("eventid") String eventId) throws ServiceException {
-        return ResponseEntity.ok(guestService.getGuestListByEventId(UUID.fromString(eventId)));
+    //    @PreAuthorize("#oauth2.hasScope('guest')")
+    @RequestMapping(value = "/{guestid}/drinks", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteDrinks(@PathVariable("guestid") String guestId, @RequestBody DrinkDTO[] drinks) throws ServiceException {
+
+        if (guestId == null || drinks == null || drinks.length == 0) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(drinkService.deleteDrinks(guestId, drinks, guestService));
     }
 
 }

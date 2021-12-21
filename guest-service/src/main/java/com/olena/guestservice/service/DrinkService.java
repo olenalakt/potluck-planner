@@ -3,7 +3,9 @@ package com.olena.guestservice.service;
 import com.olena.guestservice.config.GuestServiceProperties;
 import com.olena.guestservice.enums.Constants;
 import com.olena.guestservice.exception.ServiceException;
+import com.olena.guestservice.model.DishDTO;
 import com.olena.guestservice.model.DrinkDTO;
+import com.olena.guestservice.repository.entity.Guest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,13 +49,19 @@ public class DrinkService {
      * @param drinks
      * @throws ServiceException
      */
-    public void processDrinks(String guestId, DrinkDTO[] drinks) throws ServiceException {
+    public Guest processDrinks(String guestId, DrinkDTO[] drinks, GuestService guestService) throws ServiceException {
         // call guest service to process guests
         log.debug("processDrinks: guestId={}, drinks={}", guestId, drinks.length);
 
         URI uri = URI.create(guestServiceProperties.getDrinkServiceUrl());
         try {
+
+            Guest guest = guestService.getGuestFromDb(guestId);
+
             restTemplate.postForObject(uri, drinks, DrinkDTO[].class);
+
+            return guest;
+
         } catch (Exception e) {
             String errMsg = "Failed to update guest drinks for " + uri + ": " + e;
             log.error("processDrinks: guestId={}, drinks={}, {}", guestId, drinks.length, errMsg);
@@ -61,9 +69,31 @@ public class DrinkService {
         }
     }
 
-    public void deleteDrinks(String guestId) throws ServiceException {
+    public Guest deleteDrinks(String guestId, DrinkDTO[] drinks, GuestService guestService) throws ServiceException {
         // call guest service to process guests
-        log.debug("deleteDrinks: guestId={}", guestId);
+        log.debug("deleteDrinks: guestId={}, drinks={}", guestId, drinks);
+
+        URI uri = URI.create(guestServiceProperties.getDrinkServiceUrl());
+        try {
+
+            Guest guest = guestService.getGuestFromDb(guestId);
+
+            restTemplate.delete(uri.toString(), drinks, DrinkDTO[].class);
+
+            return guest;
+
+        } catch (ServiceException se) {
+            throw se;
+        } catch (Exception e) {
+            String errMsg = "Failed to delete guest drinks for " + uri + ": " + e;
+            log.error("deleteDrinks: guestId={}, drinks={}, {}", guestId, drinks, errMsg);
+            throw new ServiceException(errMsg);
+        }
+    }
+
+    public void deleteDrinksByGuest(String guestId) throws ServiceException {
+        // call guest service to process guests
+        log.debug("deleteDrinksByGuest: guestId={}", guestId);
 
         URI uri = URI.create(guestServiceProperties.getDrinkServiceUrl() + "/guest/"+ guestId);
         try {
@@ -72,7 +102,7 @@ public class DrinkService {
 
         } catch (Exception e) {
             String errMsg = "Failed to delete guest drinks for " + uri + ": " + e;
-            log.error("deleteDrinks: guestId={}, {}", guestId, errMsg);
+            log.error("deleteDrinksByGuest: guestId={}, {}", guestId, errMsg);
             throw new ServiceException(errMsg);
         }
     }

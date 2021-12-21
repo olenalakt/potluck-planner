@@ -47,6 +47,25 @@ public class DishController {
 
     /**
      *
+     * @param dishDTOList
+     * @return
+     * @throws ServiceException
+     */
+    //    @PreAuthorize("#oauth2.hasScope('guest')")
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteDishes(@RequestBody DishDTO[] dishDTOList) throws ServiceException {
+
+        if (dishDTOList == null || dishDTOList.length == 0) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        dishService.deleteDishes(dishDTOList);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     *
      * @param guestId
      * @return
      * @throws ServiceException

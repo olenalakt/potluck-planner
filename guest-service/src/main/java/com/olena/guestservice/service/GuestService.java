@@ -181,8 +181,8 @@ public class GuestService {
             if (guest != null) {
                 guestRepository.delete(guest);
 
-                dishService.deleteDishes(guestId);
-                drinkService.deleteDrinks(guestId);
+                dishService.deleteDishesByGuest(guestId);
+                drinkService.deleteDrinksByGuest(guestId);
 
             } else {
                 errMsg.append("Guest not found: ").append(guestId);

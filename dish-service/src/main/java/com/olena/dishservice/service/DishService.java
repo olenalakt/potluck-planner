@@ -62,7 +62,7 @@ public class DishService {
      * @throws ServiceException
      */
     public void updateDishes(DishDTO[] dishDTOList) throws ServiceException {
-        log.debug("updateDishes: guestDTO={}", dishDTOList);
+        log.debug("updateDishes: dishDTOList={}", dishDTOList);
 
 
         for (DishDTO dishDTO : dishDTOList) {
@@ -84,6 +84,32 @@ public class DishService {
             } catch (Exception e) {
                 StringBuffer errMsg = new StringBuffer();
                 errMsg.append("Failed to process dishes: ").append(e);
+                log.error("updateDishes: dishDTO={}, {}", dishDTO, errMsg);
+                throw new ServiceException(errMsg.toString());
+            }
+
+        }
+    }
+
+    /**
+     *
+     * @param dishDTOList
+     * @throws ServiceException
+     */
+    public void deleteDishes(DishDTO[] dishDTOList) throws ServiceException {
+        log.debug("updateDishes: dishDTOList={}", dishDTOList);
+
+        for (DishDTO dishDTO : dishDTOList) {
+
+            try {
+
+                Dish dish = new Dish(dishDTO, dishServiceProperties);
+
+                dishRepository.delete(dish);
+
+            } catch (Exception e) {
+                StringBuffer errMsg = new StringBuffer();
+                errMsg.append("Failed to delete dishes: ").append(e);
                 log.error("updateDishes: dishDTO={}, {}", dishDTO, errMsg);
                 throw new ServiceException(errMsg.toString());
             }

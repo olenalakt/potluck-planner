@@ -4,6 +4,7 @@ import com.olena.guestservice.config.GuestServiceProperties;
 import com.olena.guestservice.enums.Constants;
 import com.olena.guestservice.exception.ServiceException;
 import com.olena.guestservice.model.DishDTO;
+import com.olena.guestservice.repository.entity.Guest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,13 +49,20 @@ public class DishService {
      * @param dishes
      * @throws ServiceException
      */
-    public void processDishes(String guestId, DishDTO[] dishes) throws ServiceException {
+    public Guest processDishes(String guestId, DishDTO[] dishes, GuestService guestService) throws ServiceException {
         // call guest service to process guests
         log.debug("processDishes: guestId={}, dishes={}", guestId, dishes.length);
 
         URI uri = URI.create(guestServiceProperties.getDishServiceUrl());
         try {
+
+            Guest guest = guestService.getGuestFromDb(guestId);
+
             restTemplate.postForObject(uri, dishes, DishDTO[].class);
+
+            return guest;
+        } catch (ServiceException se) {
+            throw se;
         } catch (Exception e) {
             String errMsg = "Failed to update guest dishes for " + uri + ": " + e;
             log.error("processDishes: guestId={}, dishes={}, {}", guestId, dishes.length, errMsg);
@@ -65,11 +73,41 @@ public class DishService {
     /**
      *
      * @param guestId
+     * @param dishes
+     * @param guestService
+     * @return
      * @throws ServiceException
      */
-    public void deleteDishes(String guestId) throws ServiceException {
+    public Guest deleteDishes(String guestId, DishDTO[] dishes, GuestService guestService) throws ServiceException {
         // call guest service to process guests
-        log.debug("deleteDishes: guestId={}", guestId);
+        log.debug("deleteDishes: guestId={}, dishes={}", guestId, dishes.length);
+
+        URI uri = URI.create(guestServiceProperties.getDishServiceUrl());
+        try {
+
+            Guest guest = guestService.getGuestFromDb(guestId);
+
+            restTemplate.delete(uri.toString(), dishes, DishDTO[].class);
+
+            return guest;
+
+        } catch (ServiceException se) {
+            throw se;
+        } catch (Exception e) {
+            String errMsg = "Failed to delete guest dishes for " + uri + ": " + e;
+            log.error("deleteDishes: guestId={}, dishes={}, {}", guestId, dishes.length, errMsg);
+            throw new ServiceException(errMsg);
+        }
+    }
+
+    /**
+     *
+     * @param guestId
+     * @throws ServiceException
+     */
+    public void deleteDishesByGuest(String guestId) throws ServiceException {
+        // call guest service to process guests
+        log.debug("deleteDishesByGuest: guestId={}", guestId);
 
         URI uri = URI.create(guestServiceProperties.getDishServiceUrl() + "/guest/"+ guestId);
         try {
@@ -78,7 +116,7 @@ public class DishService {
 
         } catch (Exception e) {
             String errMsg = "Failed to delete guest dishes for " + uri + ": " + e;
-            log.error("deleteDishes: guestId={}, {}", guestId, errMsg);
+            log.error("deleteDishesByGuest: guestId={}, {}", guestId, errMsg);
             throw new ServiceException(errMsg);
         }
     }

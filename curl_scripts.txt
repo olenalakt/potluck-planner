@@ -1,6 +1,7 @@
-// JWT token directly via SSL
-curl -v -k -X POST --basic -u potluckPlanner:potluckPlannerSecret -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d "grant_type=password&username=olena&password=123&scope=user" https://localhost:8443/oauth/token
 
+----------   OATH-SERVER   -----------------------------------
+// JWT token directly via SSL
+curl -v -k -X POST --basic -u potluckPlanner:potluckPlannerSecret -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d "grant_type=password&username=olena&password=123&scope=user" https://localhost:8080/oauth/token
 
 
 // JWT access token directly no  SSL
@@ -13,7 +14,7 @@ curl -u potluckPlanner:potluckPlannerSecret \
 http://localhost:9090/token/oauth/token
 
 
-----------------------
+----------   EVENT-SERVICE   -----------------------------------
 
 // add event  with participants over TLS -  use -k  in dev to  avoid trust validation
 curl -k -v https://localhost:9443/events \
@@ -62,7 +63,10 @@ curl -k -H "Authorization: Bearer $TOKEN" http://localhost:9443/v1/events/0e9ebe
 ----------------
 
 
-// add guests to event by  event name
+----------   GUEST-SERVICE  -----------------------------------
+
+//called by event-service
+// add guests as list 
 curl -k -X PUT https://localhost:9443/events \
 -H 'Content-Type: application/json' \
 --data-binary @- << EOF
@@ -72,36 +76,38 @@ curl -k -X PUT https://localhost:9443/events \
 }
 EOF
 
-// fix missing guestId;
-curl -k -X PUT https://localhost:9443/events \
--H 'Content-Type: application/json' \
---data-binary @- << EOF
-{
-  "eventId":"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe",
-  "guests":[{"guestName":"vera","guestEmail":"vera@gmail.com"},{"guestName":"yura","guestEmail":"yura@gmail.com"},{"guestName":"lena","guestEmail":"lena@gmail.com"}]
-}
-EOF
-
-======================
-
+---------------
 // list guests by eventId
-curl -k -X GET https://localhost:7443/guests/event/0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe -H "Content-Type: application/json" 
+curl -k -X GET https://localhost:7443/v1/guests/event/0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe -H "Content-Type: application/json" 
 
 // list guests by eventId, no TLS
-curl -k -X GET http://localhost:7443/guests/event/0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe -H "Content-Type: application/json" 
+curl -k -X GET http://localhost:7443/v1/guests/event/0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe -H "Content-Type: application/json" 
 
-------
+// JWT token security
+curl -k -H "Authorization: Bearer $TOKEN" http://localhost:7443/v1/guests/event/0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe -H "Content-Type: application/json" 
+-------------------
 
 
+//  called be client app
+// update guest
+// JWT token security
+curl -k -H "Authorization: Bearer $TOKEN" PUT  http://localhost:7443/v1/guests/guest -H "Content-Type: application/json" 
+
+-------------
+// delete guest
+// JWT token security
+curl -k -H "Authorization: Bearer $TOKEN" DELETE  http://localhost:7443/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295 -H "Content-Type: application/json" 
+
+----------
 //  guest by guestId
-curl -k -X GET https://localhost:7443/guests/52cc7652-7db2-4acd-acbf-63c3c33da295 -H "Content-Type: application/json" 
+curl -k -X GET https://localhost:7443/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295 -H "Content-Type: application/json" 
 
 //  guest by guestId, no TLS
-curl -k -X GET http://localhost:7443/guests/52cc7652-7db2-4acd-acbf-63c3c33da295 -H "Content-Type: application/json" 
+curl -k -X GET http://localhost:7443/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295 -H "Content-Type: application/json" 
 
 ----------
 // add dishes for guest
-curl -k -v https://localhost:7443/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/dishes \
+curl -k -v https://localhost:7443/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/dishes \
 -H 'Content-Type: application/json' \
 --data-binary @- << EOF
 [
