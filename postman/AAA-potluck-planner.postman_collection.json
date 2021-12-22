@@ -111,6 +111,45 @@
 			"response": []
 		},
 		{
+			"name": "guest-service: update guests",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\"userName\":\"olena\",\"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\", \"guestName\":\"test2\",\"guestEmail\":\"test2@gmail.com\"}]"
+				},
+				"url": {
+					"raw": "{{guest-service}}/v1/guests/",
+					"host": [
+						"{{guest-service}}"
+					],
+					"path": [
+						"v1",
+						"guests",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "guest-service: delete guests by eventId",
 			"request": {
 				"auth": {
@@ -147,45 +186,6 @@
 			"response": []
 		},
 		{
-			"name": "guest-service: update guests",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{TOKEN}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "[{\"userName\":\"olena\",\"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\", \"guestName\":\"test\",\"guestEmail\":\"test@gmail.com\"}]"
-				},
-				"url": {
-					"raw": "{{guest-service}}/v1/guests/",
-					"host": [
-						"{{guest-service}}"
-					],
-					"path": [
-						"v1",
-						"guests",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "guest-service: delete guests (guestId has to be updated from  previous request response)",
 			"request": {
 				"auth": {
@@ -208,7 +208,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[{\"userName\":\"olena\",\"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\", \"guestName\":\"test\",\"guestEmail\":\"test@gmail.com\",\"guestId\": \"0f59c5af-1bb8-4890-8eb1-89c1e2684d28\"}]"
+					"raw": "[{\"guestId\": \"02c08f78-fe74-45ff-b3f0-6efd0888df85\",\"userName\":\"olena\",\"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\", \"guestName\":\"test2\",\"guestEmail\":\"test2@gmail.com\"}]"
 				},
 				"url": {
 					"raw": "{{guest-service}}/v1/guests/",
@@ -219,41 +219,6 @@
 						"v1",
 						"guests",
 						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "guest-service: query by guestId",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{TOKEN}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{guest-service}}/v1/guests/{{guestId}}",
-					"host": [
-						"{{guest-service}}"
-					],
-					"path": [
-						"v1",
-						"guests",
-						"{{guestId}}"
 					]
 				}
 			},
@@ -328,6 +293,201 @@
 						"v1",
 						"guests",
 						"48dd40b0-0c1e-4300-9849-89fde150e1da"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "guest-service: query by guestId",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{guest-service}}/v1/guests/{{guestId}}",
+					"host": [
+						"{{guest-service}}"
+					],
+					"path": [
+						"v1",
+						"guests",
+						"{{guestId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "guest-service: add/update  drinks for guest",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  {\r\n  \"userName\":\"olena\",\r\n  \"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"drinkName\":\"shardonay\",\r\n  \"drinkType\":\"WINE\",\r\n  \"drinkRecipe\":\"updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isAlcoholFree\":\"false\",\r\n  \"quantityMl\": 500\r\n  },\r\n  {\r\n  \"userName\":\"olena\",\r\n  \"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"drinkName\":\"apple juice\",\r\n  \"drinkType\":\"JUICE\",\r\n  \"drinkRecipe\":\"updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isAlcoholFree\":\"true\",\r\n  \"quantityMl\": 1000\r\n  },\r\n  {\r\n    \"userName\":\"olena\",\r\n\"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"drinkName\":\"test_delete1\",\r\n  \"drinkType\":\"JUICE\",\r\n  \"drinkRecipe\":\"updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isAlcoholFree\":\"true\",\r\n  \"quantityMl\": 1000\r\n  },\r\n  {\r\n    \"userName\":\"olena\",\r\n\"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"drinkName\":\"test_delete2\",\r\n  \"drinkType\":\"JUICE\",\r\n  \"drinkRecipe\":\"updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isAlcoholFree\":\"true\",\r\n  \"quantityMl\": 1000\r\n  }\r\n]"
+				},
+				"url": {
+					"raw": "{{guest-service}}/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/drinks",
+					"host": [
+						"{{guest-service}}"
+					],
+					"path": [
+						"v1",
+						"guests",
+						"52cc7652-7db2-4acd-acbf-63c3c33da295",
+						"drinks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "guest-service: delete  drinks for guest",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n            {\r\n            \"userName\": \"olena\",\r\n            \"eventId\": \"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n            \"guestId\": \"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n            \"dishId\": \"b113e8e6-f8d4-400b-aae9-fef3490eb035\",\r\n            \"dishName\": \"cake\",\r\n            \"dishType\": \"DESERT\",\r\n            \"dishRecipe\": \"cake recipe here - updated\",\r\n            \"isLactoseFree\": false,\r\n            \"isNutFree\": false,\r\n            \"hasFish\": false,\r\n            \"hasMeat\": false\r\n        },\r\n  {\r\n  \"dishId\": \"473f14e8-25f4-40d9-854c-73e90ef8ff88\",\"userName\":\"olena\",\r\n  \"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"dishName\":\"ragu\",\r\n  \"dishType\":\"MAIN\",\r\n  \"dishRecipe\":\"ragu recipe here - updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isNutFree\":\"true\",\r\n  \"hasFish\":\"false\",\r\n  \"hasMeat\":\"false\"\r\n  } \r\n]"
+				},
+				"url": {
+					"raw": "{{guest-service}}/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/dishes",
+					"host": [
+						"{{guest-service}}"
+					],
+					"path": [
+						"v1",
+						"guests",
+						"52cc7652-7db2-4acd-acbf-63c3c33da295",
+						"dishes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "guest-service: add/update  dishes for guest",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  {\r\n  \"userName\":\"olena\",\r\n  \"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"dishName\":\"cake\",\r\n  \"dishType\":\"DESERT\",\r\n  \"dishRecipe\":\"cake recipe here\",\r\n  \"isLactoseFree\":\"false\",\r\n  \"isNutFree\":\"false\",\r\n  \"hasFish\":\"false\",\r\n  \"hasMeat\":\"false\"\r\n  },\r\n  {\r\n  \"userName\":\"olena\",\r\n  \"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"dishName\":\"ragu\",\r\n  \"dishType\":\"MAIN\",\r\n  \"dishRecipe\":\"ragu recipe here\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isNutFree\":\"true\",\r\n  \"hasFish\":\"false\",\r\n  \"hasMeat\":\"false\"\r\n  } \r\n]"
+				},
+				"url": {
+					"raw": "{{guest-service}}/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/dishes",
+					"host": [
+						"{{guest-service}}"
+					],
+					"path": [
+						"v1",
+						"guests",
+						"52cc7652-7db2-4acd-acbf-63c3c33da295",
+						"dishes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "guest-service: delete  dishes for guest",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n            {\r\n            \"userName\": \"olena\",\r\n            \"eventId\": \"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n            \"guestId\": \"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n            \"dishId\": \"b113e8e6-f8d4-400b-aae9-fef3490eb035\",\r\n            \"dishName\": \"cake\",\r\n            \"dishType\": \"DESERT\",\r\n            \"dishRecipe\": \"cake recipe here - updated\",\r\n            \"isLactoseFree\": false,\r\n            \"isNutFree\": false,\r\n            \"hasFish\": false,\r\n            \"hasMeat\": false\r\n        },\r\n  {\r\n  \"dishId\": \"473f14e8-25f4-40d9-854c-73e90ef8ff88\",\"userName\":\"olena\",\r\n  \"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"dishName\":\"ragu\",\r\n  \"dishType\":\"MAIN\",\r\n  \"dishRecipe\":\"ragu recipe here - updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isNutFree\":\"true\",\r\n  \"hasFish\":\"false\",\r\n  \"hasMeat\":\"false\"\r\n  } \r\n]"
+				},
+				"url": {
+					"raw": "{{guest-service}}/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/dishes",
+					"host": [
+						"{{guest-service}}"
+					],
+					"path": [
+						"v1",
+						"guests",
+						"52cc7652-7db2-4acd-acbf-63c3c33da295",
+						"dishes"
 					]
 				}
 			},

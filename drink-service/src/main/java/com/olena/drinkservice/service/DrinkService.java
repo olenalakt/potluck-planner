@@ -66,8 +66,8 @@ public class DrinkService {
      * @return
      * @throws ServiceException
      */
-    public void addDrinks(DrinkDTO[] drinkDTOList) throws ServiceException {
-        log.debug("addDrinks: guestDTO={}", drinkDTOList);
+    public void updateDrinks(DrinkDTO[] drinkDTOList) throws ServiceException {
+        log.debug("updateDrinks: guestDTO={}", drinkDTOList);
 
 
         for (DrinkDTO drinkDTO : drinkDTOList) {
@@ -75,11 +75,13 @@ public class DrinkService {
             try {
 
                 Drink drink = new Drink(drinkDTO, drinkServiceProperties);
-                Drink drinkExisting = drinkRepository.findFirstByDrinkName(UUID.fromString(drinkDTO.getGuestId()), drinkDTO.getDrinkName());
+                Drink drinkExisting = drinkRepository.findFirstByGuestIdAndDrinkName(UUID.fromString(drinkDTO.getGuestId()), drinkDTO.getDrinkName());
+                log.debug("updateDrinks: drinkExisting={}", drinkExisting);
 
                 // check if drinkDTO  already  exists  -  update
                 if (drinkExisting != null) {
                     drink.setId(drinkExisting.getId());
+                    drink.setDrinkId(drinkExisting.getDrinkId());
                 }
                 // save to  DB
                 setDrink(drink);
@@ -89,7 +91,7 @@ public class DrinkService {
             } catch (Exception e) {
                 StringBuffer errMsg = new StringBuffer();
                 errMsg.append("Failed to process drinks: ").append(e);
-                log.error("addDrinks: drinkDTO={}, {}", drinkDTO, errMsg);
+                log.error("updateDrinks: drinkDTO={}, {}", drinkDTO, errMsg);
                 throw new ServiceException(errMsg.toString());
             }
 
@@ -105,15 +107,26 @@ public class DrinkService {
         log.debug("deleteDrinks: drinkDTOList={}", drinkDTOList);
 
 
+        StringBuffer errMsg = new StringBuffer();
+        Drink drink;
         for (DrinkDTO drinkDTO : drinkDTOList) {
 
             try {
 
-                Drink drink = new Drink(drinkDTO, drinkServiceProperties);
-                drinkRepository.delete(drink);
+                if (drinkDTO.getDrinkId() == null) {
+                    errMsg.append("drinkId is missing: ");
+                    log.error("deleteDrinks: drinkDTO={}, {}", drinkDTO, errMsg);
+                    throw new ServiceException(errMsg.toString());
+                }
 
+                drink = drinkRepository.findFirstByDrinkId(UUID.fromString(drinkDTO.getDrinkId()));
+                if (drink != null) {
+                    drinkRepository.delete(drink);
+                }
+
+            } catch (ServiceException se) {
+                throw se;
             } catch (Exception e) {
-                StringBuffer errMsg = new StringBuffer();
                 errMsg.append("Failed to delete drinks: ").append(e);
                 log.error("deleteDrinks: drinkDTO={}, {}", drinkDTO, errMsg);
                 throw new ServiceException(errMsg.toString());
@@ -121,8 +134,8 @@ public class DrinkService {
 
         }
     }
+
     /**
-     *
      * @param guestId
      * @return
      * @throws ServiceException
@@ -132,7 +145,7 @@ public class DrinkService {
         try {
             List<Drink> drinkList = drinkRepository.findAllByGuestIdOrderByDrinkName(guestId);
 
-            for( Drink drink: drinkList) {
+            for (Drink drink : drinkList) {
                 drinkRepository.delete(drink);
             }
             return drinkList;

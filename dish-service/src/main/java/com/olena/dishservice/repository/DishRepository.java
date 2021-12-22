@@ -14,6 +14,8 @@ public interface DishRepository extends MongoRepository<Dish, String> {
 
     // retrieve all fields
     @Query(collation = "{ 'locale' :  'en_US', strength: 2 }")
-    Dish findFirstByDishName(UUID guestId, String dishName);
+    Dish findFirstByGuestIdAndDishName(UUID guestId, String dishName);
+
+    Dish findFirstByDishId(UUID dishId);
 
 }

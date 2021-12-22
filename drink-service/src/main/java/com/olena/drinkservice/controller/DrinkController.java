@@ -41,7 +41,7 @@ public class DrinkController {
             return ResponseEntity.badRequest().build();
         }
 
-        drinkService.addDrinks(drinkDTOList);
+        drinkService.updateDrinks(drinkDTOList);
 
         return ResponseEntity.noContent().build();
     }

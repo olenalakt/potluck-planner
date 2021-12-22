@@ -33,7 +33,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(value = ServiceException.class)
     public ResponseEntity<Object> exception(ServiceException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        return new ResponseEntity<>(e.getErrMsg(), HttpStatus.EXPECTATION_FAILED);
     }
 
     @ExceptionHandler(value = Exception.class)

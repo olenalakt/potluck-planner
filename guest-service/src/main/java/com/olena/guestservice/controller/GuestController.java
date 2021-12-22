@@ -40,9 +40,10 @@ public class GuestController {
 
     //    @PreAuthorize("#oauth2.hasScope('user')")
     @RequestMapping(value = "/event/{eventid}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteGuestByEventId(@PathVariable("eventid") String eventId) throws ServiceException {
+    public ResponseEntity<?> deleteGuestByEventId(@PathVariable("eventid") String eventId
+            , @RequestHeader(name = "Authorization") String bearerToken) throws ServiceException {
 
-        return ResponseEntity.ok(guestService.deleteGuestsByEventId(eventId, dishService, drinkService));
+        return ResponseEntity.ok(guestService.deleteGuestsByEventId(eventId, bearerToken, dishService, drinkService));
     }
 
     /**
@@ -66,13 +67,14 @@ public class GuestController {
      */
 //    @PreAuthorize("#oauth2.hasScope('user')")
     @RequestMapping(method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteGuests(@RequestBody GuestDTO[] guestDTOList) throws ServiceException {
+    public ResponseEntity<?> deleteGuests(@RequestBody GuestDTO[] guestDTOList
+            , @RequestHeader(name = "Authorization") String bearerToken) throws ServiceException {
 
         if (guestDTOList == null || guestDTOList.length == 0) {
             return ResponseEntity.badRequest().build();
         }
 
-        return ResponseEntity.ok(guestService.deleteGuests(guestDTOList, dishService, drinkService));
+        return ResponseEntity.ok(guestService.deleteGuests(guestDTOList, bearerToken, dishService, drinkService));
     }
 
     /**
@@ -105,9 +107,10 @@ public class GuestController {
      */
 //    @PreAuthorize("#oauth2.hasScope('guest')")
     @RequestMapping(value = "/{guestid}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteGuest(@PathVariable("guestid") String guestId) throws ServiceException {
+    public ResponseEntity<?> deleteGuest(@PathVariable("guestid") String guestId
+            , @RequestHeader(name = "Authorization") String bearerToken) throws ServiceException {
 
-        return ResponseEntity.ok(guestService.deleteGuest(guestId, dishService, drinkService));
+        return ResponseEntity.ok(guestService.deleteGuest(guestId, bearerToken, dishService, drinkService));
     }
 
     /**
@@ -118,13 +121,14 @@ public class GuestController {
      */
 //    @PreAuthorize("#oauth2.hasScope('guest')")
     @RequestMapping(value = "/{guestid}/dishes", method = RequestMethod.POST)
-    public ResponseEntity<?> updateDishes(@PathVariable("guestid") String guestId, @RequestBody DishDTO[] dishes) throws ServiceException {
+    public ResponseEntity<?> updateDishes(@PathVariable("guestid") String guestId
+            , @RequestHeader(name = "Authorization") String bearerToken, @RequestBody DishDTO[] dishes) throws ServiceException {
 
         if (guestId == null || dishes == null || dishes.length == 0) {
             return ResponseEntity.badRequest().build();
         }
 
-        return ResponseEntity.ok(dishService.processDishes(guestId, dishes, guestService));
+        return ResponseEntity.ok(dishService.processDishes(guestId, bearerToken, dishes, guestService));
     }
 
     /**
@@ -135,13 +139,14 @@ public class GuestController {
      */
 //    @PreAuthorize("#oauth2.hasScope('guest')")
     @RequestMapping(value = "/{guestid}/dishes", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteDishes(@PathVariable("guestid") String guestId, @RequestBody DishDTO[] dishes) throws ServiceException {
+    public ResponseEntity<?> deleteDishes(@PathVariable("guestid") String guestId
+            , @RequestHeader(name = "Authorization") String bearerToken, @RequestBody DishDTO[] dishes) throws ServiceException {
 
         if (guestId == null || dishes == null || dishes.length == 0) {
             return ResponseEntity.badRequest().build();
         }
 
-        return ResponseEntity.ok(dishService.deleteDishes(guestId, dishes, guestService));
+        return ResponseEntity.ok(dishService.deleteDishes(guestId, bearerToken, dishes, guestService));
     }
 
     /**
@@ -152,13 +157,14 @@ public class GuestController {
      */
 //    @PreAuthorize("#oauth2.hasScope('guest')")
     @RequestMapping(value = "/{guestid}/drinks", method = RequestMethod.POST)
-    public ResponseEntity<?> updateDrinks(@PathVariable("guestid") String guestId, @RequestBody DrinkDTO[] drinks) throws ServiceException {
+    public ResponseEntity<?> updateDrinks(@PathVariable("guestid") String guestId
+            , @RequestHeader(name = "Authorization") String bearerToken, @RequestBody DrinkDTO[] drinks) throws ServiceException {
 
         if (guestId == null || drinks == null || drinks.length == 0) {
             return ResponseEntity.badRequest().build();
         }
 
-        return ResponseEntity.ok(drinkService.processDrinks(guestId, drinks, guestService));
+        return ResponseEntity.ok(drinkService.processDrinks(guestId, bearerToken, drinks, guestService));
     }
 
     /**
@@ -169,13 +175,14 @@ public class GuestController {
      */
     //    @PreAuthorize("#oauth2.hasScope('guest')")
     @RequestMapping(value = "/{guestid}/drinks", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteDrinks(@PathVariable("guestid") String guestId, @RequestBody DrinkDTO[] drinks) throws ServiceException {
+    public ResponseEntity<?> deleteDrinks(@PathVariable("guestid") String guestId
+            , @RequestHeader(name = "Authorization") String bearerToken, @RequestBody DrinkDTO[] drinks) throws ServiceException {
 
         if (guestId == null || drinks == null || drinks.length == 0) {
             return ResponseEntity.badRequest().build();
         }
 
-        return ResponseEntity.ok(drinkService.deleteDrinks(guestId, drinks, guestService));
+        return ResponseEntity.ok(drinkService.deleteDrinks(guestId, bearerToken, drinks, guestService));
     }
 
 }

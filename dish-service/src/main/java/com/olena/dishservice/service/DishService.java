@@ -70,11 +70,13 @@ public class DishService {
             try {
 
                 Dish dish = new Dish(dishDTO, dishServiceProperties);
-                Dish dishExisting = dishRepository.findFirstByDishName(UUID.fromString(dishDTO.getGuestId()), dishDTO.getDishName());
+                Dish dishExisting = dishRepository.findFirstByGuestIdAndDishName(UUID.fromString(dishDTO.getGuestId()), dishDTO.getDishName());
+                log.debug("updateDishes: dishExisting={}", dishExisting);
 
                 // check if dishDTO  already  exists  -  update
                 if (dishExisting != null) {
                     dish.setId(dishExisting.getId());
+                    dish.setDishId(dishExisting.getDishId());
                 }
                 // save to  DB
                 setDish(dish);
@@ -92,25 +94,34 @@ public class DishService {
     }
 
     /**
-     *
      * @param dishDTOList
      * @throws ServiceException
      */
     public void deleteDishes(DishDTO[] dishDTOList) throws ServiceException {
-        log.debug("updateDishes: dishDTOList={}", dishDTOList);
+        log.debug("deleteDishes: dishDTOList={}", dishDTOList);
 
+        StringBuffer errMsg = new StringBuffer();
+        Dish dish;
         for (DishDTO dishDTO : dishDTOList) {
 
             try {
 
-                Dish dish = new Dish(dishDTO, dishServiceProperties);
+                if (dishDTO.getDishId() == null) {
+                    errMsg.append("dishId is missing: ");
+                    log.error("deleteDishes: dishDTO={}, {}", dishDTO, errMsg);
+                    throw new ServiceException(errMsg.toString());
+                }
 
-                dishRepository.delete(dish);
+                dish = dishRepository.findFirstByDishId(UUID.fromString(dishDTO.getDishId()));
+                if (dish != null) {
+                    dishRepository.delete(dish);
+                }
 
+            } catch (ServiceException se) {
+                throw se;
             } catch (Exception e) {
-                StringBuffer errMsg = new StringBuffer();
                 errMsg.append("Failed to delete dishes: ").append(e);
-                log.error("updateDishes: dishDTO={}, {}", dishDTO, errMsg);
+                log.error("deleteDishes: dishDTO={}, {}", dishDTO, errMsg);
                 throw new ServiceException(errMsg.toString());
             }
 
@@ -118,7 +129,6 @@ public class DishService {
     }
 
     /**
-     *
      * @param guestId
      * @return
      * @throws ServiceException
@@ -128,7 +138,7 @@ public class DishService {
         try {
             List<Dish> dishList = dishRepository.findAllByGuestIdOrderByDishName(guestId);
 
-            for( Dish dish:  dishList) {
+            for (Dish dish : dishList) {
                 dishRepository.delete(dish);
             }
             return dishList;

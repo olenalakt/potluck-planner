@@ -137,7 +137,7 @@ public class GuestService {
      * @return
      * @throws ServiceException
      */
-    public List<Guest> deleteGuests(GuestDTO[] guestDTOList, DishService dishService, DrinkService drinkService) throws ServiceException {
+    public List<Guest> deleteGuests(GuestDTO[] guestDTOList, String bearerToken, DishService dishService, DrinkService drinkService) throws ServiceException {
         log.debug("deleteGuests: guestDTOList={}", guestDTOList);
 
         StringBuffer errMsg = new StringBuffer();
@@ -147,8 +147,8 @@ public class GuestService {
 
                 Guest guestExisting = guestRepository.findFirstByUserNameAndEventIdAndGuestEmail(guestDTO.getUserName(), UUID.fromString(guestDTO.getEventId()), guestDTO.getGuestEmail());
                 if (guestExisting != null) {
-                    dishService.deleteDishesByGuest(guestDTO.getGuestId());
-                    drinkService.deleteDrinksByGuest(guestDTO.getGuestId());
+                    dishService.deleteDishesByGuest(guestDTO.getGuestId(),bearerToken);
+                    drinkService.deleteDrinksByGuest( guestDTO.getGuestId(), bearerToken);
                     guestList.add(guestExisting);
                     guestRepository.delete(guestExisting);
                 }
@@ -174,7 +174,7 @@ public class GuestService {
      * @return
      * @throws ServiceException
      */
-    public List<Guest> deleteGuestsByEventId(String eventId, DishService dishService, DrinkService drinkService) throws ServiceException {
+    public List<Guest> deleteGuestsByEventId(String eventId, String bearerToken, DishService dishService, DrinkService drinkService) throws ServiceException {
         log.debug("deleteGuestsByEventId: eventId={}", eventId);
 
         StringBuffer errMsg = new StringBuffer();
@@ -184,8 +184,8 @@ public class GuestService {
             if (guestList != null || guestList.size() > 0) {
                 for (Guest guest : guestList) {
 
-                    dishService.deleteDishesByGuest(guest.getGuestId().toString());
-                    drinkService.deleteDrinksByGuest(guest.getGuestId().toString());
+                    dishService.deleteDishesByGuest(guest.getGuestId().toString(), bearerToken);
+                    drinkService.deleteDrinksByGuest(guest.getGuestId().toString(), bearerToken);
                     guestRepository.delete(guest);
 
                 }
@@ -207,9 +207,10 @@ public class GuestService {
      * @param guestDTO
      * @return
      * @throws ServiceException
+     * updates existing guest, throws exception if not found
      */
     public Guest updateGuest(GuestDTO guestDTO) throws ServiceException {
-        log.debug("addGuests: guestDTO={}", guestDTO);
+        log.debug("updateGuest: guestDTO={}", guestDTO);
 
         StringBuffer errMsg = new StringBuffer();
         try {
@@ -220,6 +221,9 @@ public class GuestService {
 
             // check if guestDTO  already  exists  -  update
             if (guestExisting != null) {
+
+                // set PK
+                guest.setId(guestExisting.getId());
 
                 // save to  DB
                 setGuest(guest);
@@ -235,7 +239,7 @@ public class GuestService {
             throw se;
         } catch (Exception e) {
             errMsg.append("Failed to map guest: ").append(e);
-            log.error("addGuests: guestDTO={}, {}", guestDTO, errMsg);
+            log.error("updateGuest: guestDTO={}, {}", guestDTO, errMsg);
             throw new ServiceException(errMsg.toString());
         }
     }
@@ -247,7 +251,7 @@ public class GuestService {
      * @return
      * @throws ServiceException
      */
-    public Guest deleteGuest(String guestId, DishService dishService, DrinkService drinkService) throws ServiceException {
+    public Guest deleteGuest(String guestId, String bearerToken, DishService dishService, DrinkService drinkService) throws ServiceException {
         log.debug("deleteGuest: guestId={}", guestId);
 
         StringBuffer errMsg = new StringBuffer();
@@ -256,8 +260,8 @@ public class GuestService {
 
             if (guest != null) {
 
-                dishService.deleteDishesByGuest(guestId);
-                drinkService.deleteDrinksByGuest(guestId);
+                dishService.deleteDishesByGuest(guestId, bearerToken);
+                drinkService.deleteDrinksByGuest(guestId, bearerToken);
                 guestRepository.delete(guest);
 
             } else {

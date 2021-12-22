@@ -14,6 +14,8 @@ public interface DrinkRepository extends MongoRepository<Drink, String> {
 
     // retrieve all fields
     @Query(collation = "{ 'locale' :  'en_US', strength: 2 }")
-    Drink findFirstByDrinkName(UUID guestId, String drinkName);
+    Drink findFirstByGuestIdAndDrinkName(UUID guestId, String drinkName);
+
+    Drink findFirstByDrinkId(UUID drinkId);
 
 }
