@@ -58,8 +58,8 @@ public class DrinkController {
 
         return ResponseEntity.noContent().build();
     }
+
     /**
-     *
      * @param guestId
      * @return
      * @throws ServiceException

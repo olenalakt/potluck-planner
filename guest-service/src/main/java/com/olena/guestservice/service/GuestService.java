@@ -130,7 +130,6 @@ public class GuestService {
     }
 
     /**
-     *
      * @param guestDTOList
      * @param dishService
      * @param drinkService
@@ -147,8 +146,8 @@ public class GuestService {
 
                 Guest guestExisting = guestRepository.findFirstByUserNameAndEventIdAndGuestEmail(guestDTO.getUserName(), UUID.fromString(guestDTO.getEventId()), guestDTO.getGuestEmail());
                 if (guestExisting != null) {
-                    dishService.deleteDishesByGuest(guestDTO.getGuestId(),bearerToken);
-                    drinkService.deleteDrinksByGuest( guestDTO.getGuestId(), bearerToken);
+                    dishService.deleteDishesByGuest(guestExisting.getGuestId().toString(), bearerToken);
+                    drinkService.deleteDrinksByGuest(guestExisting.getGuestId().toString(), bearerToken);
                     guestList.add(guestExisting);
                     guestRepository.delete(guestExisting);
                 }
@@ -167,7 +166,6 @@ public class GuestService {
     }
 
     /**
-     *
      * @param eventId
      * @param dishService
      * @param drinkService
@@ -206,8 +204,7 @@ public class GuestService {
     /**
      * @param guestDTO
      * @return
-     * @throws ServiceException
-     * updates existing guest, throws exception if not found
+     * @throws ServiceException updates existing guest, throws exception if not found
      */
     public Guest updateGuest(GuestDTO guestDTO) throws ServiceException {
         log.debug("updateGuest: guestDTO={}", guestDTO);
@@ -238,7 +235,7 @@ public class GuestService {
         } catch (ServiceException se) {
             throw se;
         } catch (Exception e) {
-            errMsg.append("Failed to map guest: ").append(e);
+            errMsg.append("Failed to update guest: ").append(e);
             log.error("updateGuest: guestDTO={}, {}", guestDTO, errMsg);
             throw new ServiceException(errMsg.toString());
         }

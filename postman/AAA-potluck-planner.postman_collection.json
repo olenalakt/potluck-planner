@@ -75,7 +75,418 @@
 			"response": []
 		},
 		{
-			"name": "guest-service: query guests by eventId",
+			"name": "EVENT-SERVICE: query events by username",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{event-service}}/v1/events/username/{{username}}",
+					"host": [
+						"{{event-service}}"
+					],
+					"path": [
+						"v1",
+						"events",
+						"username",
+						"{{username}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EVENT-SERVICE: delete events by username",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{event-service}}/v1/events/username/{{username}}",
+					"host": [
+						"{{event-service}}"
+					],
+					"path": [
+						"v1",
+						"events",
+						"username",
+						"{{username}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "event-service: query events by username  from SPA client (for compatibility only)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{event-service}}/v1/events/",
+					"host": [
+						"{{event-service}}"
+					],
+					"path": [
+						"v1",
+						"events",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "event-service: query events by event name",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{event-service}}/v1/events/eventname/Christmas%20Party%205",
+					"host": [
+						"{{event-service}}"
+					],
+					"path": [
+						"v1",
+						"events",
+						"eventname",
+						"Christmas%20Party%205"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "event-service: query events by event name pattern",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{event-service}}/v1/events/eventname/Birthday?contains=true",
+					"host": [
+						"{{event-service}}"
+					],
+					"path": [
+						"v1",
+						"events",
+						"eventname",
+						"Birthday"
+					],
+					"query": [
+						{
+							"key": "contains",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "event-service: add event",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"olena\",\r\n    \"eventName\": \"Birthday Party Ana\",\r\n    \"eventDate\": \"2021-12-19T16:00:00.000+00:00\",\r\n    \"notes\": \"Test 2\"\r\n\r\n}"
+				},
+				"url": {
+					"raw": "{{event-service}}/v1/events",
+					"host": [
+						"{{event-service}}"
+					],
+					"path": [
+						"v1",
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "event-service: query event by eventId",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{event-service}}/v1/events/6b4fed65-689d-4e0f-b7bf-ea118b111397",
+					"host": [
+						"{{event-service}}"
+					],
+					"path": [
+						"v1",
+						"events",
+						"6b4fed65-689d-4e0f-b7bf-ea118b111397"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "event-service: update event info by eventId",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"olena\",\r\n    \"eventId\": \"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n    \"eventName\": \"Christmas Party 5\",\r\n    \"eventDate\": \"2021-12-19T16:00:00.000+00:00\",\r\n    \"notes\": \"Richmond Hill friends - updated 2\"\r\n}"
+				},
+				"url": {
+					"raw": "{{event-service}}/v1/events",
+					"host": [
+						"{{event-service}}"
+					],
+					"path": [
+						"v1",
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "event-service: delete event  by eventId",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{event-service}}/v1/events/59a3c277-2556-4a1b-843c-8454f9c1aff7",
+					"host": [
+						"{{event-service}}"
+					],
+					"path": [
+						"v1",
+						"events",
+						"59a3c277-2556-4a1b-843c-8454f9c1aff7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "event-service: update event -  add  guests",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"olena\",\r\n    \"eventId\": \"6b4fed65-689d-4e0f-b7bf-ea118b111397\",\r\n    \"eventName\": \"Birthday Party\",\r\n    \"eventDate\": \"2021-12-19T16:00:00.000+00:00\",\r\n    \"notes\": \"Test\",\r\n    \"guests\": [\r\n        {\r\n            \"guestName\": \"yura\",\r\n            \"guestEmail\": \"yura@gmail.com\"\r\n        },\r\n        {\r\n            \"guestName\": \"lena\",\r\n            \"guestEmail\": \"lena@gmail.com\"\r\n        },\r\n        {\r\n            \"guestName\": \"test1\",\r\n            \"guestEmail\": \"test1@gmail.com\"\r\n        },\r\n        {\r\n            \"guestName\": \"test2\",\r\n            \"guestEmail\": \"test2@gmail.com\"\r\n        }\r\n    ]\r\n}"
+				},
+				"url": {
+					"raw": "{{event-service}}/v1/events/event/guests",
+					"host": [
+						"{{event-service}}"
+					],
+					"path": [
+						"v1",
+						"events",
+						"event",
+						"guests"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "event-service: update event -  delete guests",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n       {\r\n            \"userName\": \"olena\",\r\n            \"eventId\": \"6b4fed65-689d-4e0f-b7bf-ea118b111397\",\r\n            \"guestName\": \"test1\",\r\n            \"guestEmail\": \"test1@gmail.com\",\r\n            \"notes\": null\r\n        },\r\n        {\r\n            \"userName\": \"olena\",\r\n            \"eventId\": \"6b4fed65-689d-4e0f-b7bf-ea118b111397\",\r\n            \"guestName\": \"test2\",\r\n            \"guestEmail\": \"test2@gmail.com\",\r\n            \"notes\": null\r\n        }\r\n]"
+				},
+				"url": {
+					"raw": "{{event-service}}/v1/events/6b4fed65-689d-4e0f-b7bf-ea118b111397/guests",
+					"host": [
+						"{{event-service}}"
+					],
+					"path": [
+						"v1",
+						"events",
+						"6b4fed65-689d-4e0f-b7bf-ea118b111397",
+						"guests"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GUEST-SERVICE: query guests by eventId",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -111,7 +522,7 @@
 			"response": []
 		},
 		{
-			"name": "guest-service: update guests",
+			"name": "GUEST-SERVICE: update guests",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -247,7 +658,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"guestId\": \"48dd40b0-0c1e-4300-9849-89fde150e1da\",\"userName\":\"olena\",\"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\", \"guestName\":\"test2\",\"guestEmail\":\"test2@gmail.com\",\"notes\":\"updated\"}"
+					"raw": "{\"guestId\": \"48dd40b0-0c1e-4300-9849-89fde150e1da\",\r\n\"userName\":\"olena\",\"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\", \"guestName\":\"test2\",\"guestEmail\":\"test2@gmail.com\",\"notes\":\"updated2\"}"
 				},
 				"url": {
 					"raw": "{{guest-service}}/v1/guests/guest",
@@ -396,10 +807,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\r\n            {\r\n            \"userName\": \"olena\",\r\n            \"eventId\": \"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n            \"guestId\": \"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n            \"dishId\": \"b113e8e6-f8d4-400b-aae9-fef3490eb035\",\r\n            \"dishName\": \"cake\",\r\n            \"dishType\": \"DESERT\",\r\n            \"dishRecipe\": \"cake recipe here - updated\",\r\n            \"isLactoseFree\": false,\r\n            \"isNutFree\": false,\r\n            \"hasFish\": false,\r\n            \"hasMeat\": false\r\n        },\r\n  {\r\n  \"dishId\": \"473f14e8-25f4-40d9-854c-73e90ef8ff88\",\"userName\":\"olena\",\r\n  \"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"dishName\":\"ragu\",\r\n  \"dishType\":\"MAIN\",\r\n  \"dishRecipe\":\"ragu recipe here - updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isNutFree\":\"true\",\r\n  \"hasFish\":\"false\",\r\n  \"hasMeat\":\"false\"\r\n  } \r\n]"
+					"raw": "[\r\n{\r\n            \"userName\": \"olena\",\r\n            \"eventId\": \"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n            \"guestId\": \"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n            \"drinkId\": \"b5c70abf-d3d8-4cd8-90b8-5de4fe1c7f33\",\r\n            \"quantityMl\": 1000,\r\n            \"drinkName\": \"test_delete1\",\r\n            \"drinkType\": \"JUICE\",\r\n            \"drinkRecipe\": \"updated\",\r\n            \"isLactoseFree\": true,\r\n            \"isAlcoholFree\": true\r\n        },\r\n        {\r\n            \"userName\": \"olena\",\r\n            \"eventId\": \"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n            \"guestId\": \"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n            \"drinkId\": \"e4b6ca1e-2189-4dd7-9b84-907c28e153bc\",\r\n            \"quantityMl\": 1000,\r\n            \"drinkName\": \"test_delete2\",\r\n            \"drinkType\": \"JUICE\",\r\n            \"drinkRecipe\": \"updated\",\r\n            \"isLactoseFree\": true,\r\n            \"isAlcoholFree\": true\r\n        }\r\n]"
 				},
 				"url": {
-					"raw": "{{guest-service}}/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/dishes",
+					"raw": "{{guest-service}}/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/drinks",
 					"host": [
 						"{{guest-service}}"
 					],
@@ -407,7 +818,7 @@
 						"v1",
 						"guests",
 						"52cc7652-7db2-4acd-acbf-63c3c33da295",
-						"dishes"
+						"drinks"
 					]
 				}
 			},

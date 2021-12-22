@@ -4,16 +4,12 @@ import com.olena.guestservice.config.GuestServiceProperties;
 import com.olena.guestservice.enums.Constants;
 import com.olena.guestservice.exception.ServiceException;
 import com.olena.guestservice.model.DishDTO;
-import com.olena.guestservice.model.DrinkDTO;
 import com.olena.guestservice.repository.entity.Guest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.net.URI;
-import java.util.HashMap;
 
 @Service
 @Slf4j
@@ -37,6 +33,7 @@ public class DishService {
         try {
 
             HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
             headers.set("Authorization", bearerToken);
 
             HttpEntity<Void> entityReq = new HttpEntity<>(headers);
@@ -91,7 +88,6 @@ public class DishService {
     }
 
     /**
-     *
      * @param guestId
      * @param dishes
      * @param guestService
@@ -129,7 +125,6 @@ public class DishService {
     }
 
     /**
-     *
      * @param guestId
      * @throws ServiceException
      */
@@ -137,7 +132,7 @@ public class DishService {
         // call guest service to process guests
         log.debug("deleteDishesByGuest: guestId={}", guestId);
 
-        String url = guestServiceProperties.getDishServiceUrl() + "/guest/"+ guestId;
+        String url = guestServiceProperties.getDishServiceUrl() + "/guest/" + guestId;
         try {
 
             //restTemplate.delete(uri);

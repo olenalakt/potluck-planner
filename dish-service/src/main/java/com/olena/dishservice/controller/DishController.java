@@ -46,7 +46,6 @@ public class DishController {
     }
 
     /**
-     *
      * @param dishDTOList
      * @return
      * @throws ServiceException
@@ -65,7 +64,6 @@ public class DishController {
     }
 
     /**
-     *
      * @param guestId
      * @return
      * @throws ServiceException

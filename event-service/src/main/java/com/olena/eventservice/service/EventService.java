@@ -55,13 +55,15 @@ public class EventService {
      * @return
      * @throws ServiceException
      */
-    public void checkEvent(EventDTO eventDTO) throws ServiceException {
+    public Event checkEvent(EventDTO eventDTO) throws ServiceException {
         log.debug("checkEvent: eventDTO={}", eventDTO.toString());
 
         Event event = getEventFromDb(eventDTO.getEventId());
         eventDTO.setUserName(event.getUserName());
 
         log.debug("checkEvent done: eventDTO={}", eventDTO);
+
+        return event;
     }
 
     /**
@@ -116,7 +118,7 @@ public class EventService {
         }
     }
 
-    public EventDTO getEvent(String eventId, Boolean includeGuests, GuestService guestService) throws ServiceException {
+    public EventDTO getEvent(String eventId, Boolean includeGuests, String bearerToken, GuestService guestService) throws ServiceException {
         log.debug("getEvent: eventId={}", eventId);
 
         Event event = getEventFromDb(eventId);
@@ -125,7 +127,7 @@ public class EventService {
         log.debug("getEvent: eventDTO={}", eventDTO);
 
         if (includeGuests) {
-            eventDTO.setGuests(guestService.getGuestList(eventDTO));
+            eventDTO.setGuests(guestService.getGuestList(eventDTO, bearerToken));
         }
 
         return eventDTO;
@@ -157,7 +159,7 @@ public class EventService {
     public List<Event> getEventListByPattern(String userName, String eventNamePattern) throws ServiceException {
         log.debug("getEventListByPattern: userName={}, eventNamePattern={}", userName, eventNamePattern);
         try {
-            List<Event> eventList = eventRepository.findAllByUserNameAndEventNameContainsOrderByEventDateDesc(userName,eventNamePattern);
+            List<Event> eventList = eventRepository.findAllByUserNameAndEventNameContainsOrderByEventDateDesc(userName, eventNamePattern);
             return eventList;
         } catch (Exception e) {
             String errMsg = e.toString();
@@ -166,16 +168,127 @@ public class EventService {
         }
     }
 
-    public EventDTO getEventByName(String userName, String eventName, GuestService guestService) throws ServiceException {
+    public List<Event> deleteGuestsByEventId(String userName, String bearerToken, GuestService guestService) throws ServiceException {
+        log.debug("deleteGuestsByEventId: userName={}", userName);
+
+        StringBuffer errMsg = new StringBuffer();
+        try {
+            List<Event> eventList = eventRepository.findAllByUserNameOrderByEventDate(userName);
+
+            if (eventList != null || eventList.size() > 0) {
+                for (Event event : eventList) {
+
+                    guestService.deleteGuestsByEvent(event.getEventId().toString(), bearerToken);
+                    eventRepository.delete(event);
+
+                }
+            }
+
+            return eventList;
+
+        } catch (ServiceException se) {
+            throw se;
+        } catch (Exception e) {
+            log.error("deleteGuestsByEventId: userName={}, {}", userName, errMsg);
+            throw new ServiceException(errMsg.toString());
+        }
+    }
+
+    /**
+     *
+     * @param userName
+     * @param eventName
+     * @param bearerToken
+     * @param guestService
+     * @return
+     * @throws ServiceException
+     */
+    public EventDTO getEventByName(String userName, String eventName, String bearerToken, GuestService guestService) throws ServiceException {
         log.debug("getEventListByPattern: userName={}, eventNamePattern={}", userName, eventName);
 
         Event event = getEventFromDbByName(userName, eventName);
         ModelMapper modelMapper = new ModelMapper();
         EventDTO eventDTO = modelMapper.map(event, EventDTO.class);
         log.debug("getEventByName: eventDTO={}", eventDTO);
-        eventDTO.setGuests(guestService.getGuestList(eventDTO));
+        eventDTO.setGuests(guestService.getGuestList(eventDTO, bearerToken));
         return eventDTO;
     }
 
+    /**
+     *
+     * @param eventDTO
+     * @return
+     * @throws ServiceException
+     */
+    public Event updateEvent(EventDTO eventDTO) throws ServiceException {
+        log.debug("updateEvent: eventDTO={}", eventDTO);
 
+        StringBuffer errMsg = new StringBuffer();
+        try {
+
+            Event event = new Event(eventDTO, eventServiceProperties);
+            // unique index on username, eventId and guestEmail
+            Event eventExisting = eventRepository.findFirstByEventId(UUID.fromString(eventDTO.getEventId()));
+
+            // check if eventDTO  already  exists  -  update
+            if (eventExisting != null) {
+
+                // set PK
+                event.setId(eventExisting.getId());
+
+                // save to  DB
+                setEvent(event);
+
+            } else {
+                errMsg.append("Event not found: ").append(eventDTO.getEventId());
+                throw new ServiceException(errMsg.toString());
+            }
+
+            return event;
+
+        } catch (ServiceException se) {
+            throw se;
+        } catch (Exception e) {
+            errMsg.append("Failed to update  event: ").append(e);
+            log.error("updateEvent: eventDTO={}, {}", eventDTO, errMsg);
+            throw new ServiceException(errMsg.toString());
+        }
+    }
+
+    /**
+     *
+     * @param eventId
+     * @param bearerToken
+     * @param guestService
+     * @return
+     * @throws ServiceException
+     */
+    public Event deleteEvent(String eventId, String bearerToken, GuestService guestService) throws ServiceException {
+        log.debug("deleteEvent: eventId={}", eventId);
+
+        StringBuffer errMsg = new StringBuffer();
+        try {
+            Event event = eventRepository.findFirstByEventId(UUID.fromString(eventId));
+
+            if (event != null) {
+
+                guestService.deleteGuestsByEvent(eventId, bearerToken);
+
+                eventRepository.delete(event);
+
+            } else {
+                errMsg.append("Event not found: ").append(eventId);
+                throw new ServiceException(errMsg.toString());
+            }
+
+            return event;
+
+        } catch (ServiceException se) {
+            throw se;
+        } catch (Exception e) {
+            log.error("deleteEvent: eventId={}, {}", eventId, errMsg);
+            throw new ServiceException(errMsg.toString());
+        }
+
+    }
 }
