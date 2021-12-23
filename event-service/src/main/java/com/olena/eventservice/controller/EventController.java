@@ -5,13 +5,11 @@ import com.olena.eventservice.exception.ServiceException;
 import com.olena.eventservice.model.EventDTO;
 import com.olena.eventservice.model.GuestDTO;
 import com.olena.eventservice.publisher.EventPublisher;
-import com.olena.eventservice.repository.entity.Event;
 import com.olena.eventservice.service.EventService;
 import com.olena.eventservice.service.GuestService;
 import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -132,12 +130,12 @@ public class EventController {
      */
     //    @PreAuthorize("#oauth2.hasScope('user')")
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<?> updateGuest(@RequestBody EventDTO eventDTO) throws ServiceException, BadInputException {
+    public ResponseEntity<?> updateEvent(@RequestBody EventDTO eventDTO) throws ServiceException, BadInputException {
 
-        if (eventDTO.getEventId() == null) {
+        if (eventDTO.getEventId() != null) {
             return ResponseEntity.ok(eventService.updateEvent(eventDTO, eventPublisher));
         } else {
-            throw new BadInputException("createEvent: eventId can not be null");
+            throw new BadInputException("updateEvent: eventId can not be null");
         }
     }
 

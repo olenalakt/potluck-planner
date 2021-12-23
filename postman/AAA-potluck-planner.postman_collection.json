@@ -6,75 +6,6 @@
 	},
 	"item": [
 		{
-			"name": "Get Access token (directly) -  not working yet Copy",
-			"protocolProfileBehavior": {
-				"disabledSystemHeaders": {
-					"content-type": true
-				}
-			},
-			"request": {
-				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "potluckPlannerSecret",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "potluckPlanner",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded;charset=UTF-8",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "grant_type",
-							"value": "pasword",
-							"type": "text"
-						},
-						{
-							"key": "username",
-							"value": "olena",
-							"type": "text"
-						},
-						{
-							"key": "password",
-							"value": "123",
-							"type": "text"
-						},
-						{
-							"key": "scope",
-							"value": "user",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "{{oath-server}}/oauth/token",
-					"host": [
-						"{{oath-server}}"
-					],
-					"path": [
-						"oauth",
-						"token"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "prometheus: event-service",
 			"request": {
 				"auth": {
@@ -186,11 +117,46 @@
 			"name": "EVENT-SERVICE: query events by username",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -219,14 +185,49 @@
 			"response": []
 		},
 		{
-			"name": "EVENT-SERVICE: delete events by username",
+			"name": "EVENT-SERVICE: delete events by username (not tested)",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -258,11 +259,46 @@
 			"name": "event-service: query events by username  from SPA client (for compatibility only)",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -293,11 +329,46 @@
 			"name": "event-service: query events by event name",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -311,7 +382,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{event-service}}/v1/events/eventname/Christmas%20Party%205",
+					"raw": "{{event-service}}/v1/events/eventname/Birthday%20Party%20for%20delete",
 					"host": [
 						"{{event-service}}"
 					],
@@ -319,7 +390,7 @@
 						"v1",
 						"events",
 						"eventname",
-						"Christmas%20Party%205"
+						"Birthday%20Party%20for%20delete"
 					]
 				}
 			},
@@ -329,11 +400,46 @@
 			"name": "event-service: query events by event name pattern",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -368,14 +474,119 @@
 			"response": []
 		},
 		{
+			"name": "event-service: query event by eventId",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{event-service}}/v1/events/{{eventId}}",
+					"host": [
+						"{{event-service}}"
+					],
+					"path": [
+						"v1",
+						"events",
+						"{{eventId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "event-service: add event",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -390,7 +601,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userName\": \"olena\",\r\n    \"eventName\": \"Birthday Party Ana\",\r\n    \"eventDate\": \"2021-12-19T16:00:00.000+00:00\",\r\n    \"notes\": \"Test 2\"\r\n\r\n}"
+					"raw": "{\r\n    \"userName\": \"olena\",\r\n    \"eventName\": \"Birthday Party for delete\",\r\n    \"eventDate\": \"2022-01-31T16:00:00.000+00:00\",\r\n    \"notes\": \"Test 3\"\r\n\r\n}"
 				},
 				"url": {
 					"raw": "{{event-service}}/v1/events",
@@ -406,49 +617,49 @@
 			"response": []
 		},
 		{
-			"name": "event-service: query event by eventId",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{TOKEN}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{event-service}}/v1/events/6b4fed65-689d-4e0f-b7bf-ea118b111397",
-					"host": [
-						"{{event-service}}"
-					],
-					"path": [
-						"v1",
-						"events",
-						"6b4fed65-689d-4e0f-b7bf-ea118b111397"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "event-service: update event info by eventId",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -463,7 +674,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userName\": \"olena\",\r\n    \"eventId\": \"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n    \"eventName\": \"Christmas Party 5\",\r\n    \"eventDate\": \"2021-12-19T16:00:00.000+00:00\",\r\n    \"notes\": \"Richmond Hill friends - updated 2\"\r\n}"
+					"raw": "{\r\n    \"userName\": \"olena\",\r\n    \"eventId\": \"0486bb09-ebb9-4644-b94a-6914be57174b\",\r\n    \"eventName\": \"Birthday Party\",\r\n    \"eventDate\": \"2022-01-18T16:00:00.000+00:00\",\r\n    \"notes\": \"Richmond Hill friends - updated 1\"\r\n}"
 				},
 				"url": {
 					"raw": "{{event-service}}/v1/events",
@@ -482,11 +693,46 @@
 			"name": "event-service: delete event  by eventId",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -500,14 +746,14 @@
 					}
 				],
 				"url": {
-					"raw": "{{event-service}}/v1/events/59a3c277-2556-4a1b-843c-8454f9c1aff7",
+					"raw": "{{event-service}}/v1/events/2eb997a6-67a8-449c-9cdf-3dfcfa2b2339",
 					"host": [
 						"{{event-service}}"
 					],
 					"path": [
 						"v1",
 						"events",
-						"59a3c277-2556-4a1b-843c-8454f9c1aff7"
+						"2eb997a6-67a8-449c-9cdf-3dfcfa2b2339"
 					]
 				}
 			},
@@ -517,11 +763,46 @@
 			"name": "event-service: update event -  add  guests",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -536,17 +817,17 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userName\": \"olena\",\r\n    \"eventId\": \"6b4fed65-689d-4e0f-b7bf-ea118b111397\",\r\n    \"eventName\": \"Birthday Party\",\r\n    \"eventDate\": \"2021-12-19T16:00:00.000+00:00\",\r\n    \"notes\": \"Test\",\r\n    \"guests\": [\r\n        {\r\n            \"guestName\": \"yura\",\r\n            \"guestEmail\": \"yura@gmail.com\"\r\n        },\r\n        {\r\n            \"guestName\": \"lena\",\r\n            \"guestEmail\": \"lena@gmail.com\"\r\n        },\r\n        {\r\n            \"guestName\": \"test1\",\r\n            \"guestEmail\": \"test1@gmail.com\"\r\n        },\r\n        {\r\n            \"guestName\": \"test2\",\r\n            \"guestEmail\": \"test2@gmail.com\"\r\n        }\r\n    ]\r\n}"
+					"raw": "[\r\n    {\r\n        \"guestName\": \"yura\",\r\n        \"guestEmail\": \"yura@gmail.com\"\r\n    },\r\n    {\r\n        \"guestName\": \"lena\",\r\n        \"guestEmail\": \"lena@gmail.com\"\r\n    },\r\n    {\r\n        \"guestName\": \"test1\",\r\n        \"guestEmail\": \"test1@gmail.com\"\r\n    },\r\n    {\r\n        \"guestName\": \"test2\",\r\n        \"guestEmail\": \"test2@gmail.com\"\r\n    }\r\n]"
 				},
 				"url": {
-					"raw": "{{event-service}}/v1/events/event/guests",
+					"raw": "{{event-service}}/v1/events/{{eventId}}/guests",
 					"host": [
 						"{{event-service}}"
 					],
 					"path": [
 						"v1",
 						"events",
-						"event",
+						"{{eventId}}",
 						"guests"
 					]
 				}
@@ -557,11 +838,46 @@
 			"name": "event-service: update event -  delete guests",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -576,17 +892,17 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\r\n       {\r\n            \"userName\": \"olena\",\r\n            \"eventId\": \"6b4fed65-689d-4e0f-b7bf-ea118b111397\",\r\n            \"guestName\": \"test1\",\r\n            \"guestEmail\": \"test1@gmail.com\",\r\n            \"notes\": null\r\n        },\r\n        {\r\n            \"userName\": \"olena\",\r\n            \"eventId\": \"6b4fed65-689d-4e0f-b7bf-ea118b111397\",\r\n            \"guestName\": \"test2\",\r\n            \"guestEmail\": \"test2@gmail.com\",\r\n            \"notes\": null\r\n        }\r\n]"
+					"raw": "[\r\n        {\r\n            \"userName\": \"olena\",\r\n            \"eventId\": \"0486bb09-ebb9-4644-b94a-6914be57174b\",\r\n            \"guestId\": \"72f4d16c-5001-425f-9b0f-8b93a46893b6\",\r\n            \"guestName\": \"test1\",\r\n            \"guestEmail\": \"test1@gmail.com\",\r\n            \"notes\": null\r\n        },\r\n        {\r\n            \"userName\": \"olena\",\r\n            \"eventId\": \"0486bb09-ebb9-4644-b94a-6914be57174b\",\r\n            \"guestId\": \"1459b3e9-887c-479c-8879-c1f071034bfe\",\r\n            \"guestName\": \"test2\",\r\n            \"guestEmail\": \"test2@gmail.com\",\r\n            \"notes\": null\r\n        }\r\n]"
 				},
 				"url": {
-					"raw": "{{event-service}}/v1/events/6b4fed65-689d-4e0f-b7bf-ea118b111397/guests",
+					"raw": "{{event-service}}/v1/events/{{eventId}}/guests",
 					"host": [
 						"{{event-service}}"
 					],
 					"path": [
 						"v1",
 						"events",
-						"6b4fed65-689d-4e0f-b7bf-ea118b111397",
+						"{{eventId}}",
 						"guests"
 					]
 				}
@@ -597,11 +913,46 @@
 			"name": "GUEST-SERVICE: query guests by eventId",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -633,11 +984,46 @@
 			"name": "GUEST-SERVICE: update guests",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -652,7 +1038,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[{\"userName\":\"olena\",\"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\", \"guestName\":\"test2\",\"guestEmail\":\"test2@gmail.com\"}]"
+					"raw": "[{\"userName\":\"olena\",\"eventId\":\"c3f6bd99-b1b0-4d4a-babe-887164cf035a\", \"guestName\":\"test3\",\"guestEmail\":\"test3@gmail.com\"}]"
 				},
 				"url": {
 					"raw": "{{guest-service}}/v1/guests/",
@@ -672,11 +1058,46 @@
 			"name": "guest-service: delete guests by eventId",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -708,11 +1129,46 @@
 			"name": "guest-service: delete guests (guestId has to be updated from  previous request response)",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -727,7 +1183,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[{\"guestId\": \"02c08f78-fe74-45ff-b3f0-6efd0888df85\",\"userName\":\"olena\",\"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\", \"guestName\":\"test2\",\"guestEmail\":\"test2@gmail.com\"}]"
+					"raw": "[{\"guestId\": \"02c08f78-fe74-45ff-b3f0-6efd0888df85\",\"userName\":\"olena\",\"eventId\":\"c3f6bd99-b1b0-4d4a-babe-887164cf035a\", \"guestName\":\"test3\",\"guestEmail\":\"test3@gmail.com\"}]"
 				},
 				"url": {
 					"raw": "{{guest-service}}/v1/guests/",
@@ -747,11 +1203,46 @@
 			"name": "guest-service:  update guest by guestId",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "scope",
+							"value": "guest",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -766,7 +1257,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"guestId\": \"48dd40b0-0c1e-4300-9849-89fde150e1da\",\r\n\"userName\":\"olena\",\"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\", \"guestName\":\"test2\",\"guestEmail\":\"test2@gmail.com\",\"notes\":\"updated2\"}"
+					"raw": "{\"guestId\": \"70786690-8bf3-43c8-9408-88e817c90d66\",\r\n\"userName\":\"olena\",\"eventId\":\"c3f6bd99-b1b0-4d4a-babe-887164cf035a\", \"guestName\":\"test3\",\"guestEmail\":\"test3@gmail.com\",\"notes\":\"updated3\"}"
 				},
 				"url": {
 					"raw": "{{guest-service}}/v1/guests/guest",
@@ -786,11 +1277,46 @@
 			"name": "guest-service: delete by guestId",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "scope",
+							"value": "guest",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -804,14 +1330,14 @@
 					}
 				],
 				"url": {
-					"raw": "{{guest-service}}/v1/guests/48dd40b0-0c1e-4300-9849-89fde150e1da",
+					"raw": "{{guest-service}}/v1/guests/70786690-8bf3-43c8-9408-88e817c90d66",
 					"host": [
 						"{{guest-service}}"
 					],
 					"path": [
 						"v1",
 						"guests",
-						"48dd40b0-0c1e-4300-9849-89fde150e1da"
+						"70786690-8bf3-43c8-9408-88e817c90d66"
 					]
 				}
 			},
@@ -821,11 +1347,46 @@
 			"name": "guest-service: query by guestId",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "scope",
+							"value": "guest",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -856,11 +1417,46 @@
 			"name": "guest-service: add/update  drinks for guest",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -878,14 +1474,14 @@
 					"raw": "[\r\n  {\r\n  \"userName\":\"olena\",\r\n  \"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"drinkName\":\"shardonay\",\r\n  \"drinkType\":\"WINE\",\r\n  \"drinkRecipe\":\"updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isAlcoholFree\":\"false\",\r\n  \"quantityMl\": 500\r\n  },\r\n  {\r\n  \"userName\":\"olena\",\r\n  \"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"drinkName\":\"apple juice\",\r\n  \"drinkType\":\"JUICE\",\r\n  \"drinkRecipe\":\"updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isAlcoholFree\":\"true\",\r\n  \"quantityMl\": 1000\r\n  },\r\n  {\r\n    \"userName\":\"olena\",\r\n\"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"drinkName\":\"test_delete1\",\r\n  \"drinkType\":\"JUICE\",\r\n  \"drinkRecipe\":\"updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isAlcoholFree\":\"true\",\r\n  \"quantityMl\": 1000\r\n  },\r\n  {\r\n    \"userName\":\"olena\",\r\n\"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"drinkName\":\"test_delete2\",\r\n  \"drinkType\":\"JUICE\",\r\n  \"drinkRecipe\":\"updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isAlcoholFree\":\"true\",\r\n  \"quantityMl\": 1000\r\n  }\r\n]"
 				},
 				"url": {
-					"raw": "{{guest-service}}/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/drinks",
+					"raw": "{{guest-service}}/v1/guests/{{guestId}}/drinks",
 					"host": [
 						"{{guest-service}}"
 					],
 					"path": [
 						"v1",
 						"guests",
-						"52cc7652-7db2-4acd-acbf-63c3c33da295",
+						"{{guestId}}",
 						"drinks"
 					]
 				}
@@ -896,11 +1492,46 @@
 			"name": "guest-service: delete  drinks for guest",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "scope",
+							"value": "guest",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -918,14 +1549,14 @@
 					"raw": "[\r\n{\r\n            \"userName\": \"olena\",\r\n            \"eventId\": \"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n            \"guestId\": \"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n            \"drinkId\": \"b5c70abf-d3d8-4cd8-90b8-5de4fe1c7f33\",\r\n            \"quantityMl\": 1000,\r\n            \"drinkName\": \"test_delete1\",\r\n            \"drinkType\": \"JUICE\",\r\n            \"drinkRecipe\": \"updated\",\r\n            \"isLactoseFree\": true,\r\n            \"isAlcoholFree\": true\r\n        },\r\n        {\r\n            \"userName\": \"olena\",\r\n            \"eventId\": \"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n            \"guestId\": \"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n            \"drinkId\": \"e4b6ca1e-2189-4dd7-9b84-907c28e153bc\",\r\n            \"quantityMl\": 1000,\r\n            \"drinkName\": \"test_delete2\",\r\n            \"drinkType\": \"JUICE\",\r\n            \"drinkRecipe\": \"updated\",\r\n            \"isLactoseFree\": true,\r\n            \"isAlcoholFree\": true\r\n        }\r\n]"
 				},
 				"url": {
-					"raw": "{{guest-service}}/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/drinks",
+					"raw": "{{guest-service}}/v1/guests/{{guestId}}/drinks",
 					"host": [
 						"{{guest-service}}"
 					],
 					"path": [
 						"v1",
 						"guests",
-						"52cc7652-7db2-4acd-acbf-63c3c33da295",
+						"{{guestId}}",
 						"drinks"
 					]
 				}
@@ -936,11 +1567,46 @@
 			"name": "guest-service: add/update  dishes for guest",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "scope",
+							"value": "guest",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -958,14 +1624,14 @@
 					"raw": "[\r\n  {\r\n  \"userName\":\"olena\",\r\n  \"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"dishName\":\"cake\",\r\n  \"dishType\":\"DESERT\",\r\n  \"dishRecipe\":\"cake recipe here\",\r\n  \"isLactoseFree\":\"false\",\r\n  \"isNutFree\":\"false\",\r\n  \"hasFish\":\"false\",\r\n  \"hasMeat\":\"false\"\r\n  },\r\n  {\r\n  \"userName\":\"olena\",\r\n  \"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"dishName\":\"ragu\",\r\n  \"dishType\":\"MAIN\",\r\n  \"dishRecipe\":\"ragu recipe here\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isNutFree\":\"true\",\r\n  \"hasFish\":\"false\",\r\n  \"hasMeat\":\"false\"\r\n  } \r\n]"
 				},
 				"url": {
-					"raw": "{{guest-service}}/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/dishes",
+					"raw": "{{guest-service}}/v1/guests/{{guestId}}/dishes",
 					"host": [
 						"{{guest-service}}"
 					],
 					"path": [
 						"v1",
 						"guests",
-						"52cc7652-7db2-4acd-acbf-63c3c33da295",
+						"{{guestId}}",
 						"dishes"
 					]
 				}
@@ -976,11 +1642,46 @@
 			"name": "guest-service: delete  dishes for guest",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "oauth2",
+					"oauth2": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
+							"key": "scope",
+							"value": "guest",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
 							"type": "string"
 						}
 					]
@@ -998,14 +1699,14 @@
 					"raw": "[\r\n            {\r\n            \"userName\": \"olena\",\r\n            \"eventId\": \"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n            \"guestId\": \"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n            \"dishId\": \"b113e8e6-f8d4-400b-aae9-fef3490eb035\",\r\n            \"dishName\": \"cake\",\r\n            \"dishType\": \"DESERT\",\r\n            \"dishRecipe\": \"cake recipe here - updated\",\r\n            \"isLactoseFree\": false,\r\n            \"isNutFree\": false,\r\n            \"hasFish\": false,\r\n            \"hasMeat\": false\r\n        },\r\n  {\r\n  \"dishId\": \"473f14e8-25f4-40d9-854c-73e90ef8ff88\",\"userName\":\"olena\",\r\n  \"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"dishName\":\"ragu\",\r\n  \"dishType\":\"MAIN\",\r\n  \"dishRecipe\":\"ragu recipe here - updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isNutFree\":\"true\",\r\n  \"hasFish\":\"false\",\r\n  \"hasMeat\":\"false\"\r\n  } \r\n]"
 				},
 				"url": {
-					"raw": "{{guest-service}}/v1/guests/52cc7652-7db2-4acd-acbf-63c3c33da295/dishes",
+					"raw": "{{guest-service}}/v1/guests/{{guestId}}/dishes",
 					"host": [
 						"{{guest-service}}"
 					],
 					"path": [
 						"v1",
 						"guests",
-						"52cc7652-7db2-4acd-acbf-63c3c33da295",
+						"{{guestId}}",
 						"dishes"
 					]
 				}

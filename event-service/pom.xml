@@ -57,7 +57,7 @@
             <version>2.2.4.RELEASE</version>
         </dependency>
 
-        <dependency>
+<!--        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-stream</artifactId>
         </dependency>
@@ -69,7 +69,7 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-stream-test-support</artifactId>
             <scope>test</scope>
-        </dependency>
+        </dependency>-->
 
 <!--        <dependency>
             <groupId>javax.xml.bind</groupId>

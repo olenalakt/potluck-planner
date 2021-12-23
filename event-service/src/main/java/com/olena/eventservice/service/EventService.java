@@ -113,7 +113,7 @@ public class EventService {
             Event event = new Event(eventDTO, ActionEnum.ADD, eventServiceProperties);
             setEvent(event);
 
-            eventPublisher.publish(event);
+//            eventPublisher.publish(event);
 
             return event;
 
@@ -194,13 +194,13 @@ public class EventService {
 
             if (eventList != null || eventList.size() > 0) {
                 for (Event event : eventList) {
-// TODO implement saga here -  rollback event deletion if guests failed to delete
+
                     guestService.deleteGuestsByEvent(event.getEventId().toString(), bearerToken);
                     eventRepository.delete(event);
 
                     // publish event into  Kafka topic
                     event.setActionType(ActionEnum.DELETE.getCode());
-                    eventPublisher.publish(event);
+//                    eventPublisher.publish(event);
 
                 }
             }
@@ -257,7 +257,7 @@ public class EventService {
                 // save to  DB
                 setEvent(event);
 
-                eventPublisher.publish(event);
+//                eventPublisher.publish(event);
 
                 return event;
 
@@ -291,14 +291,13 @@ public class EventService {
 
             if (event != null) {
 
-// TODO implement saga here -  rollback event deletion if guests failed to delete
                 guestService.deleteGuestsByEvent(eventId, bearerToken);
 
                 eventRepository.delete(event);
 
                 // publish as DELETED
                 event.setActionType(ActionEnum.DELETE.getCode());
-                eventPublisher.publish(event);
+//                eventPublisher.publish(event);
 
                 return event;
 
