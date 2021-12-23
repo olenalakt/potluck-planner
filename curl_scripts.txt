@@ -4,7 +4,10 @@
 curl -v -k -X POST --basic -u potluckPlanner:potluckPlannerSecret -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d "grant_type=password&username=olena&password=123&scope=user" https://localhost:8080/oauth/token
 
 
-// JWT access token directly no  SSL
+// user-event services JWT access token directly no  SSL
+curl -v  -X POST --basic -u potluckPlanner:potluckPlannerSecret -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d "grant_type=password&username=olena&password=123&scope=user" http://localhost:8080/oauth/token
+
+// guest services JWT access token directly no  SSL
 curl -v  -X POST --basic -u potluckPlanner:potluckPlannerSecret -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -d "grant_type=password&username=olena&password=123&scope=user" http://localhost:8080/oauth/token
 
 // access token via gateway, no  SSL - not working
@@ -41,6 +44,10 @@ curl -k -H "Authorization: Bearer $TOKEN" http://localhost:9443/v1/events
 
 
 curl -k -H "Authorization: Bearer $TOKEN" http://localhost:9090/event/v1/events
+----------------
+// list events by username via postman/curl
+curl -k -H "Authorization: Bearer $TOKEN" http://localhost:9443/v1/events/username/olena
+
 --------------------------
 
 // list events by eventname pattern
@@ -60,6 +67,19 @@ curl -k -H "Authorization: Bearer $TOKEN" http://localhost:9443/v1/events/0e9ebe
 
 // event via gateway with token -  not working
  curl -k -H "Authorization: Bearer $TOKEN" http://localhost:9090/event/events/0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe -H "Content-Type: application/json"
+--------------------
+// update event 
+curl -k  -H "Authorization: Bearer $TOKEN" -X PUT https://localhost:9443/event -H "Content-Type: application/json" 
+-H 'Content-Type: application/json' \
+--data-binary @- << EOF
+{
+  "userName":"olena",
+  "eventName":"Christmas Party 5",
+  "eventDate":"2021-12-19T16:00:00.0000",
+  "notes":"Richmond Hill friends - updated"
+}
+EOF
+
 ----------------
 
 

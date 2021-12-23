@@ -14,6 +14,7 @@ public class GuestDTO {
 
     private String userName;
     private String eventId;
+    private String guestId;
 
     @NonNull
     private String guestName;
