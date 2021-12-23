@@ -2,11 +2,13 @@ package com.olena.eventservice.repository.entity;
 
 import com.mongodb.lang.NonNull;
 import com.olena.eventservice.config.EventServiceProperties;
+import com.olena.eventservice.enums.ActionEnum;
 import com.olena.eventservice.model.EventDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -44,7 +46,10 @@ public class Event {
     @NonNull
     private Timestamp lastmodified;
 
-    public Event(EventDTO eventDTO, EventServiceProperties eventServiceProperties) {
+    @Transient
+    private String actionType;
+
+    public Event(EventDTO eventDTO, ActionEnum actionEnum, EventServiceProperties eventServiceProperties) {
         this.eventId = UUID.fromString(eventDTO.getEventId());
         this.userName = eventDTO.getUserName();
         this.eventName = eventDTO.getEventName();
@@ -55,5 +60,7 @@ public class Event {
 
         Instant now = Instant.now();
         this.lastmodified = Timestamp.from(now);
+
+        actionType = actionEnum.getCode();
     }
 }

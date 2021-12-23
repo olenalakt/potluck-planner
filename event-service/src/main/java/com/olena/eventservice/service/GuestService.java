@@ -5,6 +5,7 @@ import com.olena.eventservice.enums.Constants;
 import com.olena.eventservice.exception.ServiceException;
 import com.olena.eventservice.model.EventDTO;
 import com.olena.eventservice.model.GuestDTO;
+import com.olena.eventservice.publisher.EventPublisher;
 import com.olena.eventservice.repository.entity.Event;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,9 @@ public class GuestService {
 
 
     /**
+     *
      * @param eventDTO
+     * @param bearerToken
      * @return
      * @throws ServiceException
      */
@@ -60,102 +63,11 @@ public class GuestService {
     }
 
     /**
-     * @param eventDTO
-     * @throws ServiceException
-     */
-    public void processGuests(EventDTO eventDTO, String bearerToken) throws ServiceException {
-        // call guest service to  process guests
-        log.debug("processGuests: eventDTO={}", eventDTO.toString());
-
-        //TODO replace with asynch via Kafka
-        String url = eventServiceProperties.getGuestServiceUrl();
-
-        List<GuestDTO> guestDTOList = prepareGuestList(eventDTO);
-        if (guestDTOList != null && guestDTOList.size() > 0) {
-            try {
-
-//                restTemplate.put(uri, guestDTOList);
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-                headers.set("Authorization", bearerToken);
-
-                HttpEntity<List<GuestDTO>> entityReq = new HttpEntity<>(guestDTOList, headers);
-
-                //ResponseEntity<?> respEntity =
-                restTemplate.exchange(url, HttpMethod.PUT, entityReq, Void.class);
-
-            } catch (Exception e) {
-                String errMsg = "Failed to update guest list for " + url + ": " + e;
-                log.error("processGuests: eventDTO={}, {}", eventDTO, errMsg);
-                throw new ServiceException(errMsg);
-            }
-        }
-    }
-
-    /**
-     * @param eventDTO
-     * @return
-     * @throws ServiceException
-     */
-    public List<GuestDTO> prepareGuestList(EventDTO eventDTO) throws ServiceException {
-        log.debug("prepareGuestList: eventDTO={}", eventDTO.toString());
-
-        List<GuestDTO> guestDTOList = new ArrayList<>();
-        try {
-            for (GuestDTO guest : eventDTO.getGuests()) {
-
-                guest.setEventId(eventDTO.getEventId());
-                guest.setUserName(eventDTO.getUserName());
-
-                guestDTOList.add(guest);
-            }
-
-            return guestDTOList;
-        } catch (Exception e) {
-            String errMsg = "Failed to prepare guest list from " + eventDTO.getEventName() + ": " + e;
-            log.error("prepareGuestList: eventDTO={}, {}", eventDTO, errMsg);
-            throw new ServiceException(errMsg);
-        }
-    }
-
-    /**
+     *
      * @param eventId
      * @param bearerToken
-     * @param guests
-     * @param eventService
-     * @return
      * @throws ServiceException
      */
-    public Event deleteGuests(String eventId, String bearerToken, GuestDTO[] guests, EventService eventService) throws ServiceException {
-        // call guest service to process guests
-        log.debug("deleteGuests: eventId={}, guests={}", eventId, guests);
-
-        String url = eventServiceProperties.getGuestServiceUrl();
-        try {
-
-            Event event = eventService.getEventFromDb(eventId);
-
-//            restTemplate.delete(uri.toString(), dishes, DishDTO[].class);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.set("Authorization", bearerToken);
-
-            HttpEntity<GuestDTO[]> entityReq = new HttpEntity<>(guests, headers);
-
-            //ResponseEntity<?> respEntity =
-            restTemplate.exchange(url, HttpMethod.DELETE, entityReq, Void.class);
-
-            return event;
-
-        } catch (ServiceException se) {
-            throw se;
-        } catch (Exception e) {
-            String errMsg = "Failed to delete event guests for " + url + ": " + e;
-            log.error("deleteGuests: eventId={}, guests={}, {}", eventId, guests, errMsg);
-            throw new ServiceException(errMsg);
-        }
-    }
-
     public void deleteGuestsByEvent(String eventId, String bearerToken) throws ServiceException {
         // call guest service to process guests
         log.debug("deleteGuestsByEvent: eventId={}", eventId);
@@ -179,4 +91,105 @@ public class GuestService {
             throw new ServiceException(errMsg);
         }
     }
+
+    /**
+     *
+     * @param eventId
+     * @param guests
+     * @param bearerToken
+     * @param eventService
+     * @throws ServiceException
+     */
+    public void processGuests(String eventId, GuestDTO[] guests, String bearerToken, EventService eventService) throws ServiceException {
+        // call guest service to  process guests
+        log.debug("processGuests: eventId={}", eventId);
+
+        String url = eventServiceProperties.getGuestServiceUrl();
+
+            try {
+
+                Event event = eventService.getEventFromDb(eventId);
+                List<GuestDTO> guestDTOList = prepareGuestList(event, guests);
+
+//                restTemplate.put(uri, guestDTOList);
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                headers.set("Authorization", bearerToken);
+
+                HttpEntity<List<GuestDTO>> entityReq = new HttpEntity<>(guestDTOList, headers);
+
+                //ResponseEntity<?> respEntity =
+                restTemplate.exchange(url, HttpMethod.PUT, entityReq, Void.class);
+
+            } catch (Exception e) {
+                String errMsg = "Failed to update guest list for " + url + ": " + e;
+                log.error("processGuests: eventId={}, {}", eventId, errMsg);
+                throw new ServiceException(errMsg);
+            }
+    }
+
+    /**
+     *
+     * @param event
+     * @param guests
+     * @return
+     * @throws ServiceException
+     */
+    public List<GuestDTO> prepareGuestList(Event event, GuestDTO[] guests) throws ServiceException {
+        log.debug("prepareGuestList: event={}", event.toString());
+
+        List<GuestDTO> guestDTOList = new ArrayList<>();
+        try {
+            for (GuestDTO guest : guests) {
+
+                guest.setEventId(event.getEventId().toString());
+                guest.setUserName(event.getUserName());
+                guestDTOList.add(guest);
+            }
+
+            return guestDTOList;
+        } catch (Exception e) {
+            String errMsg = "Failed to prepare guest list from " + event.getEventName() + ": " + e;
+            log.error("prepareGuestList: event={}, {}", event.toString(), errMsg);
+            throw new ServiceException(errMsg);
+        }
+    }
+
+    /**
+     * @param eventId
+     * @param bearerToken
+     * @param guests
+     * @param eventService
+     * @return
+     * @throws ServiceException
+     */
+    public void deleteGuests(String eventId, GuestDTO[] guests, String bearerToken,
+                              EventService eventService) throws ServiceException {
+        // call guest service to process guests
+        log.debug("deleteGuests: eventId={}, guests={}", eventId, guests);
+
+        String url = eventServiceProperties.getGuestServiceUrl();
+        try {
+
+            Event event = eventService.getEventFromDb(eventId);
+
+//            restTemplate.delete(uri.toString(), dishes, DishDTO[].class);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("Authorization", bearerToken);
+
+            HttpEntity<GuestDTO[]> entityReq = new HttpEntity<>(guests, headers);
+
+            //ResponseEntity<?> respEntity =
+            restTemplate.exchange(url, HttpMethod.DELETE, entityReq, Void.class);
+
+        } catch (ServiceException se) {
+            throw se;
+        } catch (Exception e) {
+            String errMsg = "Failed to delete event guests for " + url + ": " + e;
+            log.error("deleteGuests: eventId={}, guests={}, {}", eventId, guests, errMsg);
+            throw new ServiceException(errMsg);
+        }
+    }
+
 }

@@ -1,18 +1,19 @@
 package com.olena.eventservice.controller;
 
+import com.olena.eventservice.exception.BadInputException;
 import com.olena.eventservice.exception.ServiceException;
 import com.olena.eventservice.model.EventDTO;
 import com.olena.eventservice.model.GuestDTO;
+import com.olena.eventservice.publisher.EventPublisher;
 import com.olena.eventservice.repository.entity.Event;
 import com.olena.eventservice.service.EventService;
 import com.olena.eventservice.service.GuestService;
+import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -27,9 +28,13 @@ public class EventController {
     @Autowired
     GuestService guestService;
 
+    @Autowired
+    EventPublisher eventPublisher;
+
     // ! only  for compatibility  with  SPA client
     // TODO extract username from JWT token and update queries
     String username = "olena";
+
     //    @PreAuthorize("#oauth2.hasScope('user')")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> getEventListByUserName() throws ServiceException {
@@ -54,7 +59,6 @@ public class EventController {
     }
 
     /**
-     *
      * @param userName
      * @param bearerToken
      * @return
@@ -62,27 +66,26 @@ public class EventController {
      */
     //    @PreAuthorize("#oauth2.hasScope('user')")
     @RequestMapping(value = "/username/{username}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteGuestByEventId(@PathVariable("username") String userName
+    public ResponseEntity<?> deleteEventByUserName(@PathVariable("username") String userName
             , @RequestHeader(name = "Authorization") String bearerToken) throws ServiceException {
 
-        return ResponseEntity.ok(eventService.deleteGuestsByEventId(userName, bearerToken, guestService));
+        return ResponseEntity.ok(eventService.deleteEventByUserName(userName, bearerToken, guestService, eventPublisher));
     }
 
     /**
-     *
      * @param eventName
      * @param bearerToken
      * @param contains
      * @return
      * @throws ServiceException
      */
+// TODO  - move to  CQRS service
     //    @PreAuthorize("#oauth2.hasScope('user')")
     @RequestMapping(value = "/eventname/{eventname}", method = RequestMethod.GET)
     public ResponseEntity<?> getEvent(@PathVariable("eventname") final String eventName,
                                       @RequestHeader(name = "Authorization") String bearerToken,
                                       @RequestParam(name = "contains", required = false, defaultValue = "false") final Boolean contains) throws ServiceException {
 
-        // TODO - get username from JWT token later
         if (contains) {
             // return list with event names like requested, no  guest info
             return ResponseEntity.ok(eventService.getEventListByPattern(username, eventName));
@@ -90,32 +93,6 @@ public class EventController {
             // returns exact  match with guest info
             return ResponseEntity.ok(eventService.getEventByName(username, eventName, bearerToken, guestService));
         }
-    }
-
-    /**
-     * @param eventDTO
-     * @return
-     */
-//    @PreAuthorize("#oauth2.hasScope('user')")
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> createEvent(@RequestBody EventDTO eventDTO,
-                                         @RequestHeader(name = "Authorization") String bearerToken) throws ServiceException {
-
-        if (eventDTO != null) {
-
-// TODO implement saga here -  rollback event if guests failed to  add
-
-            eventDTO.setEventId(UUID.randomUUID().toString());
-            eventService.addEvent(eventDTO);
-
-            if (eventDTO.getGuests() != null && eventDTO.getGuests().length > 0) {
-                guestService.processGuests(eventDTO, bearerToken);
-            }
-
-            return ResponseEntity.ok(eventService.getEventFromDb(eventDTO.getEventId()));
-
-        }
-        return ResponseEntity.badRequest().build();
     }
 
     /**
@@ -134,21 +111,35 @@ public class EventController {
     }
 
     /**
-     *
+     * @param eventDTO
+     * @return
+     */
+//    @PreAuthorize("#oauth2.hasScope('user')")
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<?> createEvent(@RequestBody EventDTO eventDTO) throws ServiceException, BadInputException {
+
+        if (!StringUtils.isBlank(eventDTO.getEventName())) {
+            return ResponseEntity.ok(eventService.addEvent(eventDTO, eventPublisher));
+        } else {
+            throw new BadInputException("createEvent: empty event name");
+        }
+    }
+
+    /**
      * @param eventDTO
      * @return
      * @throws ServiceException
      */
-    //    @PreAuthorize("#oauth2.hasScope('guest')")
+    //    @PreAuthorize("#oauth2.hasScope('user')")
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<?> updateGuest(@RequestBody EventDTO eventDTO) throws ServiceException {
+    public ResponseEntity<?> updateGuest(@RequestBody EventDTO eventDTO) throws ServiceException, BadInputException {
 
-        if (eventDTO == null || eventDTO.getEventId() == null) {
-            return ResponseEntity.badRequest().build();
+        if (eventDTO.getEventId() == null) {
+            return ResponseEntity.ok(eventService.updateEvent(eventDTO, eventPublisher));
+        } else {
+            throw new BadInputException("createEvent: eventId can not be null");
         }
-        return ResponseEntity.ok(eventService.updateEvent(eventDTO));
     }
-
 
     /**
      * @param eventId
@@ -159,41 +150,54 @@ public class EventController {
     public ResponseEntity<?> deleteEvent(@PathVariable("eventid") String eventId
             , @RequestHeader(name = "Authorization") String bearerToken) throws ServiceException {
 
-        return ResponseEntity.ok(eventService.deleteEvent(eventId, bearerToken, guestService));
+        return ResponseEntity.ok(eventService.deleteEvent(eventId, bearerToken, guestService, eventPublisher));
+
     }
 
     /**
-     * @param eventDTO
+     * @param eventId
+     * @param guests
+     * @param bearerToken
      * @return
+     * @throws ServiceException
      */
 //    @PreAuthorize("#oauth2.hasScope('user')")
-    @RequestMapping(value = "/event/guests", method = RequestMethod.PUT)
-    public ResponseEntity<?> addGuests(@RequestBody EventDTO eventDTO,
-                                       @RequestHeader(name = "Authorization") String bearerToken) throws ServiceException {
+    @RequestMapping(value = "/{eventid}/guests", method = RequestMethod.PUT)
+    public ResponseEntity<?> addGuests(@PathVariable("eventid") String eventId, @RequestBody GuestDTO[] guests,
+                                       @RequestHeader(name = "Authorization") String bearerToken)
+            throws ServiceException, BadInputException {
 
-        if (eventDTO != null && eventDTO.getEventId() != null &&
-                eventDTO.getGuests() != null && eventDTO.getGuests().length > 0) {
+        if (guests.length != 0) {
 
-            Event event = eventService.checkEvent(eventDTO);
+            guestService.processGuests(eventId, guests, bearerToken, eventService);
 
-            guestService.processGuests(eventDTO, bearerToken);
-
-            return ResponseEntity.ok(event);
+            return ResponseEntity.ok(eventService.getEvent(eventId, true, bearerToken, guestService));
+        } else {
+            throw new BadInputException("addGuests: guest list is empty");
         }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    /**
+     * @param eventId
+     * @param guests
+     * @param bearerToken
+     * @return
+     * @throws ServiceException
+     */
     //    @PreAuthorize("#oauth2.hasScope('guest')")
     @RequestMapping(value = "/{eventid}/guests", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteEvents(@PathVariable("eventid") String eventId
-            , @RequestHeader(name = "Authorization") String bearerToken, @RequestBody GuestDTO[] guests) throws ServiceException {
+    public ResponseEntity<?> deleteGuests(@PathVariable("eventid") String eventId, @RequestBody GuestDTO[] guests,
+                                          @RequestHeader(name = "Authorization") String bearerToken) throws ServiceException, BadInputException {
 
-        if (eventId == null || guests == null || guests.length == 0) {
-            return ResponseEntity.badRequest().build();
+        if (guests.length != 0) {
+
+            guestService.deleteGuests(eventId, guests, bearerToken, eventService);
+
+            return ResponseEntity.ok(eventService.getEvent(eventId, true, bearerToken, guestService));
+
+        } else {
+            throw new BadInputException("deleteGuests: delete guest list is empty");
         }
-
-        return ResponseEntity.ok(guestService.deleteGuests(eventId, bearerToken, guests, eventService));
     }
 
 }

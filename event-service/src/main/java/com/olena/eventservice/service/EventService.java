@@ -1,8 +1,10 @@
 package com.olena.eventservice.service;
 
 import com.olena.eventservice.config.EventServiceProperties;
+import com.olena.eventservice.enums.ActionEnum;
 import com.olena.eventservice.exception.ServiceException;
 import com.olena.eventservice.model.EventDTO;
+import com.olena.eventservice.publisher.EventPublisher;
 import com.olena.eventservice.repository.EventRepository;
 import com.olena.eventservice.repository.entity.Event;
 import lombok.extern.slf4j.Slf4j;
@@ -93,10 +95,10 @@ public class EventService {
      * @return
      * @throws ServiceException
      */
-    public void addEvent(EventDTO eventDTO) throws ServiceException {
+    public Event addEvent(EventDTO eventDTO, EventPublisher eventPublisher) throws ServiceException {
         log.debug("addEvent: eventDTO={}", eventDTO);
 
-        // check if eventDTO  already  exists  -  reject
+        // check if eventDTO  already  exists   -  reject
         if (eventRepository.findFirstByUserNameAndEventName(eventDTO.getUserName(), eventDTO.getEventName()) != null) {
             StringBuffer errMsg = new StringBuffer();
             errMsg.append("Event already exists in DB");
@@ -105,14 +107,21 @@ public class EventService {
         }
 
         try {
+            // generate UUID for new event
+            eventDTO.setEventId(UUID.randomUUID().toString());
+            // construct Event from EventDTO
+            Event event = new Event(eventDTO, ActionEnum.ADD, eventServiceProperties);
+            setEvent(event);
 
-            setEvent(new Event(eventDTO, eventServiceProperties));
+            eventPublisher.publish(event);
+
+            return event;
 
         } catch (ServiceException se) {
             throw se;
         } catch (Exception e) {
             StringBuffer errMsg = new StringBuffer();
-            errMsg.append("Failed to map user: ").append(e);
+            errMsg.append("Failed to map event: ").append(e);
             log.error("addEvent: eventDTO={}, {}", eventDTO, errMsg);
             throw new ServiceException(errMsg.toString());
         }
@@ -168,8 +177,16 @@ public class EventService {
         }
     }
 
-    public List<Event> deleteGuestsByEventId(String userName, String bearerToken, GuestService guestService) throws ServiceException {
-        log.debug("deleteGuestsByEventId: userName={}", userName);
+    /**
+     *
+     * @param userName
+     * @param bearerToken
+     * @param guestService
+     * @return
+     * @throws ServiceException
+     */
+    public List<Event> deleteEventByUserName(String userName, String bearerToken, GuestService guestService, EventPublisher eventPublisher) throws ServiceException {
+        log.debug("deleteEventByUserName: userName={}", userName);
 
         StringBuffer errMsg = new StringBuffer();
         try {
@@ -177,9 +194,13 @@ public class EventService {
 
             if (eventList != null || eventList.size() > 0) {
                 for (Event event : eventList) {
-
+// TODO implement saga here -  rollback event deletion if guests failed to delete
                     guestService.deleteGuestsByEvent(event.getEventId().toString(), bearerToken);
                     eventRepository.delete(event);
+
+                    // publish event into  Kafka topic
+                    event.setActionType(ActionEnum.DELETE.getCode());
+                    eventPublisher.publish(event);
 
                 }
             }
@@ -189,7 +210,7 @@ public class EventService {
         } catch (ServiceException se) {
             throw se;
         } catch (Exception e) {
-            log.error("deleteGuestsByEventId: userName={}, {}", userName, errMsg);
+            log.error("deleteEventByUserName: userName={}, {}", userName, errMsg);
             throw new ServiceException(errMsg.toString());
         }
     }
@@ -209,7 +230,7 @@ public class EventService {
         ModelMapper modelMapper = new ModelMapper();
         EventDTO eventDTO = modelMapper.map(event, EventDTO.class);
         log.debug("getEventByName: eventDTO={}", eventDTO);
-        eventDTO.setGuests(guestService.getGuestList(eventDTO, bearerToken));
+
         return eventDTO;
     }
 
@@ -218,14 +239,14 @@ public class EventService {
      * @return
      * @throws ServiceException
      */
-    public Event updateEvent(EventDTO eventDTO) throws ServiceException {
+    public Event updateEvent(EventDTO eventDTO, EventPublisher eventPublisher) throws ServiceException {
         log.debug("updateEvent: eventDTO={}", eventDTO);
 
         StringBuffer errMsg = new StringBuffer();
         try {
 
-            Event event = new Event(eventDTO, eventServiceProperties);
-            // unique index on username, eventId and guestEmail
+            Event event = new Event(eventDTO, ActionEnum.UPDATE, eventServiceProperties);
+            // verify event exists
             Event eventExisting = eventRepository.findFirstByEventId(UUID.fromString(eventDTO.getEventId()));
 
             // check if eventDTO  already  exists  -  update
@@ -233,16 +254,17 @@ public class EventService {
 
                 // set PK
                 event.setId(eventExisting.getId());
-
                 // save to  DB
                 setEvent(event);
+
+                eventPublisher.publish(event);
+
+                return event;
 
             } else {
                 errMsg.append("Event not found: ").append(eventDTO.getEventId());
                 throw new ServiceException(errMsg.toString());
             }
-
-            return event;
 
         } catch (ServiceException se) {
             throw se;
@@ -260,7 +282,7 @@ public class EventService {
      * @return
      * @throws ServiceException
      */
-    public Event deleteEvent(String eventId, String bearerToken, GuestService guestService) throws ServiceException {
+    public Event deleteEvent(String eventId, String bearerToken, GuestService guestService, EventPublisher eventPublisher) throws ServiceException {
         log.debug("deleteEvent: eventId={}", eventId);
 
         StringBuffer errMsg = new StringBuffer();
@@ -269,16 +291,22 @@ public class EventService {
 
             if (event != null) {
 
+// TODO implement saga here -  rollback event deletion if guests failed to delete
                 guestService.deleteGuestsByEvent(eventId, bearerToken);
 
                 eventRepository.delete(event);
+
+                // publish as DELETED
+                event.setActionType(ActionEnum.DELETE.getCode());
+                eventPublisher.publish(event);
+
+                return event;
 
             } else {
                 errMsg.append("Event not found: ").append(eventId);
                 throw new ServiceException(errMsg.toString());
             }
 
-            return event;
 
         } catch (ServiceException se) {
             throw se;
