@@ -195,7 +195,6 @@ public class EventService {
     }
 
     /**
-     *
      * @param userName
      * @param eventName
      * @param bearerToken
@@ -215,7 +214,6 @@ public class EventService {
     }
 
     /**
-     *
      * @param eventDTO
      * @return
      * @throws ServiceException
@@ -256,7 +254,6 @@ public class EventService {
     }
 
     /**
-     *
      * @param eventId
      * @param bearerToken
      * @param guestService
