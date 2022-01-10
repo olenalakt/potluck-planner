@@ -5,7 +5,6 @@ import com.olena.eventservice.enums.Constants;
 import com.olena.eventservice.exception.ServiceException;
 import com.olena.eventservice.model.EventDTO;
 import com.olena.eventservice.model.GuestDTO;
-import com.olena.eventservice.publisher.EventPublisher;
 import com.olena.eventservice.repository.entity.Event;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,6 @@ public class GuestService {
 
 
     /**
-     *
      * @param eventDTO
      * @param bearerToken
      * @return
@@ -63,7 +61,6 @@ public class GuestService {
     }
 
     /**
-     *
      * @param eventId
      * @param bearerToken
      * @throws ServiceException
@@ -93,7 +90,6 @@ public class GuestService {
     }
 
     /**
-     *
      * @param eventId
      * @param guests
      * @param bearerToken
@@ -106,30 +102,29 @@ public class GuestService {
 
         String url = eventServiceProperties.getGuestServiceUrl();
 
-            try {
+        try {
 
-                Event event = eventService.getEventFromDb(eventId);
-                List<GuestDTO> guestDTOList = prepareGuestList(event, guests);
+            Event event = eventService.getEventFromDb(eventId);
+            List<GuestDTO> guestDTOList = prepareGuestList(event, guests);
 
 //                restTemplate.put(uri, guestDTOList);
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-                headers.set("Authorization", bearerToken);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("Authorization", bearerToken);
 
-                HttpEntity<List<GuestDTO>> entityReq = new HttpEntity<>(guestDTOList, headers);
+            HttpEntity<List<GuestDTO>> entityReq = new HttpEntity<>(guestDTOList, headers);
 
-                //ResponseEntity<?> respEntity =
-                restTemplate.exchange(url, HttpMethod.PUT, entityReq, Void.class);
+            //ResponseEntity<?> respEntity =
+            restTemplate.exchange(url, HttpMethod.PUT, entityReq, Void.class);
 
-            } catch (Exception e) {
-                String errMsg = "Failed to update guest list for " + url + ": " + e;
-                log.error("processGuests: eventId={}, {}", eventId, errMsg);
-                throw new ServiceException(errMsg);
-            }
+        } catch (Exception e) {
+            String errMsg = "Failed to update guest list for " + url + ": " + e;
+            log.error("processGuests: eventId={}, {}", eventId, errMsg);
+            throw new ServiceException(errMsg);
+        }
     }
 
     /**
-     *
      * @param event
      * @param guests
      * @return
@@ -150,7 +145,7 @@ public class GuestService {
             return guestDTOList;
         } catch (Exception e) {
             String errMsg = "Failed to prepare guest list from " + event.getEventName() + ": " + e;
-            log.error("prepareGuestList: event={}, {}", event.toString(), errMsg);
+            log.error("prepareGuestList: event={}, {}", event, errMsg);
             throw new ServiceException(errMsg);
         }
     }
@@ -164,7 +159,7 @@ public class GuestService {
      * @throws ServiceException
      */
     public void deleteGuests(String eventId, GuestDTO[] guests, String bearerToken,
-                              EventService eventService) throws ServiceException {
+                             EventService eventService) throws ServiceException {
         // call guest service to process guests
         log.debug("deleteGuests: eventId={}, guests={}", eventId, guests);
 

@@ -113,7 +113,8 @@ public class EventService {
             Event event = new Event(eventDTO, ActionEnum.ADD, eventServiceProperties);
             setEvent(event);
 
-//            eventPublisher.publish(event);
+            // publish event into  Kafka topic
+            eventPublisher.publish(event);
 
             return event;
 
@@ -178,7 +179,6 @@ public class EventService {
     }
 
     /**
-     *
      * @param userName
      * @param bearerToken
      * @param guestService
@@ -200,7 +200,7 @@ public class EventService {
 
                     // publish event into  Kafka topic
                     event.setActionType(ActionEnum.DELETE.getCode());
-//                    eventPublisher.publish(event);
+                    eventPublisher.publish(event);
 
                 }
             }
@@ -257,7 +257,8 @@ public class EventService {
                 // save to  DB
                 setEvent(event);
 
-//                eventPublisher.publish(event);
+                // publish event into  Kafka topic
+                eventPublisher.publish(event);
 
                 return event;
 
@@ -297,7 +298,7 @@ public class EventService {
 
                 // publish as DELETED
                 event.setActionType(ActionEnum.DELETE.getCode());
-//                eventPublisher.publish(event);
+                eventPublisher.publish(event);
 
                 return event;
 
