@@ -12,7 +12,7 @@ Olena(4)
 Sign-in into  desktop  with  dockerId
 
 Launch cmd and go to  the place with 
-C:\GIT\kafka\avroKafkaProducer\kafka-docker>
+C:\GITHUB\potluck-planner\docker-kafka-confluent
 docker-compose.yml
 
 Issue cmd to start:

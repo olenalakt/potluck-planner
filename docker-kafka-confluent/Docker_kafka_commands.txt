@@ -1,0 +1,24 @@
+======================
+from  docker CLI
+======================
+sh /usr/bin/kafka-topics --bootstrap-server localhost:9092 --create --topic POTLUCK-EVENT-DEV --partitions 1 --replication-factor 1 
+
+
+docker ps --format "{{ .Names }}"
+
+docker exec -it broker   /bin/kafka-topics.sh     --bootstrap-server :9092     --list
+
+
+
+./usr/bin/kafka-acls --authorizer-properties zookeeper.connect=localhost:2181 --add --allow-principal User:my-user --producer  --topic  POTLUCK-EVENT-DEV 
+
+./usr/bin/kafka-acls --authorizer-properties zookeeper.connect=localhost:2181 --add --allow-principal User:my-user --consumer  --topic POTLUCK-EVENT-DEV  --group '*'
+
+
+
+./usr/bin/kafka-console-producer --broker-list localhost:9092 --topic POTLUCK-EVENT-DEV
+
+./usr/bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic POTLUCK-EVENT-DEV --from-beginning
+
+
+./usr/bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic ORDERS --from-beginning

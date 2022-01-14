@@ -1,19 +1,39 @@
 package com.olena.eventservice.publisher;
 
-import com.olena.eventservice.repository.entity.Event;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.stream.messaging.Source;
-import org.springframework.messaging.support.MessageBuilder;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.Future;
+
+@Slf4j
 @Service
 public class EventPublisher {
 
-    @Autowired
-    private Source source;
+    public <T extends Object> void publish(Producer<String, T> producer, String topic, T message) {
+        //source.output().send(MessageBuilder.withPayload(event).build());
 
-    public void publish(Event event) {
-        source.output().send(MessageBuilder.withPayload(event).build());
+        log.debug("publish, entered: topic=[{}], message=[{}]", topic, message);
+
+        Future<RecordMetadata> record = send(producer, topic, message);
+        try {
+
+            RecordMetadata metadata = record.get();
+            log.debug("publish, response: topic=[{}], message=[{}], metadata=[{}]", topic, message, metadata);
+
+        } catch (Exception e) {
+
+            // monitor those in NewRelic -  improve  handleException later
+            log.error("publish, exception: [{}]", e.toString());
+        }
+
     }
 
+    private <T extends Object> Future<RecordMetadata> send(Producer<String, T> producer, String topic, T message) {
+        log.debug("send, entered: topic=[{}], message=[{}]", topic, message);
+        ProducerRecord<String, T> record = new ProducerRecord<>(topic, message);
+        return producer.send(record);
+    }
 }

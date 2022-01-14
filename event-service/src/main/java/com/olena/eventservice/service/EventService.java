@@ -1,6 +1,7 @@
 package com.olena.eventservice.service;
 
 import com.olena.eventservice.config.EventServiceProperties;
+import com.olena.eventservice.config.KafkaProperties;
 import com.olena.eventservice.enums.ActionEnum;
 import com.olena.eventservice.exception.ServiceException;
 import com.olena.eventservice.model.EventDTO;
@@ -8,6 +9,7 @@ import com.olena.eventservice.publisher.EventPublisher;
 import com.olena.eventservice.repository.EventRepository;
 import com.olena.eventservice.repository.entity.Event;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.producer.Producer;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,8 +25,13 @@ public class EventService {
     EventServiceProperties eventServiceProperties;
 
     @Autowired
+    KafkaProperties kafkaProperties;
+
+    @Autowired
     EventRepository eventRepository;
 
+    @Autowired
+    private Producer<String, Event> potluckEventProducer;
 
     public Event getEventFromDb(String eventId) throws ServiceException {
         log.debug("getEventFromDbByName: eventId={}", eventId);
@@ -114,7 +121,7 @@ public class EventService {
             setEvent(event);
 
             // publish event into  Kafka topic
-            eventPublisher.publish(event);
+            eventPublisher.publish(potluckEventProducer, kafkaProperties.getPotluckEventProducerTopic(), event);
 
             return event;
 
@@ -200,7 +207,7 @@ public class EventService {
 
                     // publish event into  Kafka topic
                     event.setActionType(ActionEnum.DELETE.getCode());
-                    eventPublisher.publish(event);
+                    eventPublisher.publish(potluckEventProducer, kafkaProperties.getPotluckEventProducerTopic(), event);
 
                 }
             }
@@ -258,7 +265,7 @@ public class EventService {
                 setEvent(event);
 
                 // publish event into  Kafka topic
-                eventPublisher.publish(event);
+                eventPublisher.publish(potluckEventProducer, kafkaProperties.getPotluckEventProducerTopic(), event);
 
                 return event;
 
@@ -298,7 +305,7 @@ public class EventService {
 
                 // publish as DELETED
                 event.setActionType(ActionEnum.DELETE.getCode());
-                eventPublisher.publish(event);
+                eventPublisher.publish(potluckEventProducer, kafkaProperties.getPotluckEventProducerTopic(), event);
 
                 return event;
 

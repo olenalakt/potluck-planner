@@ -1,0 +1,165 @@
+
+==============
+from GIT bash
+=============
+external config -  chapter10/sample01
+
+\> mvn clean install
+\> docker build -t com.manning.mss.ch10.sample01:v1 .
+
+\> export JKS_SOURCE="$(pwd)/keystores/keystore.jks"   
+\> export JKS_TARGET="/opt/keystore.jks"      
+\> export JWT_SOURCE="$(pwd)/keystores/jwt.jks"    
+\> export JWT_TARGET="/opt/jwt.jks"       
+\> export APP_SOURCE="$(pwd)/config/application.properties" 
+\> export APP_TARGET="/opt/application.properties"   
+
+docker run -p 8443:8443 \
+--mount type=bind,source="$JKS_SOURCE",target="$JKS_TARGET" \
+--mount type=bind,source="$JWT_SOURCE",target="$JWT_TARGET" \
+--mount type=bind,source="$APP_SOURCE",target="$APP_TARGET" \
+-e KEYSTORE_SECRET=springboot \
+-e JWT_KEYSTORE_SECRET=springboot \
+com.manning.mss.ch10.sample01:v2
+
+
+curl -v -X POST --basic -u applicationid:applicationsecret \
+-H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" \
+-k -d "grant_type=password&username=peter&password=peter123&scope=foo" \
+https://localhost:8443/oauth/token
+
+----------
+generate keys and sign image sample ( 369118 -  docker account ID/username)
+-------------
+docker trust key generate 369118
+docker trust signer add --key 369118.pub 369118 369118/insecure-sts-ch10
+
+
+docker trust sign 369118/insecure-sts-ch10:v1
+docker push 369118/insecure-sts-ch10:v1
+docker trust inspect --pretty  369118/insecure-sts-ch10:v1
+
+review  type of keys at
+C:\Users\olaktyushkina\.docker\trust\tuf\docker.io\369118\insecure-sts-ch10\metadata
+
+-------------
+Create custom network in docker
+-------------
+docker network create manning-network
+
+
+docker run -p 8443:8443 \
+--name sts --net manning-network \
+--mount type=bind,source="$JKS_SOURCE",target="$JKS_TARGET" \
+--mount type=bind,source="$JWT_SOURCE",target="$JWT_TARGET" \
+--mount type=bind,source="$APP_SOURCE",target="$APP_TARGET" \
+-e KEYSTORE_SECRET=springboot \
+-e JWT_KEYSTORE_SECRET=springboot \
+com.manning.mss.ch10.sample01:v2
+
+
+docker build -t com.manning.mss.ch10.sample02:v1 .
+docker run -p 9443:9443 \
+--net manning-network \
+--mount type=bind,source="$JKS_SOURCE",target="$JKS_TARGET" \
+--mount type=bind,source="$TRUST_SOURCE",target="$TRUST_TARGET" \
+--mount type=bind,source="$APP_SOURCE",target="$APP_TARGET" \
+-e KEYSTORE_SECRET=springboot \
+-e TRUSTSTORE_SECRET=springboot \
+com.manning.mss.ch10.sample02:v1
+
+======================
+Kubernetes  -  chapter11
+to validate YAML file
+www.yamllint.com
+www.kubeval.com
+======================
+STS
+----------
+to  deploy:
+\> kubectl apply -f sts.deployment.yaml
+
+deployment.apps/sts-deployment created
+
+to  check:
+\> kubectl get deployment sts-deployment
+
+
+NAME    READY UP-TO-DATE AVAILABLE AGE
+sts-deployment 1/1  1   1   12s
+
+to  troubleshoot:
+\> kubectl get events
+
+pod name=sts-deployment-799fdff46f-hdp5s
+\> kubectl logs sts-deployment-799fdff46f-hdp5s -follow
+
+----------
+Kubernetes Service for STS
+---------------------------
+\> kubectl apply -f sts.service.yml
+
+service/sts-service created
+
+to check (wait until  IP  issued):
+\> kubectl get services
+
+NAME   TYPE   CLUSTER-IP EXTERNAL-IP PORT(S)   AGE
+kubernetes ClusterIP  10.39.240.1 <none>  443/TCP  134m
+sts-service LoadBalancer 10.39.244.238 <pending>  443:30993/TCP 20s
+
+----------
+Kubernetes configMaps for STS
+---------------------------
+
+\> kubectl apply -f sts.configuration.yaml
+
+configmap/sts-application-properties-config-map created
+configmap/sts-keystore-config-map created
+configmap/sts-jwt-keystore-config-map created
+configmap/sts-keystore-credentials created
+
+\> kubectl get configmaps
+
+NAME          DATA AGE
+sts-application-properties-config-map  1  50s
+sts-keystore-config-map      0  50s
+sts-jwt-keystore-config-map     0  50s
+sts-keystore-credentials     2  50s
+
+
+\> kubectl apply -f sts.deployment.with.configmap.yaml
+
+deployment.apps/sts-deployment configured
+
+
+----------
+Kubernetes configMaps for STS from GIT
+---------------------------
+sts.deployment.with.initcontainer.yaml
+
+----------
+Kubernetes Secrets
+certificate/URI PEM decoder (https://report-uri.com/home/pem_decoder) 
+---------------------------
+\> kubectl get secrets
+
+NAME      TYPE         DATA AGE
+default-token-l9fj8  kubernetes.io/service-account-token 3  10d
+
+\> kubectl get secret default-token-l9fj8 -o yaml
+
+
+\> kubectl apply -f sts.deployment.with.secrets.yaml
+
+
+deployment.apps/sts-deployment configured
+
+By default, at the time you create a Kubernetes cluster, Kubernetes also creates a service account for the default namespace.
+Kubernetes binds each Pod to a service account. You can have multiple Pods bound to the same service account, 
+but you can't have multiple service accounts bound to the same Pod (figure 11.4). 
+For example, when you create a Kubernetes namespace, by default Kubernetes creates a service account. 
+That service account is assigned to all the Pods that are created in the same namespace (unless you create a 
+Pod under a specific service account). Under each namespace, you'll find a service account called default.
+
+

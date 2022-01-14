@@ -17,6 +17,34 @@ curl -u potluckPlanner:potluckPlannerSecret \
 http://localhost:9090/token/oauth/token
 
 
+----------   USER-SERVICE   -----------------------------------
+// add user
+curl -v http://localhost:843/users \
+-H 'Content-Type: application/json' \
+--data-binary @- << EOF
+{
+  "userName":"olena",
+  "password":"123",
+  "userRole":"ADMIN"
+}
+EOF
+
+curl -v http://localhost:843/users \
+-H 'Content-Type: application/json' \
+--data-binary @- << EOF
+{
+  "userName":"test1",
+  "password":"123",
+  "userRole":"USER"
+}
+EOF
+
+
+// get user 
+curl -k -H "Authorization: Bearer $TOKEN" \
+https://localhost:9443/users/olena
+
+
 ----------   EVENT-SERVICE   -----------------------------------
 
 // add event  with participants over TLS -  use -k  in dev to  avoid trust validation
