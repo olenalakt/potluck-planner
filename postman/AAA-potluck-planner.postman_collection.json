@@ -114,6 +114,137 @@
 			"response": []
 		},
 		{
+			"name": "get user by userName",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{user-service}}/users/olena",
+					"host": [
+						"{{user-service}}"
+					],
+					"path": [
+						"users",
+						"olena"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add user",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userName\":\"olena\",\r\n  \"password\":\"123\",\r\n  \"userRole\":\"ADMIN\"\r\n}"
+				},
+				"url": {
+					"raw": "{{user-service}}/users",
+					"host": [
+						"{{user-service}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userId\": \"46071be4-ad57-4e2e-8359-4c1fc384cec1\",\r\n  \"userName\":\"test\",\r\n  \"password\":\"456\",\r\n  \"userRole\":\"USER\"\r\n}"
+				},
+				"url": {
+					"raw": "{{user-service}}/users",
+					"host": [
+						"{{user-service}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete User",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{user-service}}/users/46071be4-ad57-4e2e-8359-4c1fc384cec1",
+					"host": [
+						"{{user-service}}"
+					],
+					"path": [
+						"users",
+						"46071be4-ad57-4e2e-8359-4c1fc384cec1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "EVENT-SERVICE: query events by username",
 			"request": {
 				"auth": {

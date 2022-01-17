@@ -9,8 +9,9 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "user-service.config")
 @Data
 @NoArgsConstructor
-public class UserServiceConfig {
+public class UserServiceProperties {
 
+    String appVersion;
     String dbSchemaVersion;
 
 }

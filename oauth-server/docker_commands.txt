@@ -1,0 +1,2 @@
+ docker build -t potluck-planner-oauthserver:v1 .
+ docker run -p 8080:8080 --name="potluck-planner-oauthserver" potluck-planner-oauthserver:v1

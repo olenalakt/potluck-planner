@@ -31,9 +31,14 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>("Bad input(s) - " + e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(value = BadInputException.class)
+    public ResponseEntity<Object> exception(BadInputException e) {
+        return new ResponseEntity<>(e.getErrMsg(), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(value = ServiceException.class)
     public ResponseEntity<Object> exception(ServiceException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        return new ResponseEntity<>(e.getErrMsg(), HttpStatus.EXPECTATION_FAILED);
     }
 
     @ExceptionHandler(value = Exception.class)

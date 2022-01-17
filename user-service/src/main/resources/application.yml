@@ -1,0 +1,109 @@
+server.port: 843
+
+# DB config
+spring:
+  data.mongodb.uri: mongodb://localhost/userdb
+
+# reporting metrics to prometheus
+management:
+  endpoints:
+    enabled-by-default: true
+    web.exposure.include: prometheus,info,health
+  endpoint:
+    prometheus.enabled: true
+
+#server.ssl.key-store: keystore.jks
+#server.ssl.key-store-password: springboot
+#server.ssl.keyAlias: spring
+
+#security.oauth2.resource.jwt.keyUri: https://localhost:8443/oauth/token_key
+#javax.net.ssl.trustStore: trust-store.jks
+#javax.net.ssl.trustStorePassword: springboot
+
+#javax.net.ssl.keyStore: keystore.jks
+#javax.net.ssl.keyStorePassword: springboot
+
+
+user-service:
+  config:
+    appVersion: 1.0.0
+    dbSchemaVersion: 1.0.0
+
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    com.olena.eventservice: debug
+    org.springframework.security: debug
+    org.springframework.web: debug
+    org.springframework.cloud: debug
+    org.springframework.data.mongodb: error
+    org.mongodb.driver: error
+    root: debug
+
+confluent-kafka:
+  config:
+    # topic
+    potluckPlannerCleanupProducerTopic: 'POTLUCK-PLANNER-CLEANUP-DEV'
+    valuePotluckPlannerCleanupSerializerCLass: 'com.olena.userservice.model.PotluckPlannerCleanupSerializer'
+
+    # shared prop
+    bootstrapServers: 'localhost:9092'
+
+    # producer clientId
+    clientId: 'potluck-event-dev'
+
+    # consumer group
+    groupId: 'potluck-event-dev'
+
+    #consumer prop
+    fetchMinBytes: 4
+    fetchMaxBytes: 52428800
+    fetchMaxWaitMs: 500
+    receiveBufferBytes: 65536
+    maxPartitionFetchBytes: 1048576
+
+    connectionsMaxIdleMs: 540000
+    sessionTimeoutMs: 10000
+    heartbeatIntervalMs: 3000
+    requestTimeoutMs: 30000
+
+    autoOffsetReset: earliest
+    # consumer was failing to  start in Dev with "resolve_canonical_bootstrap_servers_only"
+    clientDnsLookup: resolve_canonical_bootstrap_servers_only
+
+    enableAutoCommit: true
+    autoCommitIntervalMs: 5000
+
+    reconnectBackoffMs: 500
+    retryBackoffMs: 500
+    reconnectBackoffMaxMs: 1000
+
+    # profile specific consumer props
+    maxPollRecords: 500
+    pollFrequencyMs: 500
+
+    # producer props
+    schemaRegistryUrlConfig: TBD
+    keySerializerClass: 'org.apache.kafka.common.serialization.StringSerializer'
+
+    # depends on profile
+    acks: all
+    lingerMs: 10
+
+    bufferMemory: 33554432
+    batchSize: 16384
+    deliveryTimeoutMs: 120000
+    maxBlockMs: 60000
+    maxRequestSize: 1048576
+    enableIdempotence: false
+    maxInFlightRequestsPerConnection: 5
+    metadataMaxAgeMs: 300000
+
+    #shared props
+    #    securityProtocol: SASL_SSL
+    #    sslAlgorithm: https
+    #    sslTruststoreLocation: 'kafka_devtest_truststore.pkcs12'
+    #    sslTruststorePassword: server-keystore
+    #    saslMechanism: SCRAM-SHA-256
+    # setup this value via ENV variable SASL_JAAS_CONFIG_CRED
+#    saslJaasConfig: 'org.apache.kafka.common.security.scram.ScramLoginModule required ${SASL_JAAS_CONFIG_CRED};'

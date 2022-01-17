@@ -1,0 +1,6 @@
+FROM openjdk:11
+ADD target/oauth-server-0.0.1-SNAPSHOT.jar /oauth-server-0.0.1-SNAPSHOT.jar
+ADD keystores/keystore.jks /opt/keystore.jks
+ADD keystores/jwt.jks /opt/jwt.jks
+ENV SPRING_CONFIG_LOCATION=/opt/application.yml
+ENTRYPOINT ["java", "-jar", "oauth-server-0.0.1-SNAPSHOT.jar"]
