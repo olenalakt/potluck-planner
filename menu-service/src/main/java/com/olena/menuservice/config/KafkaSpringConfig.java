@@ -1,7 +1,7 @@
 package com.olena.menuservice.config;
 
 
-import com.olena.menuservice.model.EventDTO;
+import com.olena.menuservice.model.EventMenuDTO;
 import com.olena.menuservice.service.InitKafkaPropertiesService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class KafkaSpringConfig {
     private InitKafkaPropertiesService initKafkaPropertiesService;
 
     @Bean
-    public ConsumerFactory<String, EventDTO> eventMenuConsumerFactory() {
+    public ConsumerFactory<String, EventMenuDTO> eventMenuConsumerFactory() {
         log.debug("eventMenuConsumerFactory entered: kafkaProperties={}", kafkaProperties);
         Properties consumerProperties = initKafkaPropertiesService.getConsumerProperties(kafkaProperties);
         log.debug("eventMenuConsumerFactory: consumerProperties=[{}]", consumerProperties);
@@ -35,8 +35,8 @@ public class KafkaSpringConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, EventDTO> eventMenuKafkaListenerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, EventDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, EventMenuDTO> eventMenuKafkaListenerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, EventMenuDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(eventMenuConsumerFactory());
         return factory;
     }

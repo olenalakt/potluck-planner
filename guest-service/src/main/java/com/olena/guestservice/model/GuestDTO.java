@@ -23,6 +23,8 @@ public class GuestDTO {
     @NonNull
     private String guestName;
 
+    private String guestStatus;
+
     @NonNull
     private String guestEmail;
 

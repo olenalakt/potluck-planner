@@ -2,18 +2,19 @@ package com.olena.menuservice.repository.entity;
 
 import com.mongodb.lang.NonNull;
 import com.olena.menuservice.config.MenuServiceProperties;
-import com.olena.menuservice.enums.ActionEnum;
-import com.olena.menuservice.model.EventDTO;
+import com.olena.menuservice.model.Dish;
+import com.olena.menuservice.model.EventMenuDTO;
+import com.olena.menuservice.model.Guest;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -41,26 +42,28 @@ public class EventMenu {
 
     private String notes;
 
+    private List<Guest> guests;
+
+    private List<Dish> dishes;
+
+    private List<Dish> drinks;
+
     @NonNull
     private String schemaVersion;
     @NonNull
     private Timestamp lastmodified;
 
-    @Transient
-    private String actionType;
-
-    public EventMenu(EventDTO eventDTO, ActionEnum actionEnum, MenuServiceProperties menuServiceProperties) {
-        this.eventId = UUID.fromString(eventDTO.getEventId());
-        this.userName = eventDTO.getUserName();
-        this.eventName = eventDTO.getEventName();
-        this.eventDate = eventDTO.getEventDate();
-        this.notes = eventDTO.getNotes();
+    public EventMenu(EventMenuDTO eventMenuDTO, MenuServiceProperties menuServiceProperties) {
+        this.eventId = UUID.fromString(eventMenuDTO.getEventId());
+        this.userName = eventMenuDTO.getUserName();
+        this.eventName = eventMenuDTO.getEventName();
+        this.eventDate = eventMenuDTO.getEventDate();
+        this.notes = eventMenuDTO.getNotes();
 
         this.schemaVersion = menuServiceProperties.getDbSchemaVersion();
 
         Instant now = Instant.now();
         this.lastmodified = Timestamp.from(now);
 
-        actionType = actionEnum.getCode();
     }
 }

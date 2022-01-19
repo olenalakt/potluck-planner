@@ -36,6 +36,7 @@ public class Guest {
     private UUID guestId;
 
     private String guestName;
+    private String guestStatus;
 
     private String guestEmail;
 
@@ -51,6 +52,8 @@ public class Guest {
         this.userName = guestDTO.getUserName();
         this.eventId = UUID.fromString(guestDTO.getEventId());
         this.guestName = guestDTO.getGuestName();
+        // TODO  - introduce enum for guest status
+        this.guestStatus = (guestDTO.getGuestStatus() == null ? "INVITED" : guestDTO.getGuestStatus());
         this.guestEmail = guestDTO.getGuestEmail();
         this.notes = guestDTO.getNotes();
 
