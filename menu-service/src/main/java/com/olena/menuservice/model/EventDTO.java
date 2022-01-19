@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.NonNull;
+import org.bson.types.ObjectId;
 
 import java.sql.Timestamp;
 
@@ -13,17 +13,14 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventDTO {
-    @NonNull
+
+    private ObjectId id;
     private String userName;
-
     private String eventId;
-
-    @NonNull
     private String eventName;
-
-
     private Timestamp eventDate;
-
     private String notes;
+    private Timestamp lastmodified;
+    private String actionType;
 
 }

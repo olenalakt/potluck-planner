@@ -15,12 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 @Slf4j
 public class EventMenuConsumer {
 
-    @Autowired
-    private KafkaProperties kafkaProperties;
-
-    private final String TOPIC = kafkaProperties.getPotluckEventConsumerTopic();
-
-    @KafkaListener(topics = {"Web-Room-Events2"}, containerFactory = "webRoomKafkaListenerFactory")
+    @KafkaListener(topics = "${confluent-kafka.config.potluckEventConsumerTopic}", containerFactory = "eventMenuKafkaListenerFactory")
     public void onMessage(ConsumerRecord<String, EventDTO> consumerRecord) throws JsonProcessingException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         log.info("Consume Message : {}", consumerRecord);
         log.info("EventDTO Event is {}", consumerRecord.value());

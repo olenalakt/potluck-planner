@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 @Configuration
-@ConfigurationProperties(prefix = "event-service.cors-config")
+@ConfigurationProperties(prefix = "menu-service.cors-config")
 @Data
 @NoArgsConstructor
 public class CorsAndSecurityProperties {

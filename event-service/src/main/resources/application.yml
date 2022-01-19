@@ -63,6 +63,7 @@ logging:
     org.springframework.web: debug
     org.springframework.cloud: debug
     org.springframework.data.mongodb: error
+    org.springframework.kafka: error
     org.mongodb.driver: error
     root: debug
 

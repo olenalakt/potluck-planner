@@ -14,6 +14,7 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 
 import java.util.Properties;
 
+
 @Configuration
 @EnableKafka
 @Slf4j
@@ -26,8 +27,9 @@ public class KafkaSpringConfig {
 
     @Bean
     public ConsumerFactory<String, EventDTO> eventMenuConsumerFactory() {
+        log.debug("eventMenuConsumerFactory entered: kafkaProperties={}", kafkaProperties);
         Properties consumerProperties = initKafkaPropertiesService.getConsumerProperties(kafkaProperties);
-        log.debug("UmCdrConsumerApplication: consumerProperties=[{}]", consumerProperties);
+        log.debug("eventMenuConsumerFactory: consumerProperties=[{}]", consumerProperties);
 
         return new DefaultKafkaConsumerFactory(consumerProperties);
     }

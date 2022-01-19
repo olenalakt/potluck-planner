@@ -23,7 +23,7 @@ management:
   endpoint:
     prometheus.enabled: true
 
-event-service:
+menu-service:
   cors-config:
     contentSecurityPolicy: "default-src blob: localhost:*, *.lakt.ca"
     accessControlAllowCredentials: true
@@ -57,10 +57,11 @@ security:
 logging:
   config: classpath:logback-spring.xml
   level:
-    com.olena.eventservice: debug
-    org.springframework.security: debug
-    org.springframework.web: debug
-    org.springframework.cloud: debug
+    com.olena.menuservice: debug
+    org.springframework.security: error
+    org.springframework.web: error
+    org.springframework.cloud: error
+    org.springframework.kafka: error
     org.springframework.data.mongodb: error
     org.mongodb.driver: error
     root: debug
@@ -76,7 +77,7 @@ confluent-kafka:
     bootstrapServers: 'localhost:9092'
 
     # producer clientId
-#    clientId: 'potluck-event-dev'
+    clientId: 'potluck-event-dev'
 
     # consumer group
     groupId: 'potluck-event-dev'

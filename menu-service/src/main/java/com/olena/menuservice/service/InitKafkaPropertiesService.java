@@ -23,8 +23,8 @@ public class InitKafkaPropertiesService {
         log.debug("getConsumerProperties, entered: kafkaProperties=[{}]", kafkaProperties);
 
         Properties consumerProperties = new Properties();
-        ClassLoader tmpLoader = kafkaProperties.getClass().getClassLoader();
-        Path tmpPath = null;
+//        ClassLoader tmpLoader = kafkaProperties.getClass().getClassLoader();
+//        Path tmpPath = null;
 
         try {
             consumerProperties.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, kafkaProperties.getBootstrapServers());
