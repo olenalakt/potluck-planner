@@ -65,14 +65,14 @@ logging:
     org.springframework.data.mongodb: error
     org.springframework.kafka: error
     org.mongodb.driver: error
-    root: debug
+    root: error
 
 confluent-kafka:
   config:
-    # topics
-
+    # topic
     potluckEventProducerTopic: 'POTLUCK-EVENT-DEV'
-    valuePotluckEventSerializerCLass: 'com.olena.eventservice.repository.entity.PotluckEventSerializer'
+    keySerializerClass: 'org.apache.kafka.common.serialization.StringSerializer'
+    valueSerializerCLass: 'com.olena.eventservice.repository.entity.PotluckEventSerializer'
 
     # shared prop
     bootstrapServers: 'localhost:9092'
@@ -112,7 +112,6 @@ confluent-kafka:
 
     # producer props
     schemaRegistryUrlConfig: TBD
-    keySerializerClass: 'org.apache.kafka.common.serialization.StringSerializer'
 
     # depends on profile
     acks: all

@@ -44,6 +44,8 @@ public class MenuService {
             }
 
             return eventMenu;
+        } catch (ServiceException se) {
+            throw se;
         } catch (Exception e) {
             String errMsg = "Unexpected exception: " + e;
             log.error("getEventMenu: eventId={}, {}", eventId, errMsg);
@@ -134,7 +136,11 @@ public class MenuService {
             }
 
             log.debug("processEventMenuDTO: eventMenu={}", eventMenu);
-            menuRepository.save(eventMenu);
+            if (messageType.equals(MessageTypeEnum.EVENT) && action.equals(ActionEnum.DELETE)) {
+                menuRepository.delete(eventMenu);
+            } else {
+                menuRepository.save(eventMenu);
+            }
         }
 
     }
@@ -152,7 +158,9 @@ public class MenuService {
         boolean isFound = false;
 
         ArrayList<Guest> updatedGuestList = new ArrayList<>();
-        updatedGuestList.addAll(eventMenu.getGuests());
+        if (eventMenu.getGuests() !=  null) {
+            updatedGuestList.addAll(eventMenu.getGuests());
+        }
 
         for (int i = 0; i < updatedGuestList.size(); i++) {
             if (updatedGuestList.get(i).getGuestId().equals(guest.getGuestId())) {
@@ -189,7 +197,9 @@ public class MenuService {
         boolean isFound = false;
 
         ArrayList<Dish> updatedDishList = new ArrayList<>();
-        updatedDishList.addAll(eventMenu.getDishes());
+        if (eventMenu.getDishes() !=  null) {
+            updatedDishList.addAll(eventMenu.getDishes());
+        }
 
         for (int i = 0; i < updatedDishList.size(); i++) {
             if (updatedDishList.get(i).getDishId().equals(dish.getDishId())) {
@@ -227,7 +237,9 @@ public class MenuService {
         boolean isFound = false;
 
         ArrayList<Drink> updatedDrinkList = new ArrayList<>();
-        updatedDrinkList.addAll(eventMenu.getDrinks());
+        if (eventMenu.getDrinks() !=  null) {
+            updatedDrinkList.addAll(eventMenu.getDrinks());
+        }
 
         for (int i = 0; i < updatedDrinkList.size(); i++) {
             if (updatedDrinkList.get(i).getDrinkId().equals(drink.getDrinkId())) {

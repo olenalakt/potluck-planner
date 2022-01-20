@@ -1,11 +1,16 @@
 package com.olena.guestservice.service;
 
 import com.olena.guestservice.config.GuestServiceProperties;
+import com.olena.guestservice.config.KafkaProperties;
+import com.olena.guestservice.enums.ActionEnum;
 import com.olena.guestservice.exception.ServiceException;
 import com.olena.guestservice.model.GuestDTO;
+import com.olena.guestservice.model.GuestMessage;
+import com.olena.guestservice.producer.PotluckEventPublisher;
 import com.olena.guestservice.repository.GuestRepository;
 import com.olena.guestservice.repository.entity.Guest;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.producer.Producer;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +27,13 @@ public class GuestService {
     GuestServiceProperties guestServiceProperties;
 
     @Autowired
+    KafkaProperties kafkaProperties;
+
+    @Autowired
     GuestRepository guestRepository;
+
+    @Autowired
+    private Producer<String, GuestMessage> potluckEventProducer;
 
     public GuestDTO getGuestInfo(String guestId, String bearerToken, DishService dishService, DrinkService drinkService) throws ServiceException {
         log.debug("getGuestInfo: guestId={}", guestId);
@@ -96,7 +107,7 @@ public class GuestService {
      * @return
      * @throws ServiceException
      */
-    public List<Guest> addGuests(GuestDTO[] guestDTOList) throws ServiceException {
+    public List<Guest> addGuests(GuestDTO[] guestDTOList, PotluckEventPublisher potluckEventPublisher) throws ServiceException {
         log.debug("addGuests: guestDTO={}", guestDTOList);
 
         List<Guest> guestList = new ArrayList<>();
@@ -116,6 +127,11 @@ public class GuestService {
                 setGuest(guest);
                 guestList.add(guest);
 
+                // publish event into  Kafka topic
+                GuestMessage guestMessage = new GuestMessage(guest, ActionEnum.ADD);
+                potluckEventPublisher.publish(potluckEventProducer, kafkaProperties.getPotluckEventProducerTopic(), guestMessage);
+
+
             } catch (ServiceException se) {
                 throw se;
             } catch (Exception e) {
@@ -131,12 +147,14 @@ public class GuestService {
 
     /**
      * @param guestDTOList
+     * @param bearerToken
      * @param dishService
      * @param drinkService
+     * @param potluckEventPublisher
      * @return
      * @throws ServiceException
      */
-    public List<Guest> deleteGuests(GuestDTO[] guestDTOList, String bearerToken, DishService dishService, DrinkService drinkService) throws ServiceException {
+    public List<Guest> deleteGuests(GuestDTO[] guestDTOList, String bearerToken, DishService dishService, DrinkService drinkService, PotluckEventPublisher potluckEventPublisher) throws ServiceException {
         log.debug("deleteGuests: guestDTOList={}", guestDTOList);
 
         StringBuffer errMsg = new StringBuffer();
@@ -144,12 +162,18 @@ public class GuestService {
         try {
             for (GuestDTO guestDTO : guestDTOList) {
 
-                Guest guestExisting = guestRepository.findFirstByUserNameAndEventIdAndGuestEmail(guestDTO.getUserName(), UUID.fromString(guestDTO.getEventId()), guestDTO.getGuestEmail());
-                if (guestExisting != null) {
-                    dishService.deleteDishesByGuest(guestExisting.getGuestId().toString(), bearerToken);
-                    drinkService.deleteDrinksByGuest(guestExisting.getGuestId().toString(), bearerToken);
-                    guestList.add(guestExisting);
-                    guestRepository.delete(guestExisting);
+                Guest guest = guestRepository.findFirstByUserNameAndEventIdAndGuestEmail(guestDTO.getUserName(), UUID.fromString(guestDTO.getEventId()), guestDTO.getGuestEmail());
+                if (guest != null) {
+
+                    dishService.deleteDishesByGuest(guest.getGuestId().toString(), bearerToken);
+                    drinkService.deleteDrinksByGuest(guest.getGuestId().toString(), bearerToken);
+
+                    guestList.add(guest);
+                    guestRepository.delete(guest);
+
+                    // publish event into  Kafka topic
+                    GuestMessage guestMessage = new GuestMessage(guest, ActionEnum.DELETE);
+                    potluckEventPublisher.publish(potluckEventProducer, kafkaProperties.getPotluckEventProducerTopic(), guestMessage);
                 }
 
             }
@@ -203,10 +227,11 @@ public class GuestService {
 
     /**
      * @param guestDTO
+     * @param potluckEventPublisher
      * @return
-     * @throws ServiceException updates existing guest, throws exception if not found
+     * @throws ServiceException
      */
-    public Guest updateGuest(GuestDTO guestDTO) throws ServiceException {
+    public Guest updateGuest(GuestDTO guestDTO, PotluckEventPublisher potluckEventPublisher) throws ServiceException {
         log.debug("updateGuest: guestDTO={}", guestDTO);
 
         StringBuffer errMsg = new StringBuffer();
@@ -224,6 +249,10 @@ public class GuestService {
 
                 // save to  DB
                 setGuest(guest);
+
+                // publish event into  Kafka topic
+                GuestMessage guestMessage = new GuestMessage(guest, ActionEnum.UPDATE);
+                potluckEventPublisher.publish(potluckEventProducer, kafkaProperties.getPotluckEventProducerTopic(), guestMessage);
 
             } else {
                 errMsg.append("Guest not found: ").append(guestDTO.getGuestId());
@@ -243,12 +272,14 @@ public class GuestService {
 
     /**
      * @param guestId
+     * @param bearerToken
      * @param dishService
      * @param drinkService
+     * @param potluckEventPublisher
      * @return
      * @throws ServiceException
      */
-    public Guest deleteGuest(String guestId, String bearerToken, DishService dishService, DrinkService drinkService) throws ServiceException {
+    public Guest deleteGuest(String guestId, String bearerToken, DishService dishService, DrinkService drinkService, PotluckEventPublisher potluckEventPublisher) throws ServiceException {
         log.debug("deleteGuest: guestId={}", guestId);
 
         StringBuffer errMsg = new StringBuffer();
@@ -259,7 +290,12 @@ public class GuestService {
 
                 dishService.deleteDishesByGuest(guestId, bearerToken);
                 drinkService.deleteDrinksByGuest(guestId, bearerToken);
+
                 guestRepository.delete(guest);
+
+                // publish event into  Kafka topic
+                GuestMessage guestMessage = new GuestMessage(guest, ActionEnum.DELETE);
+                potluckEventPublisher.publish(potluckEventProducer, kafkaProperties.getPotluckEventProducerTopic(), guestMessage);
 
             } else {
                 errMsg.append("Guest not found: ").append(guestId);

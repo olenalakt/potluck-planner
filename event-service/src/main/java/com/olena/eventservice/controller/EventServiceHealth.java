@@ -1,7 +1,7 @@
 package com.olena.eventservice.controller;
 
 import com.olena.eventservice.config.EventServiceProperties;
-import com.olena.eventservice.publisher.EventPublisher;
+import com.olena.eventservice.producer.PotluckEventPublisher;
 import com.olena.eventservice.repository.EventRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class EventServiceHealth {
     EventRepository eventRepository;
 
     @Autowired
-    EventPublisher eventPublisher;
+    PotluckEventPublisher potluckEventPublisher;
 
     /**
      * @return

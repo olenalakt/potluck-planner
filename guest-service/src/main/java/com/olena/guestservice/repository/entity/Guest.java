@@ -44,6 +44,8 @@ public class Guest {
 
     @NonNull
     private String schemaVersion;
+    @NonNull
+    private Timestamp lastmodified;
 
     public Guest(GuestDTO guestDTO, GuestServiceProperties guestServiceProperties) {
         this.guestId = (guestDTO.getGuestId() == null ? UUID.randomUUID() : UUID.fromString(guestDTO.getGuestId()));

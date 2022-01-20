@@ -3,6 +3,7 @@ package com.olena.eventservice.repository.entity;
 import com.mongodb.lang.NonNull;
 import com.olena.eventservice.config.EventServiceProperties;
 import com.olena.eventservice.enums.ActionEnum;
+import com.olena.eventservice.enums.Constants;
 import com.olena.eventservice.model.EventDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,6 +48,8 @@ public class Event {
     private Timestamp lastmodified;
 
     @Transient
+    private String messageType;
+    @Transient
     private String actionType;
 
     public Event(EventDTO eventDTO, ActionEnum actionEnum, EventServiceProperties eventServiceProperties) {
@@ -61,6 +64,7 @@ public class Event {
         Instant now = Instant.now();
         this.lastmodified = Timestamp.from(now);
 
-        actionType = actionEnum.getCode();
+        this.messageType = Constants.EVENT.getValue();
+        this.actionType = actionEnum.getCode();
     }
 }

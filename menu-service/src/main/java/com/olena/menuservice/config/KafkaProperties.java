@@ -17,7 +17,7 @@ public class KafkaProperties {
 /*
     private String potluckEventProducerTopic;
     private String keySerializerClass;
-    private String valuePotluckEventSerializerCLass;
+    private String valueSerializerCLass;
 */
 
     // consumer props

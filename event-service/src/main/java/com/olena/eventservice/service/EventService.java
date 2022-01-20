@@ -3,9 +3,10 @@ package com.olena.eventservice.service;
 import com.olena.eventservice.config.EventServiceProperties;
 import com.olena.eventservice.config.KafkaProperties;
 import com.olena.eventservice.enums.ActionEnum;
+import com.olena.eventservice.enums.Constants;
 import com.olena.eventservice.exception.ServiceException;
 import com.olena.eventservice.model.EventDTO;
-import com.olena.eventservice.publisher.EventPublisher;
+import com.olena.eventservice.producer.PotluckEventPublisher;
 import com.olena.eventservice.repository.EventRepository;
 import com.olena.eventservice.repository.entity.Event;
 import lombok.extern.slf4j.Slf4j;
@@ -102,7 +103,7 @@ public class EventService {
      * @return
      * @throws ServiceException
      */
-    public Event addEvent(EventDTO eventDTO, EventPublisher eventPublisher) throws ServiceException {
+    public Event addEvent(EventDTO eventDTO, PotluckEventPublisher potluckEventPublisher) throws ServiceException {
         log.debug("addEvent: eventDTO={}", eventDTO);
 
         // check if eventDTO  already  exists   -  reject
@@ -121,7 +122,7 @@ public class EventService {
             setEvent(event);
 
             // publish event into  Kafka topic
-            eventPublisher.publish(potluckEventProducer, kafkaProperties.getPotluckEventProducerTopic(), event);
+            potluckEventPublisher.publish(this.potluckEventProducer, kafkaProperties.getPotluckEventProducerTopic(), event);
 
             return event;
 
@@ -192,7 +193,7 @@ public class EventService {
      * @return
      * @throws ServiceException
      */
-    public List<Event> deleteEventByUserName(String userName, String bearerToken, GuestService guestService, EventPublisher eventPublisher) throws ServiceException {
+    public List<Event> deleteEventByUserName(String userName, String bearerToken, GuestService guestService, PotluckEventPublisher potluckEventPublisher) throws ServiceException {
         log.debug("deleteEventByUserName: userName={}", userName);
 
         StringBuffer errMsg = new StringBuffer();
@@ -207,7 +208,8 @@ public class EventService {
 
                     // publish event into  Kafka topic
                     event.setActionType(ActionEnum.DELETE.getCode());
-                    eventPublisher.publish(potluckEventProducer, kafkaProperties.getPotluckEventProducerTopic(), event);
+                    event.setMessageType(Constants.EVENT.getValue());
+                    potluckEventPublisher.publish(this.potluckEventProducer, kafkaProperties.getPotluckEventProducerTopic(), event);
 
                 }
             }
@@ -246,7 +248,7 @@ public class EventService {
      * @return
      * @throws ServiceException
      */
-    public Event updateEvent(EventDTO eventDTO, EventPublisher eventPublisher) throws ServiceException {
+    public Event updateEvent(EventDTO eventDTO, PotluckEventPublisher potluckEventPublisher) throws ServiceException {
         log.debug("updateEvent: eventDTO={}", eventDTO);
 
         StringBuffer errMsg = new StringBuffer();
@@ -265,7 +267,7 @@ public class EventService {
                 setEvent(event);
 
                 // publish event into  Kafka topic
-                eventPublisher.publish(potluckEventProducer, kafkaProperties.getPotluckEventProducerTopic(), event);
+                potluckEventPublisher.publish(this.potluckEventProducer, kafkaProperties.getPotluckEventProducerTopic(), event);
 
                 return event;
 
@@ -290,7 +292,7 @@ public class EventService {
      * @return
      * @throws ServiceException
      */
-    public Event deleteEvent(String eventId, String bearerToken, GuestService guestService, EventPublisher eventPublisher) throws ServiceException {
+    public Event deleteEvent(String eventId, String bearerToken, GuestService guestService, PotluckEventPublisher potluckEventPublisher) throws ServiceException {
         log.debug("deleteEvent: eventId={}", eventId);
 
         StringBuffer errMsg = new StringBuffer();
@@ -305,7 +307,8 @@ public class EventService {
 
                 // publish as DELETED
                 event.setActionType(ActionEnum.DELETE.getCode());
-                eventPublisher.publish(potluckEventProducer, kafkaProperties.getPotluckEventProducerTopic(), event);
+                event.setMessageType(Constants.EVENT.getValue());
+                potluckEventPublisher.publish(this.potluckEventProducer, kafkaProperties.getPotluckEventProducerTopic(), event);
 
                 return event;
 

@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "event-service.config")
+@ConfigurationProperties(prefix = "menu-service.config")
 @Data
 @NoArgsConstructor
 public class MenuServiceProperties {

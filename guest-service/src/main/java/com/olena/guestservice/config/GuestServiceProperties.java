@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 public class GuestServiceProperties {
 
     String appVersion;
-
     String dbSchemaVersion;
 
     String dishServiceUrl;

@@ -1,4 +1,4 @@
-package com.olena.eventservice.publisher;
+package com.olena.guestservice.producer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.Producer;
@@ -10,7 +10,7 @@ import java.util.concurrent.Future;
 
 @Slf4j
 @Service
-public class EventPublisher {
+public class PotluckEventPublisher {
 
     public <T extends Object> void publish(Producer<String, T> producer, String topic, T message) {
         //source.output().send(MessageBuilder.withPayload(event).build());

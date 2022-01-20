@@ -1,6 +1,6 @@
-package com.olena.eventservice.service;
+package com.olena.guestservice.service;
 
-import com.olena.eventservice.config.KafkaProperties;
+import com.olena.guestservice.config.KafkaProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.olena.eventservice.config;
+package com.olena.guestservice.config;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

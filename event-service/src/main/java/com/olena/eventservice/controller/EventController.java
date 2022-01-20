@@ -4,7 +4,7 @@ import com.olena.eventservice.exception.BadInputException;
 import com.olena.eventservice.exception.ServiceException;
 import com.olena.eventservice.model.EventDTO;
 import com.olena.eventservice.model.GuestDTO;
-import com.olena.eventservice.publisher.EventPublisher;
+import com.olena.eventservice.producer.PotluckEventPublisher;
 import com.olena.eventservice.service.EventService;
 import com.olena.eventservice.service.GuestService;
 import io.micrometer.core.instrument.util.StringUtils;
@@ -27,7 +27,7 @@ public class EventController {
     GuestService guestService;
 
     @Autowired
-    EventPublisher eventPublisher;
+    PotluckEventPublisher potluckEventPublisher;
 
     // ! only  for compatibility  with  SPA client
     // TODO extract username from JWT token and update queries
@@ -67,7 +67,7 @@ public class EventController {
     public ResponseEntity<?> deleteEventByUserName(@PathVariable("username") String userName
             , @RequestHeader(name = "Authorization") String bearerToken) throws ServiceException {
 
-        return ResponseEntity.ok(eventService.deleteEventByUserName(userName, bearerToken, guestService, eventPublisher));
+        return ResponseEntity.ok(eventService.deleteEventByUserName(userName, bearerToken, guestService, potluckEventPublisher));
     }
 
     /**
@@ -117,7 +117,7 @@ public class EventController {
     public ResponseEntity<?> createEvent(@RequestBody EventDTO eventDTO) throws ServiceException, BadInputException {
 
         if (!StringUtils.isBlank(eventDTO.getEventName())) {
-            return ResponseEntity.ok(eventService.addEvent(eventDTO, eventPublisher));
+            return ResponseEntity.ok(eventService.addEvent(eventDTO, potluckEventPublisher));
         } else {
             throw new BadInputException("createEvent: empty event name");
         }
@@ -133,7 +133,7 @@ public class EventController {
     public ResponseEntity<?> updateEvent(@RequestBody EventDTO eventDTO) throws ServiceException, BadInputException {
 
         if (eventDTO.getEventId() != null) {
-            return ResponseEntity.ok(eventService.updateEvent(eventDTO, eventPublisher));
+            return ResponseEntity.ok(eventService.updateEvent(eventDTO, potluckEventPublisher));
         } else {
             throw new BadInputException("updateEvent: eventId can not be null");
         }
@@ -148,7 +148,7 @@ public class EventController {
     public ResponseEntity<?> deleteEvent(@PathVariable("eventid") String eventId
             , @RequestHeader(name = "Authorization") String bearerToken) throws ServiceException {
 
-        return ResponseEntity.ok(eventService.deleteEvent(eventId, bearerToken, guestService, eventPublisher));
+        return ResponseEntity.ok(eventService.deleteEvent(eventId, bearerToken, guestService, potluckEventPublisher));
 
     }
 

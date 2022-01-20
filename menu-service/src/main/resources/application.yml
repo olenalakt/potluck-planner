@@ -64,7 +64,7 @@ logging:
     org.springframework.kafka: error
     org.springframework.data.mongodb: error
     org.mongodb.driver: error
-    root: debug
+    root: error
 
 confluent-kafka:
   config:

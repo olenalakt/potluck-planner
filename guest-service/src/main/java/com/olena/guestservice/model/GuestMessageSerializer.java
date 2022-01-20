@@ -1,4 +1,4 @@
-package com.olena.eventservice.repository.entity;
+package com.olena.guestservice.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -7,7 +7,7 @@ import org.apache.kafka.common.serialization.Serializer;
 import java.util.Map;
 
 @Slf4j
-public class PotluckEventSerializer implements Serializer<Event> {
+public class GuestMessageSerializer implements Serializer<GuestMessage> {
 
     @Override
     public void configure(Map map, boolean b) {
@@ -15,14 +15,14 @@ public class PotluckEventSerializer implements Serializer<Event> {
     }
 
     @Override
-    public byte[] serialize(String topic, Event potluckEvent) {
+    public byte[] serialize(String topic, GuestMessage guestMessage) {
 
         log.debug("serialize, entered: topic=[{}]", topic);
 
         byte[] messageAsBytes = null;
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            messageAsBytes = objectMapper.writeValueAsString(potluckEvent).getBytes();
+            messageAsBytes = objectMapper.writeValueAsString(guestMessage).getBytes();
         } catch (Exception e) {
             log.error("serialize, exception: topic=[{}], [{}]", topic, e.toString());
         }

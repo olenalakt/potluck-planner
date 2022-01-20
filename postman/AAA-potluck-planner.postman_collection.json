@@ -245,6 +245,76 @@
 			"response": []
 		},
 		{
+			"name": "MENU-SERVICE: query menu  by eventId",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "olena",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{menu-service}}/v1/menu/bb978fec-7a20-4b98-bcc4-3eab9da632b1 ",
+					"host": [
+						"{{menu-service}}"
+					],
+					"path": [
+						"v1",
+						"menu",
+						"bb978fec-7a20-4b98-bcc4-3eab9da632b1 "
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "EVENT-SERVICE: query events by username",
 			"request": {
 				"auth": {
@@ -732,7 +802,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userName\": \"olena\",\r\n    \"eventName\": \"Birthday Party for delete\",\r\n    \"eventDate\": \"2022-01-31T16:00:00.000+00:00\",\r\n    \"notes\": \"Test 3\"\r\n\r\n}"
+					"raw": "{\r\n    \"userName\": \"olena\",\r\n    \"eventName\": \"Birthday Party\",\r\n    \"eventDate\": \"2022-01-31T16:00:00.000+00:00\",\r\n    \"notes\": \"Test 1\"\r\n\r\n}"
 				},
 				"url": {
 					"raw": "{{event-service}}/v1/events",

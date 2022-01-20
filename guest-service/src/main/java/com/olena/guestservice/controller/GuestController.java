@@ -4,6 +4,7 @@ import com.olena.guestservice.exception.ServiceException;
 import com.olena.guestservice.model.DishDTO;
 import com.olena.guestservice.model.DrinkDTO;
 import com.olena.guestservice.model.GuestDTO;
+import com.olena.guestservice.producer.PotluckEventPublisher;
 import com.olena.guestservice.service.DishService;
 import com.olena.guestservice.service.DrinkService;
 import com.olena.guestservice.service.GuestService;
@@ -27,6 +28,9 @@ public class GuestController {
 
     @Autowired
     DrinkService drinkService;
+
+    @Autowired
+    PotluckEventPublisher potluckEventPublisher;
 
     /**
      * @param eventId
@@ -65,7 +69,7 @@ public class GuestController {
             return ResponseEntity.badRequest().build();
         }
 
-        return ResponseEntity.ok(guestService.addGuests(guestDTOList));
+        return ResponseEntity.ok(guestService.addGuests(guestDTOList, potluckEventPublisher));
     }
 
     /**
@@ -81,7 +85,7 @@ public class GuestController {
             return ResponseEntity.badRequest().build();
         }
 
-        return ResponseEntity.ok(guestService.deleteGuests(guestDTOList, bearerToken, dishService, drinkService));
+        return ResponseEntity.ok(guestService.deleteGuests(guestDTOList, bearerToken, dishService, drinkService, potluckEventPublisher));
     }
 
     /**
@@ -106,7 +110,7 @@ public class GuestController {
         if (guestDTO == null || guestDTO.getGuestId() == null) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(guestService.updateGuest(guestDTO));
+        return ResponseEntity.ok(guestService.updateGuest(guestDTO, potluckEventPublisher));
     }
 
     /**
@@ -118,7 +122,7 @@ public class GuestController {
     public ResponseEntity<?> deleteGuest(@PathVariable("guestid") String guestId
             , @RequestHeader(name = "Authorization") String bearerToken) throws ServiceException {
 
-        return ResponseEntity.ok(guestService.deleteGuest(guestId, bearerToken, dishService, drinkService));
+        return ResponseEntity.ok(guestService.deleteGuest(guestId, bearerToken, dishService, drinkService, potluckEventPublisher));
     }
 
     /**
