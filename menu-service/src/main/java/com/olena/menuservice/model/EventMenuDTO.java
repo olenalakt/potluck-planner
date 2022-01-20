@@ -15,21 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 /**
- *  if action type=  "I"
- *      if Guest <> null - add guest
- *      if Dish <> null - add dish
- *      if Drink <> null - add drink
- *      else - add event
- *  if action type=  "U"
- *      if Guest <> null - update guest
- *      if Dish <> null - update dish
- *      if Drink <> null - update drink
- *      else - add event
- *  if action type=  "D"
- *      if Guest <> null - add guest
- *      if Dish <> null - add dish
- *      if Drink <> null - add drink
- *      else - add event
+
  */
 public class EventMenuDTO {
 
@@ -43,6 +29,7 @@ public class EventMenuDTO {
     private Dish dish;
     private Drink drink;
 
+    private String messageType;
     private String actionType;
 
 }

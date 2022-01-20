@@ -3,6 +3,7 @@ package com.olena.menuservice.repository.entity;
 import com.mongodb.lang.NonNull;
 import com.olena.menuservice.config.MenuServiceProperties;
 import com.olena.menuservice.model.Dish;
+import com.olena.menuservice.model.Drink;
 import com.olena.menuservice.model.EventMenuDTO;
 import com.olena.menuservice.model.Guest;
 import lombok.Data;
@@ -46,7 +47,7 @@ public class EventMenu {
 
     private List<Dish> dishes;
 
-    private List<Dish> drinks;
+    private List<Drink> drinks;
 
     @NonNull
     private String schemaVersion;
