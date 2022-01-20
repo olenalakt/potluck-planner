@@ -23,6 +23,7 @@ guest-service:
   config:
     appVersion: 1.0.0
     dbSchemaVersion: 1.0.0
+    potluckEventProducerTopic: 'POTLUCK-EVENT-DEV'
     dishServiceUrl: http://localhost:6443/v1/dishes
     drinkServiceUrl: http://localhost:5443/v1/drinks
 
@@ -59,8 +60,7 @@ logging:
 
 confluent-kafka:
   config:
-    # topic
-    potluckEventProducerTopic: 'POTLUCK-EVENT-DEV'
+    # producer
     keySerializerClass: 'org.apache.kafka.common.serialization.StringSerializer'
     valueSerializerCLass: 'com.olena.guestservice.model.GuestMessageSerializer'
 

@@ -6,12 +6,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "event-service.config")
+@ConfigurationProperties(prefix = "dish-service.config")
 @Data
 @NoArgsConstructor
 public class DishServiceProperties {
 
-    String dbSchemaVersion;
-    String appVersion;
+    private String dbSchemaVersion;
+    private String appVersion;
+
+    private String potluckEventProducerTopic;
 
 }

@@ -11,10 +11,12 @@ import org.springframework.context.annotation.Configuration;
 @NoArgsConstructor
 public class GuestServiceProperties {
 
-    String appVersion;
-    String dbSchemaVersion;
+    private String appVersion;
+    private String dbSchemaVersion;
 
-    String dishServiceUrl;
-    String drinkServiceUrl;
+    private String potluckEventProducerTopic;
+
+    private String dishServiceUrl;
+    private String drinkServiceUrl;
 
 }

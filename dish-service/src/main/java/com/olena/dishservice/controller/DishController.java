@@ -2,6 +2,7 @@ package com.olena.dishservice.controller;
 
 import com.olena.dishservice.exception.ServiceException;
 import com.olena.dishservice.model.DishDTO;
+import com.olena.dishservice.producer.PotluckEventPublisher;
 import com.olena.dishservice.service.DishService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,14 @@ public class DishController {
     @Autowired
     DishService dishService;
 
+    @Autowired
+    PotluckEventPublisher potluckEventPublisher;
+
     /**
      * @param guestId
      * @return
      */
-//    @PreAuthorize("#oauth2.hasScope('guest')")
+//    @PreAuthorize("#oauth2.hasScope('dish')")
     @RequestMapping(value = "/guest/{guestid}", method = RequestMethod.GET)
     public ResponseEntity<?> getDishListByGuest(@PathVariable("guestid") String guestId) throws ServiceException {
         return ResponseEntity.ok(dishService.getDishListByGuestId(UUID.fromString(guestId)));
@@ -32,7 +36,7 @@ public class DishController {
      * @param dishDTOList
      * @return
      */
-//    @PreAuthorize("#oauth2.hasScope('guest')")
+//    @PreAuthorize("#oauth2.hasScope('dish')")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> updateDishes(@RequestBody DishDTO[] dishDTOList) throws ServiceException {
 
@@ -40,7 +44,7 @@ public class DishController {
             return ResponseEntity.badRequest().build();
         }
 
-        dishService.updateDishes(dishDTOList);
+        dishService.updateDishes(dishDTOList, potluckEventPublisher);
 
         return ResponseEntity.noContent().build();
     }
@@ -50,7 +54,7 @@ public class DishController {
      * @return
      * @throws ServiceException
      */
-    //    @PreAuthorize("#oauth2.hasScope('guest')")
+    //    @PreAuthorize("#oauth2.hasScope('dish')")
     @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteDishes(@RequestBody DishDTO[] dishDTOList) throws ServiceException {
 
@@ -58,7 +62,7 @@ public class DishController {
             return ResponseEntity.badRequest().build();
         }
 
-        dishService.deleteDishes(dishDTOList);
+        dishService.deleteDishes(dishDTOList, potluckEventPublisher);
 
         return ResponseEntity.noContent().build();
     }
@@ -68,10 +72,10 @@ public class DishController {
      * @return
      * @throws ServiceException
      */
-    //    @PreAuthorize("#oauth2.hasScope('guest')")
+    //    @PreAuthorize("#oauth2.hasScope('dish')")
     @RequestMapping(value = "/guest/{guestid}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteDishesByGuestId(@PathVariable("guestid") String guestId) throws ServiceException {
-        return ResponseEntity.ok(dishService.deleteDishesByGuestId(UUID.fromString(guestId)));
+        return ResponseEntity.ok(dishService.deleteDishesByGuestId(UUID.fromString(guestId), potluckEventPublisher));
     }
 
 }

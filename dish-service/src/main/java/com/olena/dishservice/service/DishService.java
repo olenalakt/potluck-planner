@@ -1,11 +1,15 @@
 package com.olena.dishservice.service;
 
 import com.olena.dishservice.config.DishServiceProperties;
+import com.olena.dishservice.enums.ActionEnum;
 import com.olena.dishservice.exception.ServiceException;
 import com.olena.dishservice.model.DishDTO;
+import com.olena.dishservice.model.DishMessage;
+import com.olena.dishservice.producer.PotluckEventPublisher;
 import com.olena.dishservice.repository.DishRepository;
 import com.olena.dishservice.repository.entity.Dish;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.producer.Producer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +25,9 @@ public class DishService {
 
     @Autowired
     DishRepository dishRepository;
+
+    @Autowired
+    private Producer<String, DishMessage> potluckEventProducer;
 
     /**
      * @param guestId
@@ -61,8 +68,8 @@ public class DishService {
      * @return
      * @throws ServiceException
      */
-    public void updateDishes(DishDTO[] dishDTOList) throws ServiceException {
-        log.debug("updateDishes: dishDTOList={}", dishDTOList);
+    public void updateDishes(DishDTO[] dishDTOList, PotluckEventPublisher potluckEventPublisher) throws ServiceException {
+        log.debug("updateDishes: dishDTOList={}, dishServiceProperties={}", dishDTOList, dishServiceProperties);
 
 
         for (DishDTO dishDTO : dishDTOList) {
@@ -81,6 +88,10 @@ public class DishService {
                 // save to  DB
                 setDish(dish);
 
+                // publish to Kafka topic
+                DishMessage dishMessage = new DishMessage(dish, ActionEnum.ADD);
+                potluckEventPublisher.publish(potluckEventProducer, dishServiceProperties.getPotluckEventProducerTopic(), dishMessage);
+
             } catch (ServiceException se) {
                 throw se;
             } catch (Exception e) {
@@ -97,7 +108,7 @@ public class DishService {
      * @param dishDTOList
      * @throws ServiceException
      */
-    public void deleteDishes(DishDTO[] dishDTOList) throws ServiceException {
+    public void deleteDishes(DishDTO[] dishDTOList, PotluckEventPublisher potluckEventPublisher) throws ServiceException {
         log.debug("deleteDishes: dishDTOList={}", dishDTOList);
 
         StringBuffer errMsg = new StringBuffer();
@@ -115,6 +126,10 @@ public class DishService {
                 dish = dishRepository.findFirstByDishId(UUID.fromString(dishDTO.getDishId()));
                 if (dish != null) {
                     dishRepository.delete(dish);
+
+                    // publish to Kafka topic
+                    DishMessage dishMessage = new DishMessage(dish, ActionEnum.DELETE);
+                    potluckEventPublisher.publish(potluckEventProducer, dishServiceProperties.getPotluckEventProducerTopic(), dishMessage);
                 }
 
             } catch (ServiceException se) {
@@ -133,13 +148,17 @@ public class DishService {
      * @return
      * @throws ServiceException
      */
-    public List<Dish> deleteDishesByGuestId(UUID guestId) throws ServiceException {
+    public List<Dish> deleteDishesByGuestId(UUID guestId, PotluckEventPublisher potluckEventPublisher) throws ServiceException {
         log.debug("deleteDishesByGuestId: guestId={}", guestId);
         try {
             List<Dish> dishList = dishRepository.findAllByGuestIdOrderByDishName(guestId);
 
             for (Dish dish : dishList) {
                 dishRepository.delete(dish);
+
+                // publish to Kafka topic
+                DishMessage dishMessage = new DishMessage(dish, ActionEnum.DELETE);
+                potluckEventPublisher.publish(potluckEventProducer, dishServiceProperties.getPotluckEventProducerTopic(), dishMessage);
             }
             return dishList;
         } catch (Exception e) {

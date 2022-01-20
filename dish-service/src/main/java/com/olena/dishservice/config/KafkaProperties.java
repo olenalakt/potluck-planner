@@ -1,4 +1,4 @@
-package com.olena.guestservice.config;
+package com.olena.dishservice.config;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

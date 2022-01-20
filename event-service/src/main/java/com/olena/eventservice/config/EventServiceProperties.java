@@ -11,9 +11,11 @@ import org.springframework.context.annotation.Configuration;
 @NoArgsConstructor
 public class EventServiceProperties {
 
-    String appVersion;
-    String dbSchemaVersion;
+    private String appVersion;
+    private String dbSchemaVersion;
 
-    String guestServiceUrl;
+    private String potluckEventProducerTopic;
+
+    private String guestServiceUrl;
 
 }

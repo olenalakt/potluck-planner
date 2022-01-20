@@ -43,7 +43,6 @@ public class GuestController {
     }
 
     /**
-     *
      * @param eventId
      * @param bearerToken
      * @return

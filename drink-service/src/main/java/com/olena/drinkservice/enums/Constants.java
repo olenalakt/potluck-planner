@@ -2,7 +2,7 @@ package com.olena.drinkservice.enums;
 
 public enum Constants {
 
-    GUEST_SERVICE("guest.service");
+    DRINK("drink");
 
     private final String value;
 

@@ -1,11 +1,15 @@
 package com.olena.drinkservice.service;
 
 import com.olena.drinkservice.config.DrinkServiceProperties;
+import com.olena.drinkservice.enums.ActionEnum;
 import com.olena.drinkservice.exception.ServiceException;
 import com.olena.drinkservice.model.DrinkDTO;
+import com.olena.drinkservice.model.DrinkMessage;
+import com.olena.drinkservice.producer.PotluckEventPublisher;
 import com.olena.drinkservice.repository.DrinkRepository;
 import com.olena.drinkservice.repository.entity.Drink;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.producer.Producer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +25,9 @@ public class DrinkService {
 
     @Autowired
     DrinkRepository drinkRepository;
+
+    @Autowired
+    private Producer<String, DrinkMessage> potluckEventProducer;
 
     /**
      * @param guestId
@@ -66,7 +73,7 @@ public class DrinkService {
      * @return
      * @throws ServiceException
      */
-    public void updateDrinks(DrinkDTO[] drinkDTOList) throws ServiceException {
+    public void updateDrinks(DrinkDTO[] drinkDTOList, PotluckEventPublisher potluckEventPublisher) throws ServiceException {
         log.debug("updateDrinks: guestDTO={}", drinkDTOList);
 
 
@@ -86,6 +93,10 @@ public class DrinkService {
                 // save to  DB
                 setDrink(drink);
 
+                // publish to  Kafka topic
+                DrinkMessage drinkMessage = new DrinkMessage(drink, ActionEnum.ADD);
+                potluckEventPublisher.publish(potluckEventProducer, drinkServiceProperties.getPotluckEventProducerTopic(), drinkMessage);
+
             } catch (ServiceException se) {
                 throw se;
             } catch (Exception e) {
@@ -103,7 +114,7 @@ public class DrinkService {
      * @return
      * @throws ServiceException
      */
-    public void deleteDrinks(DrinkDTO[] drinkDTOList) throws ServiceException {
+    public void deleteDrinks(DrinkDTO[] drinkDTOList, PotluckEventPublisher potluckEventPublisher) throws ServiceException {
         log.debug("deleteDrinks: drinkDTOList={}", drinkDTOList);
 
 
@@ -122,6 +133,10 @@ public class DrinkService {
                 drink = drinkRepository.findFirstByDrinkId(UUID.fromString(drinkDTO.getDrinkId()));
                 if (drink != null) {
                     drinkRepository.delete(drink);
+
+                    // publish to  Kafka topic
+                    DrinkMessage drinkMessage = new DrinkMessage(drink, ActionEnum.DELETE);
+                    potluckEventPublisher.publish(potluckEventProducer, drinkServiceProperties.getPotluckEventProducerTopic(), drinkMessage);
                 }
 
             } catch (ServiceException se) {
@@ -140,13 +155,17 @@ public class DrinkService {
      * @return
      * @throws ServiceException
      */
-    public List<Drink> deleteDrinksByGuestId(UUID guestId) throws ServiceException {
+    public List<Drink> deleteDrinksByGuestId(UUID guestId, PotluckEventPublisher potluckEventPublisher) throws ServiceException {
         log.debug("deleteDrinksByGuestId: guestId={}", guestId);
         try {
             List<Drink> drinkList = drinkRepository.findAllByGuestIdOrderByDrinkName(guestId);
 
             for (Drink drink : drinkList) {
                 drinkRepository.delete(drink);
+
+                // publish to Kafka topic
+                DrinkMessage drinkMessage = new DrinkMessage(drink, ActionEnum.DELETE);
+                potluckEventPublisher.publish(potluckEventProducer, drinkServiceProperties.getPotluckEventProducerTopic(), drinkMessage);
             }
             return drinkList;
         } catch (Exception e) {

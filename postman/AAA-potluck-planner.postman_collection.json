@@ -301,14 +301,14 @@
 					}
 				],
 				"url": {
-					"raw": "{{menu-service}}/v1/menu/bb978fec-7a20-4b98-bcc4-3eab9da632b1 ",
+					"raw": "{{menu-service}}/v1/menu/{{eventId}}",
 					"host": [
 						"{{menu-service}}"
 					],
 					"path": [
 						"v1",
 						"menu",
-						"bb978fec-7a20-4b98-bcc4-3eab9da632b1 "
+						"{{eventId}}"
 					]
 				}
 			},
@@ -802,7 +802,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userName\": \"olena\",\r\n    \"eventName\": \"Birthday Party\",\r\n    \"eventDate\": \"2022-01-31T16:00:00.000+00:00\",\r\n    \"notes\": \"Test 1\"\r\n\r\n}"
+					"raw": "{\r\n    \"userName\": \"olena\",\r\n    \"eventName\": \"test 3\",\r\n    \"eventDate\": \"2022-01-22T16:00:00.000+00:00\",\r\n    \"notes\": \"Test 3\"\r\n\r\n}"
 				},
 				"url": {
 					"raw": "{{event-service}}/v1/events",
@@ -875,7 +875,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userName\": \"olena\",\r\n    \"eventId\": \"0486bb09-ebb9-4644-b94a-6914be57174b\",\r\n    \"eventName\": \"Birthday Party\",\r\n    \"eventDate\": \"2022-01-18T16:00:00.000+00:00\",\r\n    \"notes\": \"Richmond Hill friends - updated 1\"\r\n}"
+					"raw": "{\r\n    \"userName\": \"{{username}}\",\r\n    \"eventId\": \"{{eventId}}\",\r\n    \"eventName\": \"test\",\r\n    \"eventDate\": \"2022-01-18T16:00:00.000+00:00\",\r\n    \"notes\": \"Richmond Hill friends - updated 1\"\r\n}"
 				},
 				"url": {
 					"raw": "{{event-service}}/v1/events",
@@ -947,14 +947,14 @@
 					}
 				],
 				"url": {
-					"raw": "{{event-service}}/v1/events/2eb997a6-67a8-449c-9cdf-3dfcfa2b2339",
+					"raw": "{{event-service}}/v1/events/7765ad96-34d4-4b43-966a-82eabbf33ea8",
 					"host": [
 						"{{event-service}}"
 					],
 					"path": [
 						"v1",
 						"events",
-						"2eb997a6-67a8-449c-9cdf-3dfcfa2b2339"
+						"7765ad96-34d4-4b43-966a-82eabbf33ea8"
 					]
 				}
 			},
@@ -1093,7 +1093,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\r\n        {\r\n            \"userName\": \"olena\",\r\n            \"eventId\": \"0486bb09-ebb9-4644-b94a-6914be57174b\",\r\n            \"guestId\": \"72f4d16c-5001-425f-9b0f-8b93a46893b6\",\r\n            \"guestName\": \"test1\",\r\n            \"guestEmail\": \"test1@gmail.com\",\r\n            \"notes\": null\r\n        },\r\n        {\r\n            \"userName\": \"olena\",\r\n            \"eventId\": \"0486bb09-ebb9-4644-b94a-6914be57174b\",\r\n            \"guestId\": \"1459b3e9-887c-479c-8879-c1f071034bfe\",\r\n            \"guestName\": \"test2\",\r\n            \"guestEmail\": \"test2@gmail.com\",\r\n            \"notes\": null\r\n        }\r\n]"
+					"raw": "[\r\n    {\r\n        \"userName\": \"{{username}}\",\r\n        \"eventId\": \"{{eventId}}\",\r\n        \"guestId\": \"14c1c2af-611c-416c-983f-8f5944fa7d56\",\r\n        \"guestName\": \"test1\",\r\n        \"guestEmail\": \"test1@gmail.com\",\r\n        \"notes\": null\r\n    },\r\n    {\r\n        \"userName\": \"{{username}}\",\r\n        \"eventId\": \"{{eventId}}\",\r\n        \"guestId\": \"fc90af0d-2bb6-4e5c-a870-115615a2d281\",\r\n        \"guestName\": \"test2\",\r\n        \"guestEmail\": \"test2@gmail.com\",\r\n        \"notes\": null\r\n    }\r\n]"
 				},
 				"url": {
 					"raw": "{{event-service}}/v1/events/{{eventId}}/guests",
@@ -1239,7 +1239,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[{\"userName\":\"olena\",\"eventId\":\"c3f6bd99-b1b0-4d4a-babe-887164cf035a\", \"guestName\":\"test3\",\"guestEmail\":\"test3@gmail.com\"}]"
+					"raw": "[\r\n    {\r\n        \"userName\": \"{{username}}\",\r\n        \"eventId\": \"{{eventId}}\",\r\n        \"guestName\": \"test3\",\r\n        \"guestEmail\": \"test3@gmail.com\"\r\n    }\r\n]"
 				},
 				"url": {
 					"raw": "{{guest-service}}/v1/guests/",
@@ -1384,7 +1384,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[{\"guestId\": \"02c08f78-fe74-45ff-b3f0-6efd0888df85\",\"userName\":\"olena\",\"eventId\":\"c3f6bd99-b1b0-4d4a-babe-887164cf035a\", \"guestName\":\"test3\",\"guestEmail\":\"test3@gmail.com\"}]"
+					"raw": "[\r\n    {\r\n        \"guestId\": \"02c08f78-fe74-45ff-b3f0-6efd0888df85\",\r\n        \"userName\": \"{{username}}\",\r\n        \"eventId\": \"{{eventId}}\",\r\n        \"guestName\": \"test3\",\r\n        \"guestEmail\": \"test3@gmail.com\"\r\n    }\r\n]"
 				},
 				"url": {
 					"raw": "{{guest-service}}/v1/guests/",
@@ -1458,7 +1458,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"guestId\": \"70786690-8bf3-43c8-9408-88e817c90d66\",\r\n\"userName\":\"olena\",\"eventId\":\"c3f6bd99-b1b0-4d4a-babe-887164cf035a\", \"guestName\":\"test3\",\"guestEmail\":\"test3@gmail.com\",\"notes\":\"updated3\"}"
+					"raw": "{\r\n    \"guestId\": \"{{guestId}}\",\r\n    \"userName\": \"{{username}}\",\r\n    \"eventId\": \"{{eventId}}\",\r\n    \"guestName\": \"test3\",\r\n    \"guestEmail\": \"test3@gmail.com\",\r\n    \"notes\": \"updated3\"\r\n}"
 				},
 				"url": {
 					"raw": "{{guest-service}}/v1/guests/guest",
@@ -1672,7 +1672,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\r\n  {\r\n  \"userName\":\"olena\",\r\n  \"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"drinkName\":\"shardonay\",\r\n  \"drinkType\":\"WINE\",\r\n  \"drinkRecipe\":\"updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isAlcoholFree\":\"false\",\r\n  \"quantityMl\": 500\r\n  },\r\n  {\r\n  \"userName\":\"olena\",\r\n  \"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"drinkName\":\"apple juice\",\r\n  \"drinkType\":\"JUICE\",\r\n  \"drinkRecipe\":\"updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isAlcoholFree\":\"true\",\r\n  \"quantityMl\": 1000\r\n  },\r\n  {\r\n    \"userName\":\"olena\",\r\n\"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"drinkName\":\"test_delete1\",\r\n  \"drinkType\":\"JUICE\",\r\n  \"drinkRecipe\":\"updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isAlcoholFree\":\"true\",\r\n  \"quantityMl\": 1000\r\n  },\r\n  {\r\n    \"userName\":\"olena\",\r\n\"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"drinkName\":\"test_delete2\",\r\n  \"drinkType\":\"JUICE\",\r\n  \"drinkRecipe\":\"updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isAlcoholFree\":\"true\",\r\n  \"quantityMl\": 1000\r\n  }\r\n]"
+					"raw": "[\r\n  {\r\n  \"userName\":\"{{username}}\",\r\n  \"eventId\":\"{{eventId}}\",\r\n  \"guestId\":\"{{guestId}}\",\r\n  \"drinkName\":\"shardonay\",\r\n  \"drinkType\":\"WINE\",\r\n  \"drinkRecipe\":\"updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isAlcoholFree\":\"false\",\r\n  \"quantityMl\": 500\r\n  },\r\n  {\r\n  \"userName\":\"{{username}}\",\r\n  \"eventId\":\"{{eventId}}\",\r\n  \"guestId\":\"{{guestId}}\",\r\n  \"drinkName\":\"apple juice\",\r\n  \"drinkType\":\"JUICE\",\r\n  \"drinkRecipe\":\"updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isAlcoholFree\":\"true\",\r\n  \"quantityMl\": 1000\r\n  },\r\n  {\r\n    \"userName\":\"{{username}}\",\r\n\"eventId\":\"{{eventId}}\",\r\n  \"guestId\":\"{{guestId}}\",\r\n  \"drinkName\":\"test_delete1\",\r\n  \"drinkType\":\"JUICE\",\r\n  \"drinkRecipe\":\"updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isAlcoholFree\":\"true\",\r\n  \"quantityMl\": 1000\r\n  },\r\n  {\r\n    \"userName\":\"{{username}}\",\r\n\"eventId\":\"{{eventId}}\",\r\n  \"guestId\":\"{{guestId}}\",\r\n  \"drinkName\":\"test_delete2\",\r\n  \"drinkType\":\"JUICE\",\r\n  \"drinkRecipe\":\"updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isAlcoholFree\":\"true\",\r\n  \"quantityMl\": 1000\r\n  }\r\n]"
 				},
 				"url": {
 					"raw": "{{guest-service}}/v1/guests/{{guestId}}/drinks",
@@ -1747,7 +1747,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\r\n{\r\n            \"userName\": \"olena\",\r\n            \"eventId\": \"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n            \"guestId\": \"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n            \"drinkId\": \"b5c70abf-d3d8-4cd8-90b8-5de4fe1c7f33\",\r\n            \"quantityMl\": 1000,\r\n            \"drinkName\": \"test_delete1\",\r\n            \"drinkType\": \"JUICE\",\r\n            \"drinkRecipe\": \"updated\",\r\n            \"isLactoseFree\": true,\r\n            \"isAlcoholFree\": true\r\n        },\r\n        {\r\n            \"userName\": \"olena\",\r\n            \"eventId\": \"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n            \"guestId\": \"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n            \"drinkId\": \"e4b6ca1e-2189-4dd7-9b84-907c28e153bc\",\r\n            \"quantityMl\": 1000,\r\n            \"drinkName\": \"test_delete2\",\r\n            \"drinkType\": \"JUICE\",\r\n            \"drinkRecipe\": \"updated\",\r\n            \"isLactoseFree\": true,\r\n            \"isAlcoholFree\": true\r\n        }\r\n]"
+					"raw": "[\r\n    {\r\n        \"userName\": \"{{username}}\",\r\n        \"eventId\": \"{{eventId}}\",\r\n        \"guestId\": \"{{guestId}}\",\r\n        \"drinkId\": \"23bbf56e-3713-4513-879f-81163dc6af67\",\r\n        \"quantityMl\": 1000,\r\n        \"drinkName\": \"test_delete1\",\r\n        \"drinkType\": \"JUICE\",\r\n        \"drinkRecipe\": \"updated\",\r\n        \"isLactoseFree\": true,\r\n        \"isAlcoholFree\": true\r\n    },\r\n    {\r\n        \"userName\": \"{{username}}\",\r\n        \"eventId\": \"{{eventId}}\",\r\n        \"guestId\": \"{{guestId}}\",\r\n        \"drinkId\": \"04d25c51-7098-458d-a507-4dc3e5ae6a45\",\r\n        \"quantityMl\": 1000,\r\n        \"drinkName\": \"test_delete2\",\r\n        \"drinkType\": \"JUICE\",\r\n        \"drinkRecipe\": \"updated\",\r\n        \"isLactoseFree\": true,\r\n        \"isAlcoholFree\": true\r\n    }\r\n]"
 				},
 				"url": {
 					"raw": "{{guest-service}}/v1/guests/{{guestId}}/drinks",
@@ -1822,7 +1822,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\r\n  {\r\n  \"userName\":\"olena\",\r\n  \"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"dishName\":\"cake\",\r\n  \"dishType\":\"DESERT\",\r\n  \"dishRecipe\":\"cake recipe here\",\r\n  \"isLactoseFree\":\"false\",\r\n  \"isNutFree\":\"false\",\r\n  \"hasFish\":\"false\",\r\n  \"hasMeat\":\"false\"\r\n  },\r\n  {\r\n  \"userName\":\"olena\",\r\n  \"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"dishName\":\"ragu\",\r\n  \"dishType\":\"MAIN\",\r\n  \"dishRecipe\":\"ragu recipe here\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isNutFree\":\"true\",\r\n  \"hasFish\":\"false\",\r\n  \"hasMeat\":\"false\"\r\n  } \r\n]"
+					"raw": "[\r\n    {\r\n        \"userName\": \"{{username}}\",\r\n        \"eventId\": \"{{eventId}}\",\r\n        \"guestId\": \"{{guestId}}\",\r\n        \"dishName\": \"cake\",\r\n        \"dishType\": \"DESERT\",\r\n        \"dishRecipe\": \"cake recipe here\",\r\n        \"isLactoseFree\": \"false\",\r\n        \"isNutFree\": \"false\",\r\n        \"hasFish\": \"false\",\r\n        \"hasMeat\": \"false\"\r\n    },\r\n    {\r\n        \"userName\": \"{{username}}\",\r\n        \"eventId\": \"{{eventId}}\",\r\n        \"guestId\": \"{{guestId}}\",\r\n        \"dishName\": \"ragu\",\r\n        \"dishType\": \"MAIN\",\r\n        \"dishRecipe\": \"ragu recipe here\",\r\n        \"isLactoseFree\": \"true\",\r\n        \"isNutFree\": \"true\",\r\n        \"hasFish\": \"false\",\r\n        \"hasMeat\": \"false\"\r\n    },\r\n    {\r\n        \"userName\": \"{{username}}\",\r\n        \"eventId\": \"{{eventId}}\",\r\n        \"guestId\": \"{{guestId}}\",\r\n        \"dishName\": \"dish_for_delete\",\r\n        \"dishType\": \"MAIN\",\r\n        \"dishRecipe\": \"ragu recipe here\",\r\n        \"isLactoseFree\": \"true\",\r\n        \"isNutFree\": \"true\",\r\n        \"hasFish\": \"false\",\r\n        \"hasMeat\": \"false\"\r\n    }\r\n]"
 				},
 				"url": {
 					"raw": "{{guest-service}}/v1/guests/{{guestId}}/dishes",
@@ -1897,7 +1897,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\r\n            {\r\n            \"userName\": \"olena\",\r\n            \"eventId\": \"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n            \"guestId\": \"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n            \"dishId\": \"b113e8e6-f8d4-400b-aae9-fef3490eb035\",\r\n            \"dishName\": \"cake\",\r\n            \"dishType\": \"DESERT\",\r\n            \"dishRecipe\": \"cake recipe here - updated\",\r\n            \"isLactoseFree\": false,\r\n            \"isNutFree\": false,\r\n            \"hasFish\": false,\r\n            \"hasMeat\": false\r\n        },\r\n  {\r\n  \"dishId\": \"473f14e8-25f4-40d9-854c-73e90ef8ff88\",\"userName\":\"olena\",\r\n  \"eventId\":\"0e9ebe3d-71e9-4d17-ab0c-732a37ecbefe\",\r\n  \"guestId\":\"52cc7652-7db2-4acd-acbf-63c3c33da295\",\r\n  \"dishName\":\"ragu\",\r\n  \"dishType\":\"MAIN\",\r\n  \"dishRecipe\":\"ragu recipe here - updated\",\r\n  \"isLactoseFree\":\"true\",\r\n  \"isNutFree\":\"true\",\r\n  \"hasFish\":\"false\",\r\n  \"hasMeat\":\"false\"\r\n  } \r\n]"
+					"raw": "[\r\n    {\r\n        \"dishId\": \"9c418f30-bb27-428a-889f-041177bfb716\",\r\n        \"userName\": \"{{username}}\",\r\n        \"eventId\": \"{{eventId}}\",\r\n        \"guestId\": \"{{guestId}}\",\r\n        \"dishName\": \"ragu\",\r\n        \"dishType\": \"MAIN\",\r\n        \"dishRecipe\": \"ragu recipe here - updated\",\r\n        \"isLactoseFree\": \"true\",\r\n        \"isNutFree\": \"true\",\r\n        \"hasFish\": \"false\",\r\n        \"hasMeat\": \"false\"\r\n    }\r\n]"
 				},
 				"url": {
 					"raw": "{{guest-service}}/v1/guests/{{guestId}}/dishes",

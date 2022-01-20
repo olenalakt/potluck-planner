@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
 public class KafkaProperties {
 
     // producer props
-    private String potluckEventProducerTopic;
     private String keySerializerClass;
     private String valueSerializerCLass;
 

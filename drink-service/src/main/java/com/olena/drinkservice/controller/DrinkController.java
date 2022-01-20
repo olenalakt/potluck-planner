@@ -2,6 +2,7 @@ package com.olena.drinkservice.controller;
 
 import com.olena.drinkservice.exception.ServiceException;
 import com.olena.drinkservice.model.DrinkDTO;
+import com.olena.drinkservice.producer.PotluckEventPublisher;
 import com.olena.drinkservice.service.DrinkService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,14 @@ public class DrinkController {
     @Autowired
     DrinkService drinkService;
 
+    @Autowired
+    PotluckEventPublisher potluckEventPublisher;
+
     /**
      * @param guestId
      * @return
      */
-//    @PreAuthorize("#oauth2.hasScope('guest')")
+//    @PreAuthorize("#oauth2.hasScope('drink')")
     @RequestMapping(value = "/guest/{guestid}", method = RequestMethod.GET)
     public ResponseEntity<?> getDrinkListByGuest(@PathVariable("guestid") String guestId) throws ServiceException {
         return ResponseEntity.ok(drinkService.getDrinkListByGuestId(UUID.fromString(guestId)));
@@ -33,7 +37,7 @@ public class DrinkController {
      * @param drinkDTOList
      * @return
      */
-//    @PreAuthorize("#oauth2.hasScope('guest')")
+//    @PreAuthorize("#oauth2.hasScope('drink')")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> updateDrinks(@RequestBody DrinkDTO[] drinkDTOList) throws ServiceException {
 
@@ -41,12 +45,12 @@ public class DrinkController {
             return ResponseEntity.badRequest().build();
         }
 
-        drinkService.updateDrinks(drinkDTOList);
+        drinkService.updateDrinks(drinkDTOList, potluckEventPublisher);
 
         return ResponseEntity.noContent().build();
     }
 
-    //    @PreAuthorize("#oauth2.hasScope('guest')")
+    //    @PreAuthorize("#oauth2.hasScope('drink')")
     @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteDrinks(@RequestBody DrinkDTO[] drinkDTOList) throws ServiceException {
 
@@ -54,7 +58,7 @@ public class DrinkController {
             return ResponseEntity.badRequest().build();
         }
 
-        drinkService.deleteDrinks(drinkDTOList);
+        drinkService.deleteDrinks(drinkDTOList, potluckEventPublisher);
 
         return ResponseEntity.noContent().build();
     }
@@ -64,9 +68,9 @@ public class DrinkController {
      * @return
      * @throws ServiceException
      */
-    //    @PreAuthorize("#oauth2.hasScope('guest')")
+    //    @PreAuthorize("#oauth2.hasScope('drink')")
     @RequestMapping(value = "/guest/{guestid}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteDishesByGuestId(@PathVariable("guestid") String guestId) throws ServiceException {
-        return ResponseEntity.ok(drinkService.deleteDrinksByGuestId(UUID.fromString(guestId)));
+        return ResponseEntity.ok(drinkService.deleteDrinksByGuestId(UUID.fromString(guestId), potluckEventPublisher));
     }
 }

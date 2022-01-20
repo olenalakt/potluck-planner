@@ -6,12 +6,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "event-service.config")
+@ConfigurationProperties(prefix = "drink-service.config")
 @Data
 @NoArgsConstructor
 public class DrinkServiceProperties {
 
-    String appVersion;
-    String dbSchemaVersion;
+    private String appVersion;
+    private String dbSchemaVersion;
+
+    private String potluckEventProducerTopic;
 
 }

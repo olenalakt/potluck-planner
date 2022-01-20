@@ -1,7 +1,6 @@
 package com.olena.guestservice.service;
 
 import com.olena.guestservice.config.GuestServiceProperties;
-import com.olena.guestservice.config.KafkaProperties;
 import com.olena.guestservice.enums.ActionEnum;
 import com.olena.guestservice.exception.ServiceException;
 import com.olena.guestservice.model.GuestDTO;
@@ -25,9 +24,6 @@ public class GuestService {
 
     @Autowired
     GuestServiceProperties guestServiceProperties;
-
-    @Autowired
-    KafkaProperties kafkaProperties;
 
     @Autowired
     GuestRepository guestRepository;
@@ -129,7 +125,7 @@ public class GuestService {
 
                 // publish event into  Kafka topic
                 GuestMessage guestMessage = new GuestMessage(guest, ActionEnum.ADD);
-                potluckEventPublisher.publish(potluckEventProducer, kafkaProperties.getPotluckEventProducerTopic(), guestMessage);
+                potluckEventPublisher.publish(potluckEventProducer, guestServiceProperties.getPotluckEventProducerTopic(), guestMessage);
 
 
             } catch (ServiceException se) {
@@ -173,7 +169,7 @@ public class GuestService {
 
                     // publish event into  Kafka topic
                     GuestMessage guestMessage = new GuestMessage(guest, ActionEnum.DELETE);
-                    potluckEventPublisher.publish(potluckEventProducer, kafkaProperties.getPotluckEventProducerTopic(), guestMessage);
+                    potluckEventPublisher.publish(potluckEventProducer, guestServiceProperties.getPotluckEventProducerTopic(), guestMessage);
                 }
 
             }
@@ -252,7 +248,7 @@ public class GuestService {
 
                 // publish event into  Kafka topic
                 GuestMessage guestMessage = new GuestMessage(guest, ActionEnum.UPDATE);
-                potluckEventPublisher.publish(potluckEventProducer, kafkaProperties.getPotluckEventProducerTopic(), guestMessage);
+                potluckEventPublisher.publish(potluckEventProducer, guestServiceProperties.getPotluckEventProducerTopic(), guestMessage);
 
             } else {
                 errMsg.append("Guest not found: ").append(guestDTO.getGuestId());
@@ -295,7 +291,7 @@ public class GuestService {
 
                 // publish event into  Kafka topic
                 GuestMessage guestMessage = new GuestMessage(guest, ActionEnum.DELETE);
-                potluckEventPublisher.publish(potluckEventProducer, kafkaProperties.getPotluckEventProducerTopic(), guestMessage);
+                potluckEventPublisher.publish(potluckEventProducer, guestServiceProperties.getPotluckEventProducerTopic(), guestMessage);
 
             } else {
                 errMsg.append("Guest not found: ").append(guestId);
