@@ -10,10 +10,10 @@
     </parent>
 
     <groupId>com.olena</groupId>
-    <artifactId>user-service</artifactId>
+    <artifactId>userservice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>user-service</name>
-    <description>user-service</description>
+    <description>User service</description>
     <properties>
         <java.version>11</java.version>
     </properties>

@@ -1,8 +1,8 @@
-package com.olena.menuservice.enums;
+package com.olena.menucleanupservice.enums;
 
 public enum Constants {
 
-    MENU("menu");
+    EVENT("event");
 
     private final String value;
 

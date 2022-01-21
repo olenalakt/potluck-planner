@@ -35,7 +35,7 @@ public class KafkaSpringConfig {
 
     @Bean(name = "potluckPlannerCleanupProducer")
     public Producer<String, PotluckPlannerCleanup> startPotluckPlannerCleanupProducer(Properties producerProperties) {
-        producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, kafkaProperties.getValuePotluckPlannerCleanupSerializerCLass());
+        producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, kafkaProperties.getValueSerializerCLass());
         log.debug("startPotluckEventProducer: Properties=[{}]", producerProperties);
         return new KafkaProducer<String, PotluckPlannerCleanup>(producerProperties);
     }

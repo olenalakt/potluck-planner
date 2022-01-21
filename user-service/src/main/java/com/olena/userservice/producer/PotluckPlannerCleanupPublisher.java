@@ -1,4 +1,4 @@
-package com.olena.userservice.publisher;
+package com.olena.userservice.producer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.Producer;

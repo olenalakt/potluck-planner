@@ -49,7 +49,7 @@ public class InitKafkaPropertiesService {
             producerProperties.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, kafkaProperties.getEnableIdempotence());
             producerProperties.put(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, kafkaProperties.getMaxInFlightRequestsPerConnection());
             producerProperties.put(ProducerConfig.METADATA_MAX_AGE_CONFIG, kafkaProperties.getMetadataMaxAgeMs());
-            producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, kafkaProperties.getValuePotluckPlannerCleanupSerializerCLass());
+            producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, kafkaProperties.getValueSerializerCLass());
 
 /*
             Path tmpPath = Paths.get(tmpLoader.getResource(kafkaProperties.getSslTruststoreLocation()).toURI());

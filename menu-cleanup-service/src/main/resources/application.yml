@@ -1,0 +1,136 @@
+server.port: 11443
+
+# DB config
+spring:
+  data.mongodb.uri: mongodb://localhost/menudb
+#  cloud:
+#    stream:
+#      kafka:
+#        binder:
+#          zkNodes.brokers: localhost:29092
+#      bindings:
+#        output:
+          # topic name
+#         destination: POTLUCK-EVENT-DEV
+#          content-type: application/json
+
+
+# reporting metrics to prometheus
+management:
+  endpoints:
+    enabled-by-default: true
+    web.exposure.include: prometheus,info,health
+  endpoint:
+    prometheus.enabled: true
+
+menu-cleanup-service:
+  cors-config:
+    contentSecurityPolicy: "default-src blob: localhost:*, *.lakt.ca"
+    accessControlAllowCredentials: true
+    accessControlAllowOriginList:
+      - "http://localhost[:]*"
+      - "https://localhost[:]*"
+      - "http://*[.]lakt[.]ca"
+      - "https://*[.]lakt[.]ca"
+  config:
+    appVersion: 1.0.0
+    dbSchemaVersion: 1.0.0
+
+
+# mTLS config
+#server.ssl.key-store: eventservice.jks
+#server.ssl.key-store-password: olena123
+#server.ssl.keyAlias: eventservice
+
+# openid oauth-server client  config
+security:
+  oauth2:
+    resource:
+      user-info-uri: http://localhost:8080/api/users/me
+      token-info-uri: http://localhost:8080/oauth/check_token
+      jwt:
+        key-uri: http://localhost:8080/oauth/token_key
+    client:
+      clientId: potluckPlanner
+      clientSecret: potluckPlannerSecret
+
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    com.olena.menuservice: debug
+    org.springframework.security: error
+    org.springframework.web: error
+    org.springframework.cloud: error
+    org.springframework.kafka: error
+    org.springframework.data.mongodb: error
+    org.mongodb.driver: error
+    root: error
+
+confluent-kafka:
+  config:
+    # topics
+    menuCleanupRequestConsumerTopic: 'POTLUCK-PLANNER-CLEANUP-DEV'
+    keyDeserializerClass: 'org.apache.kafka.common.serialization.StringDeserializer'
+    valueDeserializerClass: 'com.olena.menucleanupservice.model.MenuCleanupRequestDTODeserializer'
+
+    # shared prop
+    bootstrapServers: 'localhost:9092'
+
+    # producer clientId
+    clientId: 'potluck-event-dev'
+
+    # consumer group
+    groupId: 'potluck-event-dev'
+
+    #consumer prop
+    fetchMinBytes: 4
+    fetchMaxBytes: 52428800
+    fetchMaxWaitMs: 500
+    receiveBufferBytes: 65536
+    maxPartitionFetchBytes: 1048576
+
+    connectionsMaxIdleMs: 540000
+    sessionTimeoutMs: 10000
+    heartbeatIntervalMs: 3000
+    requestTimeoutMs: 30000
+
+    autoOffsetReset: earliest
+    # consumer was failing to  start in Dev with "resolve_canonical_bootstrap_servers_only"
+    clientDnsLookup: resolve_canonical_bootstrap_servers_only
+
+    enableAutoCommit: true
+    autoCommitIntervalMs: 5000
+
+    reconnectBackoffMs: 500
+    retryBackoffMs: 500
+    reconnectBackoffMaxMs: 1000
+
+    # profile specific consumer props
+    maxPollRecords: 500
+    pollFrequencyMs: 500
+
+    # producer props
+    schemaRegistryUrlConfig: TBD
+    keySerializerClass: 'org.apache.kafka.common.serialization.StringSerializer'
+
+    # depends on profile
+    acks: all
+    lingerMs: 10
+
+    bufferMemory: 33554432
+    batchSize: 16384
+    deliveryTimeoutMs: 120000
+    maxBlockMs: 60000
+    maxRequestSize: 1048576
+    enableIdempotence: false
+    maxInFlightRequestsPerConnection: 5
+    metadataMaxAgeMs: 300000
+
+    #shared props
+#    securityProtocol: SASL_SSL
+#    sslAlgorithm: https
+#    sslTruststoreLocation: 'kafka_devtest_truststore.pkcs12'
+#    sslTruststorePassword: server-keystore
+#    saslMechanism: SCRAM-SHA-256
+    # setup this value via ENV variable SASL_JAAS_CONFIG_CRED
+#    saslJaasConfig: 'org.apache.kafka.common.security.scram.ScramLoginModule required ${SASL_JAAS_CONFIG_CRED};'

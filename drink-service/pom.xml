@@ -10,10 +10,10 @@
     </parent>
 
     <groupId>com.olena</groupId>
-    <artifactId>drink-service</artifactId>
+    <artifactId>drinkservice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>drink-service</name>
-    <description>drink-service</description>
+    <description>Potluck Drink service</description>
     <properties>
         <java.version>11</java.version>
     </properties>

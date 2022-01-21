@@ -1,8 +1,8 @@
-package com.olena.menuservice.enums;
+package com.olena.userservice.enums;
 
 public enum Constants {
 
-    MENU("menu");
+    USER("user");
 
     private final String value;
 

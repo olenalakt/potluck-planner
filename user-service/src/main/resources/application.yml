@@ -28,6 +28,7 @@ user-service:
   config:
     appVersion: 1.0.0
     dbSchemaVersion: 1.0.0
+    potluckPlannerCleanupProducerTopic: 'POTLUCK-PLANNER-CLEANUP-DEV'
 
 logging:
   config: classpath:logback-spring.xml
@@ -42,9 +43,9 @@ logging:
 
 confluent-kafka:
   config:
-    # topic
-    potluckPlannerCleanupProducerTopic: 'POTLUCK-PLANNER-CLEANUP-DEV'
-    valuePotluckPlannerCleanupSerializerCLass: 'com.olena.userservice.model.PotluckPlannerCleanupSerializer'
+    # producer
+    keySerializerClass: 'org.apache.kafka.common.serialization.StringSerializer'
+    valueSerializerCLass: 'com.olena.userservice.model.PotluckPlannerCleanupSerializer'
 
     # shared prop
     bootstrapServers: 'localhost:9092'
@@ -84,7 +85,6 @@ confluent-kafka:
 
     # producer props
     schemaRegistryUrlConfig: TBD
-    keySerializerClass: 'org.apache.kafka.common.serialization.StringSerializer'
 
     # depends on profile
     acks: all

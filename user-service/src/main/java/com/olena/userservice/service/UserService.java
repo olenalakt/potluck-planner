@@ -6,7 +6,7 @@ import com.olena.userservice.enums.ActionEnum;
 import com.olena.userservice.exception.ServiceException;
 import com.olena.userservice.model.PotluckPlannerCleanup;
 import com.olena.userservice.model.UserDTO;
-import com.olena.userservice.publisher.PotluckPlannerCleanupPublisher;
+import com.olena.userservice.producer.PotluckPlannerCleanupPublisher;
 import com.olena.userservice.repository.UserRepository;
 import com.olena.userservice.repository.entity.User;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +22,6 @@ public class UserService {
 
     @Autowired
     UserServiceProperties userServiceProperties;
-
-    @Autowired
-    KafkaProperties kafkaProperties;
 
     @Autowired
     private Producer<String, PotluckPlannerCleanup> potluckPlannerCleanupProducer;
@@ -171,7 +168,7 @@ public class UserService {
                 userRepository.delete(user);
 
                 PotluckPlannerCleanup potluckPlannerCleanupUser = new  PotluckPlannerCleanup (user);
-                potluckPlannerCleanupPublisher.publish(potluckPlannerCleanupProducer, kafkaProperties.getPotluckPlannerCleanupProducerTopic(), potluckPlannerCleanupUser);
+                potluckPlannerCleanupPublisher.publish(potluckPlannerCleanupProducer, userServiceProperties.getPotluckPlannerCleanupProducerTopic(), potluckPlannerCleanupUser);
 
                 return user;
 

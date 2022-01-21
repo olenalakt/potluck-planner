@@ -9,11 +9,12 @@
         <!--   <version>2.2.4.RELEASE</version> -->
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
-    <artifactId>oauth-server</artifactId>
+
+    <groupId>com.olena</groupId>
+    <artifactId>oauthserver</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>oauth-server</name>
-    <description>oauth-server</description>
+    <description>Authentication server</description>
     <properties>
         <java.version>11</java.version>
     </properties>

@@ -11,7 +11,9 @@ import org.springframework.context.annotation.Configuration;
 @NoArgsConstructor
 public class UserServiceProperties {
 
-    String appVersion;
-    String dbSchemaVersion;
+    private String appVersion;
+    private String dbSchemaVersion;
+
+    private String potluckPlannerCleanupProducerTopic;
 
 }

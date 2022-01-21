@@ -1,4 +1,4 @@
-package com.olena.userservice.config;
+package com.olena.menucleanupservice.config;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,8 +14,16 @@ import org.springframework.context.annotation.Configuration;
 public class KafkaProperties {
 
     // producer props
+/*
+    private String potluckEventProducerTopic;
     private String keySerializerClass;
     private String valueSerializerCLass;
+*/
+
+    // consumer props
+    private String potluckEventConsumerTopic;
+    private String keyDeserializerClass;
+    private String valueDeserializerClass;
 
     // Common props
     private String bootstrapServers;
@@ -33,10 +41,7 @@ public class KafkaProperties {
     private String retryBackoffMs;
 
     // consumer props
-/*
     private String groupId;
-    private String keyDeserializerClass;
-    private String valueDeserializerClass;
 
     private String fetchMinBytes;
     private String fetchMaxBytes;
@@ -54,9 +59,10 @@ public class KafkaProperties {
 
     private String maxPollRecords;
     private String pollFrequencyMs;
-    */
+
 
     // producer props
+/*
     private String acks;
     private String lingerMs;
 
@@ -70,7 +76,7 @@ public class KafkaProperties {
     private String metadataMaxAgeMs;
 
     //shared props
-/*
+
     private String securityProtocol;
     private String sslAlgorithm;
     private String sslTruststoreLocation;

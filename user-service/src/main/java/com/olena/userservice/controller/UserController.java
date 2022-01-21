@@ -3,7 +3,7 @@ package com.olena.userservice.controller;
 import com.olena.userservice.exception.BadInputException;
 import com.olena.userservice.exception.ServiceException;
 import com.olena.userservice.model.UserDTO;
-import com.olena.userservice.publisher.PotluckPlannerCleanupPublisher;
+import com.olena.userservice.producer.PotluckPlannerCleanupPublisher;
 import com.olena.userservice.service.UserService;
 import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
