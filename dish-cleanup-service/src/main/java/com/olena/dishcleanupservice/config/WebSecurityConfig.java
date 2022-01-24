@@ -1,4 +1,4 @@
-package com.olena.menucleanupservice.config;
+package com.olena.dishcleanupservice.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class WebSecurityConfig extends ResourceServerConfigurerAdapter {
 
         httpSecurity.anonymous().
                 and().authorizeRequests().antMatchers("/actuator/**").permitAll().
-                and().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/v1/menucleanup/**").permitAll().
+                and().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/v1/dishcleanup/**").permitAll().
                 anyRequest().authenticated();
 
         if (corsAndSecurityProperties.getContentSecurityPolicy() != null) {

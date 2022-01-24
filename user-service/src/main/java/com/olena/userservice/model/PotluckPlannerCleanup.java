@@ -18,18 +18,21 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PotluckPlannerCleanup {
 
-    private String userId;
     private String userName;
 
     private String messageType;
 
     public PotluckPlannerCleanup(User user) {
 
-        this.userId = user.getUserId().toString();
         this.userName = user.getUserName();
 
         this.messageType = Constants.USER.getValue();
     }
 
+    public PotluckPlannerCleanup(String userName) {
 
+        this.userName = userName;
+
+        this.messageType = Constants.USER.getValue();
+    }
 }

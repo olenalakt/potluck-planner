@@ -1,26 +1,24 @@
-package com.olena.menucleanupservice.repository.entity;
+package com.olena.dishcleanupservice.repository.entity;
 
 import com.mongodb.lang.NonNull;
-import com.olena.menucleanupservice.config.MenuCleanupServiceProperties;
-import com.olena.menucleanupservice.enums.RequestStatusEnum;
-import com.olena.menucleanupservice.model.*;
+import com.olena.dishcleanupservice.config.DishCleanupServiceProperties;
+import com.olena.dishcleanupservice.enums.RequestStatusEnum;
+import com.olena.dishcleanupservice.model.DishCleanupRequestDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
 
 
 @Data
-@Document(collection = "MenuCleanupRequest")
+@Document(collection = "DishCleanupRequest")
 @NoArgsConstructor
-public class MenuCleanupRequest {
+public class DishCleanupRequest {
 
     @Id
     private UUID id;
@@ -33,7 +31,6 @@ public class MenuCleanupRequest {
     private UUID eventId;
     private UUID guestId;
     private UUID dishId;
-    private UUID drinkId;
 
     @NonNull
     private String messageType;
@@ -49,17 +46,17 @@ public class MenuCleanupRequest {
     @NonNull
     private Timestamp lastmodified;
 
-    public MenuCleanupRequest(MenuCleanupRequestDTO menuCleanupRequestDTO, MenuCleanupServiceProperties menuCleanupServiceProperties) {
+    public DishCleanupRequest(DishCleanupRequestDTO dishCleanupRequestDTO, DishCleanupServiceProperties dishCleanupServiceProperties) {
 
         this.id = UUID.randomUUID();
 
-        this.userName = menuCleanupRequestDTO.getUserName();
+        this.userName = dishCleanupRequestDTO.getUserName();
 
-        this.messageType = menuCleanupRequestDTO.getMessageType();
+        this.messageType = dishCleanupRequestDTO.getMessageType();
 
         this.requestStatus = RequestStatusEnum.PENDING.getValue();
 
-        this.schemaVersion = menuCleanupServiceProperties.getDbSchemaVersion();
+        this.schemaVersion = dishCleanupServiceProperties.getDbSchemaVersion();
 
         Instant now = Instant.now();
         this.created = Timestamp.from(now);

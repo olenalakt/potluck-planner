@@ -1,6 +1,6 @@
 package com.olena.guestservice.enums;
 
-public enum DrinkType {
+public enum DrinkTypeEnum {
 
     // part of path to  dishes service
     WATER("WATER"),
@@ -15,7 +15,7 @@ public enum DrinkType {
 
     private final String value;
 
-    DrinkType(String value) {
+    DrinkTypeEnum(String value) {
         this.value = value;
     }
 

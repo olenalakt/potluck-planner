@@ -33,7 +33,6 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserFromDb(userName));
     }
 
-
     /**
      * @param userDTO
      * @return
@@ -77,6 +76,16 @@ public class UserController {
             return ResponseEntity.ok(userService.deleteUser(userId, potluckPlannerCleanupPublisher));
         } else {
             throw new BadInputException("deleteUser: userId can not be null");
+        }
+    }
+
+    @RequestMapping(value = "/username/{username}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteUserByUserName(@PathVariable("username") String userName) throws ServiceException, BadInputException {
+
+        if (!StringUtils.isBlank(userName)) {
+            return ResponseEntity.ok(userService.deleteUserByName(userName, potluckPlannerCleanupPublisher));
+        } else {
+            throw new BadInputException("deleteUserByUserName: userName can not be null");
         }
     }
 }

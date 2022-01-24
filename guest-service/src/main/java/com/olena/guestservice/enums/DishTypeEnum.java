@@ -1,6 +1,6 @@
 package com.olena.guestservice.enums;
 
-public enum DishType {
+public enum DishTypeEnum {
 
     // part of path to  dishes service
     APPETIZER("APPETIZER"),
@@ -10,7 +10,7 @@ public enum DishType {
 
     private final String value;
 
-    DishType(String value) {
+    DishTypeEnum(String value) {
         this.value = value;
     }
 

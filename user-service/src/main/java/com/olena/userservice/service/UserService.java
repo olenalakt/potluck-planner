@@ -1,6 +1,5 @@
 package com.olena.userservice.service;
 
-import com.olena.userservice.config.KafkaProperties;
 import com.olena.userservice.config.UserServiceProperties;
 import com.olena.userservice.enums.ActionEnum;
 import com.olena.userservice.exception.ServiceException;
@@ -77,8 +76,8 @@ public class UserService {
         // check if userDTO is already  exist  -  reject
         User existingUser = userRepository.findFirstByUserName(userDTO.getUserName());
         if (existingUser != null) {
-             // TODO -  remove, temporary fix the existing users
-            if (existingUser.getUserId() ==  null) {
+            // TODO -  remove, temporary fix the existing users
+            if (existingUser.getUserId() == null) {
                 existingUser.setUserId(UUID.randomUUID());
                 setUser(existingUser);
             }
@@ -163,20 +162,17 @@ public class UserService {
 
             if (user != null) {
 
-// TODO  - publish user deletion to  remove data from all other associated  services
-
                 userRepository.delete(user);
 
-                PotluckPlannerCleanup potluckPlannerCleanupUser = new  PotluckPlannerCleanup (user);
+                PotluckPlannerCleanup potluckPlannerCleanupUser = new PotluckPlannerCleanup(user);
                 potluckPlannerCleanupPublisher.publish(potluckPlannerCleanupProducer, userServiceProperties.getPotluckPlannerCleanupProducerTopic(), potluckPlannerCleanupUser);
 
                 return user;
 
             } else {
-                errMsg.append("Event not found: ").append(userId);
+                errMsg.append("User not found: ").append(userId);
                 throw new ServiceException(errMsg.toString());
             }
-
 
         } catch (ServiceException se) {
             throw se;
@@ -185,5 +181,45 @@ public class UserService {
             throw new ServiceException(errMsg.toString());
         }
 
+    }
+
+
+    /**
+     * Backdoor service to  trigger  adhoc cleanup
+     * @param userName
+     * @param potluckPlannerCleanupPublisher
+     * @return
+     * @throws ServiceException
+     */
+    public User deleteUserByName(String userName, PotluckPlannerCleanupPublisher potluckPlannerCleanupPublisher) throws ServiceException {
+        log.debug("deleteUserByName: userName={}", userName);
+
+        StringBuffer errMsg = new StringBuffer();
+        Boolean isUserNotFound = true;
+        try {
+            User user = userRepository.findFirstByUserId(UUID.fromString(userName));
+
+            if (user != null) {
+                isUserNotFound = false;
+                userRepository.delete(user);
+            }
+
+            // send message even if user not found  to  cleanup  downstream systems
+            PotluckPlannerCleanup potluckPlannerCleanupUser = new PotluckPlannerCleanup(userName);
+            potluckPlannerCleanupPublisher.publish(potluckPlannerCleanupProducer, userServiceProperties.getPotluckPlannerCleanupProducerTopic(), potluckPlannerCleanupUser);
+
+            if (isUserNotFound) {
+                errMsg.append("User not found, cleanup abandoned data triggered for userName=").append(userName);
+                throw new ServiceException(errMsg.toString());
+            } else {
+                return user;
+            }
+
+        } catch (ServiceException se) {
+            throw se;
+        } catch (Exception e) {
+            log.error("deleteUserByName: userName={}, {}", userName, errMsg);
+            throw new ServiceException(errMsg.toString());
+        }
     }
 }

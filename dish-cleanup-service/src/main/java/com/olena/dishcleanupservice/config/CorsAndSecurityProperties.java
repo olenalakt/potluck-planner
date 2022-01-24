@@ -1,4 +1,4 @@
-package com.olena.menucleanupservice.config;
+package com.olena.dishcleanupservice.config;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 @Configuration
-@ConfigurationProperties(prefix = "menu-cleanup-service.cors-config")
+@ConfigurationProperties(prefix = "dish-service.cors-config")
 @Data
 @NoArgsConstructor
 public class CorsAndSecurityProperties {

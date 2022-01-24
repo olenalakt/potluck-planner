@@ -1,4 +1,4 @@
-package com.olena.menucleanupservice.model;
+package com.olena.dishcleanupservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MenuCleanupRequestDTO {
+public class DishCleanupRequestDTO {
 
     private String userName;
 

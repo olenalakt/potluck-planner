@@ -2,6 +2,7 @@ package com.olena.guestservice.repository.entity;
 
 import com.mongodb.lang.NonNull;
 import com.olena.guestservice.config.GuestServiceProperties;
+import com.olena.guestservice.enums.GuestStatusEnum;
 import com.olena.guestservice.model.GuestDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -53,7 +54,7 @@ public class Guest {
         this.eventId = UUID.fromString(guestDTO.getEventId());
         this.guestName = guestDTO.getGuestName();
         // TODO  - introduce enum for guest status
-        this.guestStatus = (guestDTO.getGuestStatus() == null ? "INVITED" : guestDTO.getGuestStatus());
+        this.guestStatus = (guestDTO.getGuestStatus() == null ? GuestStatusEnum.INVITED.getValue() : guestDTO.getGuestStatus());
         this.guestEmail = guestDTO.getGuestEmail();
         this.notes = guestDTO.getNotes();
 

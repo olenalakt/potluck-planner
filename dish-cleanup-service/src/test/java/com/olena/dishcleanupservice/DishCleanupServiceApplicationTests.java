@@ -1,10 +1,10 @@
-package com.olena.menuservice;
+package com.olena.dishcleanupservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MenuCleanupServiceApplicationTests {
+class DishCleanupServiceApplicationTests {
 
     @Test
     void contextLoads() {
