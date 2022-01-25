@@ -1,8 +1,8 @@
-server.port: 12443
+server.port: 13443
 
 # DB config
 spring:
-  data.mongodb.uri: mongodb://localhost/dishdb
+  data.mongodb.uri: mongodb://localhost/eventdb
 #  cloud:
 #    stream:
 #      kafka:
@@ -23,7 +23,7 @@ management:
   endpoint:
     prometheus.enabled: true
 
-dish-cleanup-service:
+event-cleanup-service:
   cors-config:
     contentSecurityPolicy: "default-src blob: localhost:*, *.lakt.ca"
     accessControlAllowCredentials: true
@@ -57,7 +57,7 @@ security:
 logging:
   config: classpath:logback-spring.xml
   level:
-    com.olena.dishcleanupservice: debug
+    com.olena.eventcleanupservice: debug
     org.springframework.security: error
     org.springframework.web: error
     org.springframework.cloud: error
@@ -69,9 +69,9 @@ logging:
 confluent-kafka:
   config:
     # topics
-    dishCleanupRequestConsumerTopic: 'POTLUCK-PLANNER-CLEANUP-DEV'
+    eventCleanupRequestConsumerTopic: 'POTLUCK-PLANNER-CLEANUP-DEV'
     keyDeserializerClass: 'org.apache.kafka.common.serialization.StringDeserializer'
-    valueDeserializerClass: 'DishCleanupRequestDTODeserializer'
+    valueDeserializerClass: 'EventCleanupRequestDTODeserializer'
 
     # shared prop
     bootstrapServers: 'localhost:9092'

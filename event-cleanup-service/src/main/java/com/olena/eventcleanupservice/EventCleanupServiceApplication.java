@@ -1,7 +1,5 @@
-package com.olena.menucleanupservice;
+package com.olena.eventcleanupservice;
 
-import com.olena.menucleanupservice.repository.EventMenuRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -14,7 +12,7 @@ import javax.net.ssl.SSLSession;
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableResourceServer
 //@EnableBinding(Source.class)
-public class MenuCleanupServiceApplication {
+public class EventCleanupServiceApplication {
 
 
     //TODO - !!! only  for dev env
@@ -26,11 +24,8 @@ public class MenuCleanupServiceApplication {
         });
     }
 
-    @Autowired
-    EventMenuRepository eventMenuRepository;
-
     public static void main(String[] args) {
-        SpringApplication.run(MenuCleanupServiceApplication.class, args);
+        SpringApplication.run(EventCleanupServiceApplication.class, args);
     }
 
 }

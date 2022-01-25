@@ -6,7 +6,7 @@ import com.olena.menucleanupservice.enums.RequestStatusEnum;
 import com.olena.menucleanupservice.exception.ServiceException;
 import com.olena.menucleanupservice.model.MenuCleanupRequestDTO;
 import com.olena.menucleanupservice.repository.MenuCleanupRequestRepository;
-import com.olena.menucleanupservice.repository.MenuRepository;
+import com.olena.menucleanupservice.repository.EventMenuRepository;
 import com.olena.menucleanupservice.repository.entity.EventMenu;
 import com.olena.menucleanupservice.repository.entity.MenuCleanupRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ public class MenuCleanupService {
     MenuCleanupServiceProperties menuCleanupServiceProperties;
 
     @Autowired
-    MenuRepository menuRepository;
+    EventMenuRepository eventMenuRepository;
 
     @Autowired
     MenuCleanupRequestRepository menuCleanupRequestRepository;
@@ -146,9 +146,9 @@ public class MenuCleanupService {
 
         // query existing events for user
         // TODO -  replace Mongo repository with Mongo query  to  delete all  entries by  username
-        List<EventMenu> eventMenuList = menuRepository.findAllByUserNameOrderByLastmodifiedDesc(menuCleanupRequest.getUserName());
+        List<EventMenu> eventMenuList = eventMenuRepository.findAllByUserNameOrderByLastmodifiedDesc(menuCleanupRequest.getUserName());
         for (EventMenu eventMenu: eventMenuList) {
-            menuRepository.delete(eventMenu);
+            eventMenuRepository.delete(eventMenu);
         }
 
     }

@@ -57,7 +57,7 @@ security:
 logging:
   config: classpath:logback-spring.xml
   level:
-    com.olena.menuservice: debug
+    com.olena.menucleanupservice: debug
     org.springframework.security: error
     org.springframework.web: error
     org.springframework.cloud: error

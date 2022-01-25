@@ -1,4 +1,4 @@
-package com.olena.menucleanupservice.model;
+package com.olena.menucleanupservice.repository.entity;
 
 import com.mongodb.lang.NonNull;
 import lombok.Data;

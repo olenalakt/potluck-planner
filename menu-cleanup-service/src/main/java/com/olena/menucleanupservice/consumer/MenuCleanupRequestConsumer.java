@@ -13,7 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 
 @Component
 @Slf4j
-public class MenuCleanupConsumer {
+public class MenuCleanupRequestConsumer {
 
     @Autowired
     MenuCleanupService menuCleanupService;
