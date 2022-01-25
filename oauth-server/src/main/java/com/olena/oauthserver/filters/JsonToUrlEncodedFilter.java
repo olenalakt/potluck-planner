@@ -1,7 +1,6 @@
 package com.olena.oauthserver.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.io.ByteStreams;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.web.savedrequest.Enumerator;
 import org.springframework.stereotype.Component;
@@ -37,7 +36,7 @@ public class JsonToUrlEncodedFilter extends OncePerRequestFilter {
         if (Objects.equals(request.getServletPath(), "/oauth/token") && Objects.equals(request.getContentType(),
                 "application/json")) {
 
-            byte[] json = ByteStreams.toByteArray(request.getInputStream());
+            byte[] json = request.getInputStream().readAllBytes();
 
             Map<String, String> jsonMap = new ObjectMapper().readValue(json, Map.class);
             Map<String, String[]> parameters
