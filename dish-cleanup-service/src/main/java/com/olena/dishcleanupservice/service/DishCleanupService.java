@@ -83,9 +83,9 @@ public class DishCleanupService {
      * @param dishCleanupRequestDTO
      */
     // TODO  -  consider insert  every state -  might be pushed to  zipkin, rather then store in DB
-    public void processDishCleanupRequest(DishCleanupRequestDTO dishCleanupRequestDTO) {
+    public void processCleanupRequest(DishCleanupRequestDTO dishCleanupRequestDTO) {
 
-        log.debug("processDishCleanupRequest: dishCleanupRequestDTO={}", dishCleanupRequestDTO);
+        log.debug("processCleanupRequest: dishCleanupRequestDTO={}", dishCleanupRequestDTO);
         // construct new request entry
         DishCleanupRequest dishCleanupRequest = new DishCleanupRequest(dishCleanupRequestDTO, dishCleanupServiceProperties);
         dishCleanupRequestRepository.save(dishCleanupRequest);
@@ -115,12 +115,12 @@ public class DishCleanupService {
                 }
 
                 updateRequestStatus(dishCleanupRequest, RequestStatusEnum.PROCESSED);
-                log.debug("processDishCleanupRequest: dishCleanupRequest={}", dishCleanupRequest);
+                log.debug("processCleanupRequest: dishCleanupRequest={}", dishCleanupRequest);
             } catch (Exception e) {
 
                 dishCleanupRequest.setRequestError(e.toString());
                 updateRequestStatus(dishCleanupRequest, RequestStatusEnum.FAILED);
-                log.error("processDishCleanupRequest exception: dishCleanupRequest={}, {}", dishCleanupRequest, e.toString());
+                log.error("processCleanupRequest exception: dishCleanupRequest={}, {}", dishCleanupRequest, e.toString());
 
             }
         } else {

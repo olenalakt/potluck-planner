@@ -25,7 +25,7 @@ public class EventCleanupRequestConsumer {
         try {
             EventCleanupRequestDTO eventCleanupRequestDTO = consumerRecord.value();
 
-            eventCleanupService.processMenuCleanupRequest(eventCleanupRequestDTO);
+            eventCleanupService.processCleanupRequest(eventCleanupRequestDTO);
 
         } catch (Exception e) {
             log.error("KafkaListener.onMessage exception: {}", e.toString());

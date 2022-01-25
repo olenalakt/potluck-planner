@@ -1,9 +1,9 @@
-package com.olena.eventcleanupservice.repository.entity;
+package com.olena.guestcleanupservice.repository.entity;
 
 import com.mongodb.lang.NonNull;
-import com.olena.eventcleanupservice.config.EventCleanupServiceProperties;
-import com.olena.eventcleanupservice.enums.RequestStatusEnum;
-import com.olena.eventcleanupservice.model.EventCleanupRequestDTO;
+import com.olena.guestcleanupservice.config.GuestCleanupServiceProperties;
+import com.olena.guestcleanupservice.enums.RequestStatusEnum;
+import com.olena.guestcleanupservice.model.GuestCleanupRequestDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -16,9 +16,9 @@ import java.util.UUID;
 
 
 @Data
-@Document(collection = "EventCleanupRequest")
+@Document(collection = "GuestCleanupRequest")
 @NoArgsConstructor
-public class EventCleanupRequest {
+public class GuestCleanupRequest {
 
     @Id
     private UUID id;
@@ -29,6 +29,7 @@ public class EventCleanupRequest {
 
     // possible extention in the future -  delete reactively
     private UUID eventId;
+    private UUID guestId;
 
     @NonNull
     private String messageType;
@@ -44,17 +45,17 @@ public class EventCleanupRequest {
     @NonNull
     private Timestamp lastmodified;
 
-    public EventCleanupRequest(EventCleanupRequestDTO eventCleanupRequestDTO, EventCleanupServiceProperties eventCleanupServiceProperties) {
+    public GuestCleanupRequest(GuestCleanupRequestDTO guestCleanupRequestDTO, GuestCleanupServiceProperties guestCleanupServiceProperties) {
 
         this.id = UUID.randomUUID();
 
-        this.userName = eventCleanupRequestDTO.getUserName();
+        this.userName = guestCleanupRequestDTO.getUserName();
 
-        this.messageType = eventCleanupRequestDTO.getMessageType();
+        this.messageType = guestCleanupRequestDTO.getMessageType();
 
         this.requestStatus = RequestStatusEnum.PENDING.getValue();
 
-        this.schemaVersion = eventCleanupServiceProperties.getDbSchemaVersion();
+        this.schemaVersion = guestCleanupServiceProperties.getDbSchemaVersion();
 
         Instant now = Instant.now();
         this.created = Timestamp.from(now);

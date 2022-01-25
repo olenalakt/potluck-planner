@@ -84,9 +84,9 @@ public class MenuCleanupService {
      * @param menuCleanupRequestDTO
      */
     // TODO  -  consider insert  every state -  might be pushed to  zipkin, rather then store in DB
-    public void processMenuCleanupRequest(MenuCleanupRequestDTO menuCleanupRequestDTO) {
+    public void processCleanupRequest(MenuCleanupRequestDTO menuCleanupRequestDTO) {
 
-        log.debug("processMenuCleanupRequest: menuCleanupRequestDTO={}", menuCleanupRequestDTO);
+        log.debug("processCleanupRequest: menuCleanupRequestDTO={}", menuCleanupRequestDTO);
         // construct new request entry
         MenuCleanupRequest menuCleanupRequest = new MenuCleanupRequest(menuCleanupRequestDTO, menuCleanupServiceProperties);
         menuCleanupRequestRepository.save(menuCleanupRequest);
@@ -116,12 +116,12 @@ public class MenuCleanupService {
                 }
 
                 updateRequestStatus(menuCleanupRequest, RequestStatusEnum.PROCESSED);
-                log.debug("processMenuCleanupRequest: menuCleanupRequest={}", menuCleanupRequest);
+                log.debug("processCleanupRequest: menuCleanupRequest={}", menuCleanupRequest);
             } catch (Exception e) {
 
                 menuCleanupRequest.setRequestError(e.toString());
                 updateRequestStatus(menuCleanupRequest, RequestStatusEnum.FAILED);
-                log.error("processMenuCleanupRequest exception: menuCleanupRequest={}, {}", menuCleanupRequest, e.toString());
+                log.error("processCleanupRequest exception: menuCleanupRequest={}, {}", menuCleanupRequest, e.toString());
 
             }
         } else {

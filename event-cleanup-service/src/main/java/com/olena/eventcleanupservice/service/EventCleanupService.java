@@ -83,9 +83,9 @@ public class EventCleanupService {
      * @param eventCleanupRequestDTO
      */
     // TODO  -  consider insert  every state -  might be pushed to  zipkin, rather then store in DB
-    public void processMenuCleanupRequest(EventCleanupRequestDTO eventCleanupRequestDTO) {
+    public void processCleanupRequest(EventCleanupRequestDTO eventCleanupRequestDTO) {
 
-        log.debug("processMenuCleanupRequest: eventCleanupRequestDTO={}", eventCleanupRequestDTO);
+        log.debug("processCleanupRequest: eventCleanupRequestDTO={}", eventCleanupRequestDTO);
         // construct new request entry
         EventCleanupRequest eventCleanupRequest = new EventCleanupRequest(eventCleanupRequestDTO, eventCleanupServiceProperties);
         eventCleanupRequestRepository.save(eventCleanupRequest);
@@ -115,12 +115,12 @@ public class EventCleanupService {
                 }
 
                 updateRequestStatus(eventCleanupRequest, RequestStatusEnum.PROCESSED);
-                log.debug("processMenuCleanupRequest: eventCleanupRequest={}", eventCleanupRequest);
+                log.debug("processCleanupRequest: eventCleanupRequest={}", eventCleanupRequest);
             } catch (Exception e) {
 
                 eventCleanupRequest.setRequestError(e.toString());
                 updateRequestStatus(eventCleanupRequest, RequestStatusEnum.FAILED);
-                log.error("processMenuCleanupRequest exception: eventCleanupRequest={}, {}", eventCleanupRequest, e.toString());
+                log.error("processCleanupRequest exception: eventCleanupRequest={}, {}", eventCleanupRequest, e.toString());
 
             }
         } else {

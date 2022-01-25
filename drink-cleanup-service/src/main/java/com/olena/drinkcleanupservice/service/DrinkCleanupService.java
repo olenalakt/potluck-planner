@@ -83,9 +83,9 @@ public class DrinkCleanupService {
      * @param drinkCleanupRequestDTO
      */
     // TODO  -  consider insert  every state -  might be pushed to  zipkin, rather then store in DB
-    public void processDrinkCleanupRequest(DrinkCleanupRequestDTO drinkCleanupRequestDTO) {
+    public void processCleanupRequest(DrinkCleanupRequestDTO drinkCleanupRequestDTO) {
 
-        log.debug("processDrinkCleanupRequest: drinkCleanupRequestDTO={}", drinkCleanupRequestDTO);
+        log.debug("processCleanupRequest: drinkCleanupRequestDTO={}", drinkCleanupRequestDTO);
         // construct new request entry
         DrinkCleanupRequest drinkCleanupRequest = new DrinkCleanupRequest(drinkCleanupRequestDTO, drinkCleanupServiceProperties);
         drinkCleanupRequestRepository.save(drinkCleanupRequest);
@@ -115,12 +115,12 @@ public class DrinkCleanupService {
                 }
 
                 updateRequestStatus(drinkCleanupRequest, RequestStatusEnum.PROCESSED);
-                log.debug("processDrinkCleanupRequest: drinkCleanupRequest={}", drinkCleanupRequest);
+                log.debug("processCleanupRequest: drinkCleanupRequest={}", drinkCleanupRequest);
             } catch (Exception e) {
 
                 drinkCleanupRequest.setRequestError(e.toString());
                 updateRequestStatus(drinkCleanupRequest, RequestStatusEnum.FAILED);
-                log.error("processDrinkCleanupRequest exception: drinkCleanupRequest={}, {}", drinkCleanupRequest, e.toString());
+                log.error("processCleanupRequest exception: drinkCleanupRequest={}, {}", drinkCleanupRequest, e.toString());
 
             }
         } else {

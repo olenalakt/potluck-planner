@@ -25,7 +25,7 @@ public class DrinkCleanupRequestConsumer {
         try {
             DrinkCleanupRequestDTO drinkCleanupRequestDTO = consumerRecord.value();
 
-            drinkCleanupService.processDrinkCleanupRequest(drinkCleanupRequestDTO);
+            drinkCleanupService.processCleanupRequest(drinkCleanupRequestDTO);
 
         } catch (Exception e) {
             log.error("KafkaListener.onMessage exception: {}", e.toString());

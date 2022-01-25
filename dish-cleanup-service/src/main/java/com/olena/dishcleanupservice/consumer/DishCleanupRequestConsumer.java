@@ -25,7 +25,7 @@ public class DishCleanupRequestConsumer {
         try {
             DishCleanupRequestDTO dishCleanupRequestDTO = consumerRecord.value();
 
-            dishCleanupService.processDishCleanupRequest(dishCleanupRequestDTO);
+            dishCleanupService.processCleanupRequest(dishCleanupRequestDTO);
 
         } catch (Exception e) {
             log.error("KafkaListener.onMessage exception: {}", e.toString());
