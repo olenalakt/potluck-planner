@@ -21,7 +21,7 @@ public class KafkaProperties {
 */
 
     // consumer props
-    private String potluckEventConsumerTopic;
+    private String menuCleanupRequestConsumerTopic;
     private String keyDeserializerClass;
     private String valueDeserializerClass;
 

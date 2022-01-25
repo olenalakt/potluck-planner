@@ -1,4 +1,4 @@
-server.port: 14443
+server.port: 15443
 
 # DB config
 spring:
@@ -77,10 +77,10 @@ confluent-kafka:
     bootstrapServers: 'localhost:9092'
 
     # producer clientId
-    clientId: 'potluck-event-dev'
+    clientId: 'potluck-event-cleanup-dev'
 
     # consumer group
-    groupId: 'potluck-event-dev'
+    groupId: 'potluck-event-guest-cleanup-dev'
 
     #consumer prop
     fetchMinBytes: 4

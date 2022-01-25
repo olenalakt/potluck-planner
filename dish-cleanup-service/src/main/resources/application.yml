@@ -71,16 +71,16 @@ confluent-kafka:
     # topics
     dishCleanupRequestConsumerTopic: 'POTLUCK-PLANNER-CLEANUP-DEV'
     keyDeserializerClass: 'org.apache.kafka.common.serialization.StringDeserializer'
-    valueDeserializerClass: 'DishCleanupRequestDTODeserializer'
+    valueDeserializerClass: 'com.olena.dishcleanupservice.model.DishCleanupRequestDTODeserializer'
 
     # shared prop
     bootstrapServers: 'localhost:9092'
 
     # producer clientId
-    clientId: 'potluck-event-dev'
+    clientId: 'potluck-event-cleanup-dev'
 
     # consumer group
-    groupId: 'potluck-event-dev'
+    groupId: 'potluck-event-dish-cleanup-dev'
 
     #consumer prop
     fetchMinBytes: 4

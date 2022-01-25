@@ -165,7 +165,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"userName\":\"testd2\",\r\n  \"password\":\"123\",\r\n  \"userRole\":\"USER\"\r\n}"
+					"raw": "{\r\n  \"userName\":\"olena\",\r\n  \"password\":\"123\",\r\n  \"userRole\":\"ADMIN\"\r\n}"
 				},
 				"url": {
 					"raw": "{{user-service}}/users",
@@ -245,6 +245,394 @@
 			"response": []
 		},
 		{
+			"name": "delete User by  username -  unconditionally  pushes request  into  kafka to  cleanup  downstream systems (backdoor service)",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{user-service}}/users/testd1",
+					"host": [
+						"{{user-service}}"
+					],
+					"path": [
+						"users",
+						"testd1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DISH-CLEANUP-SERVICE: query dish cleanup  requests by username",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{dish-cleanup-service}}/v1/dishcleanup/username/testd1",
+					"host": [
+						"{{dish-cleanup-service}}"
+					],
+					"path": [
+						"v1",
+						"dishcleanup",
+						"username",
+						"testd1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DRINK-CLEANUP-SERVICE: query drink cleanup  requests by username",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{drink-cleanup-service}}/v1/drinkcleanup/username/testd1",
+					"host": [
+						"{{drink-cleanup-service}}"
+					],
+					"path": [
+						"v1",
+						"drinkcleanup",
+						"username",
+						"testd1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EVENT-CLEANUP-SERVICE: query event cleanup  requests by username",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{event-cleanup-service}}/v1/eventcleanup/username/testd1",
+					"host": [
+						"{{event-cleanup-service}}"
+					],
+					"path": [
+						"v1",
+						"eventcleanup",
+						"username",
+						"testd1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GUEST-CLEANUP-SERVICE: query event cleanup  requests by username",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{guest-cleanup-service}}/v1/guestcleanup/username/testd1",
+					"host": [
+						"{{guest-cleanup-service}}"
+					],
+					"path": [
+						"v1",
+						"guestcleanup",
+						"username",
+						"testd1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MENU-CLEANUP-SERVICE: query menu cleanup  requests by username",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "{{oath-server}}/oauth/token",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "potluckPlannerSecret",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "potluckPlanner",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "password_credentials",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{menu-cleanup-service}}/v1/menucleanup/username/testd1",
+					"host": [
+						"{{menu-cleanup-service}}"
+					],
+					"path": [
+						"v1",
+						"menucleanup",
+						"username",
+						"testd1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "MENU-SERVICE: query menu  by eventId",
 			"request": {
 				"auth": {
@@ -315,7 +703,7 @@
 			"response": []
 		},
 		{
-			"name": "MENU-CLEANUP-SERVICE: query menu cleanup  requests by username",
+			"name": "EVENT-SERVICE: query events by username",
 			"request": {
 				"auth": {
 					"type": "oauth2",
@@ -338,77 +726,6 @@
 						{
 							"key": "password",
 							"value": "123",
-							"type": "string"
-						},
-						{
-							"key": "clientSecret",
-							"value": "potluckPlannerSecret",
-							"type": "string"
-						},
-						{
-							"key": "clientId",
-							"value": "potluckPlanner",
-							"type": "string"
-						},
-						{
-							"key": "grant_type",
-							"value": "password_credentials",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{menu-cleanup-service}}/v1/menucleanup/username/{{username}}",
-					"host": [
-						"{{menu-cleanup-service}}"
-					],
-					"path": [
-						"v1",
-						"menucleanup",
-						"username",
-						"{{username}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "EVENT-SERVICE: query events by username",
-			"request": {
-				"auth": {
-					"type": "oauth2",
-					"oauth2": [
-						{
-							"key": "accessTokenUrl",
-							"value": "{{oath-server}}/oauth/token",
-							"type": "string"
-						},
-						{
-							"key": "scope",
-							"value": "user",
-							"type": "string"
-						},
-						{
-							"key": "password",
-							"value": "123",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "olena",
 							"type": "string"
 						},
 						{
@@ -873,7 +1190,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userName\": \"{{username}}\",\r\n    \"eventName\": \"test 3\",\r\n    \"eventDate\": \"2022-01-22T16:00:00.000+00:00\",\r\n    \"notes\": \"Test 3\"\r\n\r\n}"
+					"raw": "{\r\n    \"userName\": \"{{username}}\",\r\n    \"eventName\": \"test d1-2\",\r\n    \"eventDate\": \"2022-01-22T16:00:00.000+00:00\",\r\n    \"notes\": \"Test d1-2\"\r\n\r\n}"
 				},
 				"url": {
 					"raw": "{{event-service}}/v1/events",

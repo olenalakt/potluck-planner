@@ -51,10 +51,10 @@ confluent-kafka:
     bootstrapServers: 'localhost:9092'
 
     # producer clientId
-    clientId: 'potluck-event-dev'
+    clientId: 'potluck-event-cleanup-dev'
 
     # consumer group
-    groupId: 'potluck-event-dev'
+    groupId: 'potluck-event-cleanup-dev'
 
     #consumer prop
     fetchMinBytes: 4

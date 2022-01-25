@@ -18,7 +18,7 @@ public class EventCleanupRequestConsumer {
     @Autowired
     EventCleanupService eventCleanupService;
 
-    @KafkaListener(topics = "${confluent-kafka.config.drinkCleanupRequestConsumerTopic}", containerFactory = "eventCleanupRequestKafkaListenerFactory")
+    @KafkaListener(topics = "${confluent-kafka.config.eventCleanupRequestConsumerTopic}", containerFactory = "eventCleanupRequestKafkaListenerFactory")
     public void onMessage(ConsumerRecord<String, EventCleanupRequestDTO> consumerRecord) throws JsonProcessingException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         log.debug("Consume Message : {}", consumerRecord);
 

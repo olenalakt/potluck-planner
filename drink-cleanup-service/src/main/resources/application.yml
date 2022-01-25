@@ -1,4 +1,4 @@
-server.port: 12443
+server.port: 13443
 
 # DB config
 spring:
@@ -71,16 +71,16 @@ confluent-kafka:
     # topics
     drinkCleanupRequestConsumerTopic: 'POTLUCK-PLANNER-CLEANUP-DEV'
     keyDeserializerClass: 'org.apache.kafka.common.serialization.StringDeserializer'
-    valueDeserializerClass: 'DrinkCleanupRequestDTODeserializer'
+    valueDeserializerClass: 'com.olena.drinkcleanupservice.model.DrinkCleanupRequestDTODeserializer'
 
     # shared prop
     bootstrapServers: 'localhost:9092'
 
     # producer clientId
-    clientId: 'potluck-event-dev'
+    clientId: 'potluck-event-cleanup-dev'
 
     # consumer group
-    groupId: 'potluck-event-dev'
+    groupId: 'potluck-event-drink-cleanup-dev'
 
     #consumer prop
     fetchMinBytes: 4

@@ -163,6 +163,7 @@ public class UserService {
             if (user != null) {
 
                 userRepository.delete(user);
+                log.debug("deleteUser, deleted: user={}", user);
 
                 PotluckPlannerCleanup potluckPlannerCleanupUser = new PotluckPlannerCleanup(user);
                 potluckPlannerCleanupPublisher.publish(potluckPlannerCleanupProducer, userServiceProperties.getPotluckPlannerCleanupProducerTopic(), potluckPlannerCleanupUser);
@@ -177,6 +178,7 @@ public class UserService {
         } catch (ServiceException se) {
             throw se;
         } catch (Exception e) {
+            errMsg.append(e);
             log.error("deleteUser: userId={}, {}", userId, errMsg);
             throw new ServiceException(errMsg.toString());
         }
@@ -197,13 +199,14 @@ public class UserService {
         StringBuffer errMsg = new StringBuffer();
         Boolean isUserNotFound = true;
         try {
-            User user = userRepository.findFirstByUserId(UUID.fromString(userName));
+            User user = userRepository.findFirstByUserName(userName);
 
             if (user != null) {
                 isUserNotFound = false;
                 userRepository.delete(user);
             }
 
+            log.debug("deleteUserByName: user={}", user);
             // send message even if user not found  to  cleanup  downstream systems
             PotluckPlannerCleanup potluckPlannerCleanupUser = new PotluckPlannerCleanup(userName);
             potluckPlannerCleanupPublisher.publish(potluckPlannerCleanupProducer, userServiceProperties.getPotluckPlannerCleanupProducerTopic(), potluckPlannerCleanupUser);
@@ -218,6 +221,7 @@ public class UserService {
         } catch (ServiceException se) {
             throw se;
         } catch (Exception e) {
+            errMsg.append(e);
             log.error("deleteUserByName: userName={}, {}", userName, errMsg);
             throw new ServiceException(errMsg.toString());
         }
