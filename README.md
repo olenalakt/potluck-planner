@@ -1,6 +1,6 @@
 # potluck-planner
 
-Diagram: Potluck Planner.png
+Diagram: PotluckPlanner.drawio.png
 
 Potluck Planner (Min Viable Product) requirements:
 1) user registration/authorization;
